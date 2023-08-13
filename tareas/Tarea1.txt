@@ -1,0 +1,60 @@
+1) L = {a^n b^n c^n | n>=1}
+
+1.- S -> aBc 
+2.- S -> aSc 
+3.- S -> abc
+4.- B -> bB
+5.- B -> S
+6.- B -> b
+Σ = {a,b,c}
+
+VALIDAR LAS SIGUIENTES CADENAS:
+* aabbcc
+2,1,4,6
+
+aSc
+a(aBc)c
+a(a(Bb)c)c
+a(a(bb)c)c
+
+* aaabbbccc
+2,2,1,4,4,4
+
+aSc
+a(aSc)c
+a(a(aBc)c)c
+a(a(a(bB)c)c)c
+a(a(a(b(bB))c)c)c
+a(a(a(b(b(b)))c)c)c
+
+2) DADA LA SIGUIENTE GRAMÁTICA DEPENDIENTE DEL CONTEXTO:
+1.- S -> aSb
+2.- S -> X
+3.- X -> bXc
+4.- Y -> Y
+5.- Y -> cYd
+6.- Y -> Ɛ
+
+Determine si las siguientes cadenas pertenecen al lenguaje generado por esta gramatica:
+*abcd
+1,
+aSb 
+no es perteneciente al lenguaje
+
+*aabbcc
+1,1,2
+aSb
+a(aSb)b
+a(aXb)b
+a(a(Y)b)b
+a(a(E)b)b
+no es perteneciente 
+
+3) Considere el lenguaje:
+L ={a^ib^jc^k | i=j o j=k} , proporcione una gramática dependiente del contexto
+
+1.- S -> aSa
+2.- S -> bSb 
+3.- S -> b
+4.- S -> a
+5.- ε
