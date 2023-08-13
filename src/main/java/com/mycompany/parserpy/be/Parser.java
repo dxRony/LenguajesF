@@ -1,0 +1,272 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.parserpy.be;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author romar
+ */
+public class Parser {
+    ArrayList<Token> tablaTokens = new ArrayList();//lista donde se guardaran los tokens
+    private final String[] operadores = {"+", "-", "**", "/", "//", "%", "*", "==", "!=", ">", "<", ">=", "<=", "=", "(", ")", "{", "}",
+        "[", "]", ",", ";", ":"};
+    private final String[] palabrasReservadas = {"and", "as", "assert", "break", "class", "continue", "def", "del", "elif", "else", "except",
+        "False", "finally", "for", "from", "global", "if", "import", "in", "is", "in", "lambda", "None", "nonlocal", "not", "or", "pass", "raise",
+        "return", "True", "try", "while", "with", "yield"};
+
+    public Parser(ArrayList<Token> tablaTokens) {
+        this.tablaTokens = tablaTokens;
+    }
+
+    public void analizar(String codigoFuente) {
+        int estado = 0;
+        String lexema = "";
+        String tipo1 = "";
+        String tipo2 = "";
+        String patron = "";
+        String[] lineas = splitear(codigoFuente, '\n');//el metodo splitear devuelve un arreglo con el codigoFuente separado linea por linea, para analizarlo de la misma forma
+
+        boolean esPalabraReservada = false;
+        boolean esOperador = false;
+
+        for (int i = 0; i < lineas.length; i++) {//recorre el arreglo linea por linea
+            for (int j = 0; j < lineas[i].length(); j++) {//recorre caracter a caracter que haya en la linea
+                esPalabraReservada = false;
+                esOperador = false;
+                int caracterActual;
+                int caracterSiguiente = -1;
+                caracterActual = lineas[i].codePointAt(j);
+                String letraSiguiente = "";
+
+                if (estado == 0) {
+                    estado = evaluarEstadoTransicion(caracterActual);//evaluando caracter inicial
+                }
+                try {//por si el caracter siguiente no existe
+                    caracterSiguiente = lineas[i].codePointAt(j + 1);//guardando el caracter siguiente
+                    char charSiguiente = (char) caracterSiguiente;
+                    letraSiguiente = String.valueOf(charSiguiente);
+                } catch (Exception e) {
+                }
+                esOperador = encontrarOperador(letraSiguiente);
+
+                switch (estado) {
+                    case 1://si es entero                      
+                        lexema += lineas[i].charAt(j);
+                        if (caracterSiguiente > 47 && caracterSiguiente < 58) {//si el caracter siguiente es un numero                           
+                            estado = 1;
+                        } else if (caracterSiguiente == 46) {//si viene un punto decimal, se convierte en un decimal
+                            estado = 4;
+                        } else if (esOperador == true) {//si el siguiente caracter es un operador o espacio
+                            tipo1 = "Entero";
+                            tipo2 = "Constante";
+                            estado = 0;
+                        } else {
+                            tipo1 = "Entero";
+                            tipo2 = "Constante";
+                            estado = 0;
+                        }
+                        break;
+
+                    case 2://si es letra
+                        lexema += lineas[i].charAt(j);
+                        if (caracterSiguiente > 96 && caracterSiguiente < 123 || caracterSiguiente > 64 && caracterSiguiente < 91) {// si el caracter siguiente es una letra
+                            estado = 2;
+                        } else if (caracterSiguiente == 95) {//se convierte en identificador
+                            estado = 5;
+                        } else if (caracterSiguiente > 47 && caracterSiguiente < 48) {//se convierte en un identificador
+                            estado = 5;
+                        } /*else if (esOperador == true) { // si el caracter siguiente no es una letra
+                            tipo = "Palabra";
+                            estado = 0;
+                        }*/ else {
+                            tipo1 = "Identificador";
+                            estado = 0;
+                        }
+                        break;
+
+                    case 3://si hay un espacio o tab
+                        estado = -2; // para evitar que se cree un token de un espacio en blanco
+                        break;
+
+                    case 4://si se ha convertido a decimal
+                        lexema += lineas[i].charAt(j);
+                        if (caracterSiguiente > 47 && caracterSiguiente < 58) {//si sigue un numero luego del .
+                            estado = 4;
+                        } else if (esOperador == true) {
+                            tipo1 = "Decimal";
+                            tipo2 = "Constante";
+                            estado = 0;
+                        } else {
+                            tipo1 = "Decimal";
+                            tipo2 = "Constante";
+                            estado = 0;
+                        }
+                        break;
+
+                    case 5://si se ha convertido en ID
+                        lexema += lineas[i].charAt(j);
+                        if (caracterSiguiente > 96 && caracterSiguiente < 123 || caracterSiguiente > 64 && caracterSiguiente < 91 || caracterSiguiente == 95) {
+                            estado = 5;
+                        } else if (esOperador == true) {
+                            tipo1 = "Identificador";
+                            estado = 0;
+                        } else {
+                            tipo1 = "Identificador";
+                            estado = 0;
+                        }
+                        break;
+
+                    case 6://si es comentario
+                        lexema += lineas[i].charAt(j);
+                        if (caracterSiguiente > 31 && caracterSiguiente < 127) {//agregar cualquier caracter al comentario
+                            estado = 6;
+                        } else {
+                            tipo1 = "Comentario";
+                            estado = 0;
+                        }
+                        break;
+
+                    case 7:
+                        lexema += lineas[i].charAt(j);
+                        if (caracterSiguiente > 31 && caracterSiguiente < 127) {//para agregar cualquier 
+                            estado = 7;
+                        } else if (caracterActual == 34 || caracterActual == 39) {
+                            tipo1 = "Cadena";
+                            tipo2 = "Constante";
+                            estado = 0;
+                        } else {
+                            tipo1 = "No es cadena";
+
+                            estado = 0;
+                        }
+                        break;
+
+                    case 8:
+                        lexema += lineas[i].charAt(j); //agrega cada caracter al token
+                        tipo1 = "Operador";
+                        estado = 0;
+                        if (lexema.equals("==") || lexema.equals(">=") || lexema.equals("<=") || lexema.equals("!=")) {
+                            tipo2 = "Comparacion";
+                        } else if (lexema.equals("**")||lexema.equals("//")) {
+                            tipo2= "Aritmetico";
+                        }
+                        break;
+
+                    case 10://estado de aceptacion de operadores
+                        lexema += lineas[i].charAt(j); //agrega cada caracter al token
+                        if (caracterActual == 61 && caracterSiguiente == 61 || caracterActual == 33 && caracterSiguiente == 61
+                                || caracterActual == 60 && caracterSiguiente == 61 || caracterActual == 62 && caracterSiguiente == 61
+                                || caracterActual == 42 && caracterSiguiente == 42 || caracterActual == 47 && caracterSiguiente == 47) {
+                            estado = 8;//si es un operador logico doble
+                        } else {
+                            tipo1 = "Operador";
+                            estado = 0;
+                            if (lexema.equals("+") || lexema.equals("-") || lexema.equals("%") || lexema.equals("/") || lexema.equals("*")) {
+                                tipo2 = "Aritmetico";
+                            } else if (lexema.equals(">") | lexema.equals("<")) {
+                                tipo2 = "Comparacion";
+                            } else if (lexema.equals("=")) {
+                                tipo2 = "Asignacion";
+                            }  else if (lexema.equals("(") || lexema.equals(")") || lexema.equals("{") || lexema.equals("}") || lexema.equals(".")
+                                    || lexema.equals(":") || lexema.equals("[") || lexema.equals("]") || lexema.equals(",")) {
+                                tipo2 = "Otros";
+                            }
+                        }
+                        break;
+                }
+                if (estado == 0) {//agregando el token y su informacion a la tabla de tokens
+                    esPalabraReservada = encontrarKW(lexema);
+                    if (esPalabraReservada == true) {
+                        tipo1 = "Palabra_Reservada";
+                    }
+                    if (lexema.equals("and")||lexema.equals("or")||lexema.equals("not")) {
+                        tipo2 = "Operador Logico";
+                    } else if (lexema.equals("True")||lexema.equals("False")) {
+                        tipo2 = "Constante Booleana";
+                    } 
+                    tablaTokens.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron));
+                    lexema = "";
+                    tipo1 = "";
+                    tipo2 = "";
+                    patron = "";
+                }
+                if (estado == -2) {
+                    estado = 0;
+                }
+
+            }
+        }
+    }
+
+    public String[] splitear(String codigo, char separar) {
+        String linea = "";
+        int contador = 0;
+
+        for (int i = 0; i < codigo.length(); i++) {
+            if (codigo.charAt(i) == separar) {
+                contador++;
+            }
+        }
+        String[] lineas = new String[contador];
+        contador = 0;
+
+        for (int i = 0; i < codigo.length(); i++) {
+            if (codigo.charAt(i) != separar) {
+                linea = linea + String.valueOf(codigo.charAt(i));
+            } else {
+                lineas[contador] = linea;
+                contador++;
+                linea = "";
+            }
+        }
+        return lineas;
+    }
+
+    public int evaluarEstadoTransicion(int caracterAscii) {
+        if (caracterAscii > 47 && caracterAscii < 58) {
+            return 1;//estado de aceptacion de numeros
+        } else if (caracterAscii > 96 && caracterAscii < 123 || caracterAscii > 64 && caracterAscii < 91) {
+            return 2;//estado  de aceptacion de letras
+        } else if (caracterAscii == 32 || caracterAscii == 9 || caracterAscii == 13) {// detecta si hay espacio, tab 
+            return 3;//estado de aceptacion de espacios o tabulaciones
+        } else if (caracterAscii == 95) {
+            return 5;//estado de aceptacion ID
+        } else if (caracterAscii == 35) {
+            return 6;//estado de aceptacion comentario
+        } else if (caracterAscii == 34 || caracterAscii == 39) {
+            return 7;//estado de aceptacion cadenas
+        } /*   else if (true) {
+            return 8;//estado de aceptacion operadores dobles
+        }*/ else {
+            return 10;//cuando el caracter siguiente es especial
+        }
+    }
+
+    public boolean encontrarOperador(String letra) {
+        boolean encontrado = false;
+
+        for (String elemento : operadores) {
+            if (elemento.equals(letra)) {
+                encontrado = true;
+                break;
+            }
+        }
+        return encontrado;
+    }
+
+    public boolean encontrarKW(String token) {
+        boolean encontrado = false;
+
+        for (String elemento : palabrasReservadas) {
+            if (elemento.equals(token)) {
+                encontrado = true;
+                break;
+            }
+        }
+        return encontrado;
+    }
+}
