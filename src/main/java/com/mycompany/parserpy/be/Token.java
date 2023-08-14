@@ -9,7 +9,8 @@ package com.mycompany.parserpy.be;
  * @author romar
  */
 public class Token {
-     private String lexema;
+
+    private String lexema;
     private int linea;
     private int columna;
     private String tipo1;

@@ -4,17 +4,31 @@
  */
 package com.mycompany.parserpy.fe;
 
+import com.mycompany.parserpy.be.Archivo;
+import com.mycompany.parserpy.be.Parser;
+import com.mycompany.parserpy.be.Token;
+import java.awt.Color;
+import java.util.ArrayList;
+
 /**
  *
  * @author romar
  */
 public class UI extends javax.swing.JFrame {
 
+    private Archivo archivo;
+    ArrayList<Token> reporteTokens = new ArrayList();
+
     /**
-     * Creates new form UI
+     * Creates new form NewJFrame
      */
     public UI() {
         initComponents();
+        archivo = new Archivo();
+        txtAreaCodigo.setEnabled(false);
+        txtAreaError.setEnabled(false);
+        txtAreaReporte.setEnabled(false);
+        btnPlay.setEnabled(false);
     }
 
     /**
@@ -26,39 +40,122 @@ public class UI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlUI = new java.awt.Panel();
+        pnlUI = new javax.swing.JPanel();
+        btnPlay = new javax.swing.JButton();
+        lblReporte = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAreaReporte = new javax.swing.JTextArea();
+        lblError = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtAreaError = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtAreaCodigo = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        menuArchivo = new javax.swing.JMenu();
-        menuGenerarGrafico = new javax.swing.JMenu();
-        menuAyuda = new javax.swing.JMenu();
-        menuAcercaDe = new javax.swing.JMenu();
+        btnMenuArchivo = new javax.swing.JMenu();
+        btnMenuSeleccionarArchivo = new javax.swing.JMenuItem();
+        btnMenuEscribirCodigo = new javax.swing.JMenuItem();
+        btnMenuGenerarGrafico = new javax.swing.JMenu();
+        btnMenuAyuda = new javax.swing.JMenu();
+        btnMenuAcercaDe = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pnlUI.setBackground(new java.awt.Color(153, 0, 0));
+        pnlUI.setBackground(new java.awt.Color(153, 0, 51));
+        pnlUI.setLayout(null);
 
-        javax.swing.GroupLayout pnlUILayout = new javax.swing.GroupLayout(pnlUI);
-        pnlUI.setLayout(pnlUILayout);
-        pnlUILayout.setHorizontalGroup(
-            pnlUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        pnlUILayout.setVerticalGroup(
-            pnlUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
-        );
+        btnPlay.setBackground(new java.awt.Color(0, 0, 153));
+        btnPlay.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnPlay.setForeground(new java.awt.Color(255, 255, 255));
+        btnPlay.setText("Iniciar Analisis Lexico\n");
+        btnPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayActionPerformed(evt);
+            }
+        });
+        pnlUI.add(btnPlay);
+        btnPlay.setBounds(520, 10, 180, 40);
 
-        menuArchivo.setText("Archivo");
-        jMenuBar1.add(menuArchivo);
+        lblReporte.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblReporte.setText("Reporte");
+        pnlUI.add(lblReporte);
+        lblReporte.setBounds(10, 250, 60, 30);
 
-        menuGenerarGrafico.setText("Generar Grafico");
-        jMenuBar1.add(menuGenerarGrafico);
+        txtAreaReporte.setColumns(20);
+        txtAreaReporte.setRows(5);
+        jScrollPane1.setViewportView(txtAreaReporte);
 
-        menuAyuda.setText("Ayuda");
-        jMenuBar1.add(menuAyuda);
+        pnlUI.add(jScrollPane1);
+        jScrollPane1.setBounds(10, 280, 690, 140);
 
-        menuAcercaDe.setText("Acerca de");
-        jMenuBar1.add(menuAcercaDe);
+        lblError.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblError.setText("Error");
+        pnlUI.add(lblError);
+        lblError.setBounds(10, 430, 34, 20);
+
+        txtAreaError.setColumns(20);
+        txtAreaError.setRows(5);
+        jScrollPane2.setViewportView(txtAreaError);
+
+        pnlUI.add(jScrollPane2);
+        jScrollPane2.setBounds(10, 460, 690, 90);
+
+        txtAreaCodigo.setColumns(20);
+        txtAreaCodigo.setRows(5);
+        jScrollPane3.setViewportView(txtAreaCodigo);
+
+        pnlUI.add(jScrollPane3);
+        jScrollPane3.setBounds(10, 50, 690, 200);
+
+        jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnMenuArchivo.setText("Archivo");
+        btnMenuArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuArchivoActionPerformed(evt);
+            }
+        });
+
+        btnMenuSeleccionarArchivo.setText("Seleccionar Archivo (Codigo Fuente)");
+        btnMenuSeleccionarArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuSeleccionarArchivoActionPerformed(evt);
+            }
+        });
+        btnMenuArchivo.add(btnMenuSeleccionarArchivo);
+
+        btnMenuEscribirCodigo.setText("Escribir Codigo Fuente");
+        btnMenuEscribirCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuEscribirCodigoActionPerformed(evt);
+            }
+        });
+        btnMenuArchivo.add(btnMenuEscribirCodigo);
+
+        jMenuBar1.add(btnMenuArchivo);
+
+        btnMenuGenerarGrafico.setText("Generar Grafico");
+        btnMenuGenerarGrafico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuGenerarGraficoActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(btnMenuGenerarGrafico);
+
+        btnMenuAyuda.setText("Ayuda");
+        btnMenuAyuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuAyudaActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(btnMenuAyuda);
+
+        btnMenuAcercaDe.setText("Acerca de ");
+        btnMenuAcercaDe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuAcercaDeActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(btnMenuAcercaDe);
 
         setJMenuBar(jMenuBar1);
 
@@ -66,26 +163,83 @@ public class UI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnMenuArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuArchivoActionPerformed
+        btnPlay.setVisible(true);
+        txtAreaCodigo.setVisible(true);
+        txtAreaError.setVisible(true);
+        lblError.setVisible(true);
+    }//GEN-LAST:event_btnMenuArchivoActionPerformed
+
+    private void btnMenuGenerarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuGenerarGraficoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMenuGenerarGraficoActionPerformed
+
+    private void btnMenuAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuAyudaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMenuAyudaActionPerformed
+
+    private void btnMenuAcercaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuAcercaDeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMenuAcercaDeActionPerformed
+
+    private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
+        // TODO add your handling code here:
+        new Parser(reporteTokens).analizar(txtAreaCodigo.getText());
+
+        for (int i = 0; i < reporteTokens.size(); i++) {
+            txtAreaReporte.setText(txtAreaReporte.getText() +  reporteTokens.get(i).toString());
+        }
+        txtAreaReporte.setBackground(Color.darkGray);
+    }//GEN-LAST:event_btnPlayActionPerformed
+
+    private void btnMenuSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSeleccionarArchivoActionPerformed
+        // TODO add your handling code here:
+        String codigoFuenteLeido;
+        codigoFuenteLeido = archivo.abrirArchivo();
+        txtAreaCodigo.setText(codigoFuenteLeido);
+        txtAreaCodigo.setEnabled(false);
+        txtAreaCodigo.setBackground(Color.red);
+        btnPlay.setEnabled(true);
+    }//GEN-LAST:event_btnMenuSeleccionarArchivoActionPerformed
+
+    private void btnMenuEscribirCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuEscribirCodigoActionPerformed
+        // TODO add your handling code here:
+        txtAreaCodigo.setEnabled(true);
+        txtAreaCodigo.setBackground(Color.white);
+        btnPlay.setEnabled(true);
+    }//GEN-LAST:event_btnMenuEscribirCodigoActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu btnMenuAcercaDe;
+    private javax.swing.JMenu btnMenuArchivo;
+    private javax.swing.JMenu btnMenuAyuda;
+    private javax.swing.JMenuItem btnMenuEscribirCodigo;
+    private javax.swing.JMenu btnMenuGenerarGrafico;
+    private javax.swing.JMenuItem btnMenuSeleccionarArchivo;
+    private javax.swing.JButton btnPlay;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu menuAcercaDe;
-    private javax.swing.JMenu menuArchivo;
-    private javax.swing.JMenu menuAyuda;
-    private javax.swing.JMenu menuGenerarGrafico;
-    private java.awt.Panel pnlUI;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblError;
+    private javax.swing.JLabel lblReporte;
+    private javax.swing.JPanel pnlUI;
+    private javax.swing.JTextArea txtAreaCodigo;
+    private javax.swing.JTextArea txtAreaError;
+    private javax.swing.JTextArea txtAreaReporte;
     // End of variables declaration//GEN-END:variables
 }

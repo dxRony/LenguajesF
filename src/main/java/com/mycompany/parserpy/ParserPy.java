@@ -4,12 +4,16 @@
  */
 package com.mycompany.parserpy;
 
+import com.mycompany.parserpy.fe.UI;
+
 /**
  *
  * @author romar
  */
 public class ParserPy {
+
     public static void main(String[] args) {
-        
+        UI parser = new UI();
+        parser.setVisible(true);
     }
 }
