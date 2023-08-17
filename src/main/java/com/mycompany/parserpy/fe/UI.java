@@ -18,6 +18,7 @@ public class UI extends javax.swing.JFrame {
 
     private Archivo archivo;
     ArrayList<Token> reporteTokens = new ArrayList();
+    ArrayList<Token> reporteErrores = new ArrayList();
 
     /**
      * Creates new form NewJFrame
@@ -194,12 +195,20 @@ public class UI extends javax.swing.JFrame {
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
         // TODO add your handling code here:
-        new Parser(reporteTokens).analizar(txtAreaCodigo.getText());
+        txtAreaReporte.setText("");
+        txtAreaError.setText("");
+        reporteTokens.clear();
+        reporteErrores.clear();
+        new Parser(reporteTokens, reporteErrores).analizar(txtAreaCodigo.getText());
 
         for (int i = 0; i < reporteTokens.size(); i++) {
-            txtAreaReporte.setText(txtAreaReporte.getText() +  reporteTokens.get(i).toString());
+            txtAreaReporte.setText(txtAreaReporte.getText() + reporteTokens.get(i).toString());
+        }
+        for (int i = 0; i < reporteErrores.size(); i++) {
+            txtAreaError.setText(txtAreaError.getText() + reporteErrores.get(i).toString());
         }
         txtAreaReporte.setBackground(Color.darkGray);
+        txtAreaError.setBackground(Color.darkGray);
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnMenuSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSeleccionarArchivoActionPerformed

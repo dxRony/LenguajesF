@@ -11,15 +11,18 @@ import java.util.ArrayList;
  * @author romar
  */
 public class Parser {
+
     ArrayList<Token> tablaTokens = new ArrayList();//lista donde se guardaran los tokens
+    ArrayList<Token> tablaErrores = new ArrayList();//lista donde se guardaran los errores
     private final String[] operadores = {"+", "-", "**", "/", "//", "%", "*", "==", "!=", ">", "<", ">=", "<=", "=", "(", ")", "{", "}",
         "[", "]", ",", ";", ":"};
     private final String[] palabrasReservadas = {"and", "as", "assert", "break", "class", "continue", "def", "del", "elif", "else", "except",
         "False", "finally", "for", "from", "global", "if", "import", "in", "is", "in", "lambda", "None", "nonlocal", "not", "or", "pass", "raise",
         "return", "True", "try", "while", "with", "yield"};
 
-    public Parser(ArrayList<Token> tablaTokens) {
+    public Parser(ArrayList<Token> tablaTokens, ArrayList<Token> tablaErrores) {
         this.tablaTokens = tablaTokens;
+        this.tablaErrores = tablaErrores;
     }
 
     public void analizar(String codigoFuente) {
@@ -32,6 +35,7 @@ public class Parser {
 
         boolean esPalabraReservada = false;
         boolean esOperador = false;
+        boolean acaboCadena = false;
 
         for (int i = 0; i < lineas.length; i++) {//recorre el arreglo linea por linea
             for (int j = 0; j < lineas[i].length(); j++) {//recorre caracter a caracter que haya en la linea
@@ -42,9 +46,14 @@ public class Parser {
                 caracterActual = lineas[i].codePointAt(j);
                 String letraSiguiente = "";
 
+                if (acaboCadena == true) {
+                    caracterActual = 32;
+                }
+
                 if (estado == 0) {
                     estado = evaluarEstadoTransicion(caracterActual);//evaluando caracter inicial
                 }
+                acaboCadena = false;
                 try {//por si el caracter siguiente no existe
                     caracterSiguiente = lineas[i].codePointAt(j + 1);//guardando el caracter siguiente
                     char charSiguiente = (char) caracterSiguiente;
@@ -52,6 +61,9 @@ public class Parser {
                 } catch (Exception e) {
                 }
                 esOperador = encontrarOperador(letraSiguiente);
+                //  System.out.println("estado = " + estado);
+                // System.out.println("caracterActual = " + (char) caracterActual + "/" + caracterActual);
+                // System.out.println("caracterSiguiente = " + (char) caracterSiguiente + "/" + caracterSiguiente);
 
                 switch (estado) {
                     case 1://si es entero                      
@@ -132,16 +144,18 @@ public class Parser {
 
                     case 7:
                         lexema += lineas[i].charAt(j);
-                        if (caracterSiguiente > 31 && caracterSiguiente < 127) {//para agregar cualquier 
+
+                        if (caracterSiguiente > 31 && caracterSiguiente < 127 && caracterSiguiente != 34 &&caracterSiguiente != 39) {
                             estado = 7;
-                        } else if (caracterActual == 34 || caracterActual == 39) {
+                        } else if (caracterSiguiente == 34 ||caracterSiguiente == 39) {
+                            lexema += lineas[i].charAt(j + 1);
                             tipo1 = "Cadena";
                             tipo2 = "Constante";
                             estado = 0;
+                            acaboCadena = true;
                         } else {
-                            tipo1 = "No es cadena";
-
-                            estado = 0;
+                            tipo1 = "Error lexico";
+                            estado=0;
                         }
                         break;
 
@@ -151,13 +165,14 @@ public class Parser {
                         estado = 0;
                         if (lexema.equals("==") || lexema.equals(">=") || lexema.equals("<=") || lexema.equals("!=")) {
                             tipo2 = "Comparacion";
-                        } else if (lexema.equals("**")||lexema.equals("//")) {
-                            tipo2= "Aritmetico";
+                        } else if (lexema.equals("**") || lexema.equals("//")) {
+                            tipo2 = "Aritmetico";
                         }
                         break;
 
                     case 10://estado de aceptacion de operadores
                         lexema += lineas[i].charAt(j); //agrega cada caracter al token
+
                         if (caracterActual == 61 && caracterSiguiente == 61 || caracterActual == 33 && caracterSiguiente == 61
                                 || caracterActual == 60 && caracterSiguiente == 61 || caracterActual == 62 && caracterSiguiente == 61
                                 || caracterActual == 42 && caracterSiguiente == 42 || caracterActual == 47 && caracterSiguiente == 47) {
@@ -171,7 +186,7 @@ public class Parser {
                                 tipo2 = "Comparacion";
                             } else if (lexema.equals("=")) {
                                 tipo2 = "Asignacion";
-                            }  else if (lexema.equals("(") || lexema.equals(")") || lexema.equals("{") || lexema.equals("}") || lexema.equals(".")
+                            } else if (lexema.equals("(") || lexema.equals(")") || lexema.equals("{") || lexema.equals("}") || lexema.equals(".")
                                     || lexema.equals(":") || lexema.equals("[") || lexema.equals("]") || lexema.equals(",")) {
                                 tipo2 = "Otros";
                             }
@@ -183,12 +198,17 @@ public class Parser {
                     if (esPalabraReservada == true) {
                         tipo1 = "Palabra_Reservada";
                     }
-                    if (lexema.equals("and")||lexema.equals("or")||lexema.equals("not")) {
+                    if (lexema.equals("and") || lexema.equals("or") || lexema.equals("not")) {
                         tipo2 = "Operador Logico";
-                    } else if (lexema.equals("True")||lexema.equals("False")) {
+                    } else if (lexema.equals("True") || lexema.equals("False")) {
                         tipo2 = "Constante Booleana";
-                    } 
-                    tablaTokens.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron));
+                    }
+                    if (tipo1 == "Error lexico") {
+                        tablaErrores.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron));
+                    } else {
+                        tablaTokens.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron));
+                        //  System.out.println("lexema = " + lexema + "\n---------------------------");
+                    }
                     lexema = "";
                     tipo1 = "";
                     tipo2 = "";
@@ -197,7 +217,6 @@ public class Parser {
                 if (estado == -2) {
                     estado = 0;
                 }
-
             }
         }
     }
