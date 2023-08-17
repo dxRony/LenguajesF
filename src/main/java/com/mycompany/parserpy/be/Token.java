@@ -16,18 +16,19 @@ public class Token {
     private String tipo1;
     private String tipo2;
     private String patron;
+    private String color;
 
     public Token() {
     }
 
-    public Token(String lexema, int linea, int columna, String tipo1, String tipo2, String patron) {
+    public Token(String lexema, int linea, int columna, String tipo1, String tipo2, String patron,String color) {
         this.lexema = lexema;//contenido del token
         this.linea = linea;//linea donde esta el token
         this.columna = columna;//columna donde esta el token
         this.tipo1 = tipo1;//tipo de token
         this.tipo2 = tipo2;//tipo de token
         this.patron = patron;//patron de token
-
+        this.color = color;//color del token
     }
 
     public String getLexema() {

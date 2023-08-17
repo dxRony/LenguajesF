@@ -31,6 +31,7 @@ public class Parser {
         String tipo1 = "";
         String tipo2 = "";
         String patron = "";
+        String color = "";
         String[] lineas = splitear(codigoFuente, '\n');//el metodo splitear devuelve un arreglo con el codigoFuente separado linea por linea, para analizarlo de la misma forma
 
         boolean esPalabraReservada = false;
@@ -75,10 +76,14 @@ public class Parser {
                         } else if (esOperador == true) {//si el siguiente caracter es un operador o espacio
                             tipo1 = "Entero";
                             tipo2 = "Constante";
+                            color = "RED";
+                            patron = "[1-9]*";
                             estado = 0;
                         } else {
                             tipo1 = "Entero";
                             tipo2 = "Constante";
+                            color = "RED";
+                            patron = "[1-9]*";
                             estado = 0;
                         }
                         break;
@@ -96,6 +101,8 @@ public class Parser {
                             estado = 0;
                         }*/ else {
                             tipo1 = "Identificador";
+                            color = "BLACK";
+                            patron = "([w]|_)+(w|d)*";
                             estado = 0;
                         }
                         break;
@@ -111,10 +118,14 @@ public class Parser {
                         } else if (esOperador == true) {
                             tipo1 = "Decimal";
                             tipo2 = "Constante";
+                            patron = "[1-9]*[.][0-9]*";
+                            color = "RED";
                             estado = 0;
                         } else {
                             tipo1 = "Decimal";
                             tipo2 = "Constante";
+                            patron = "[1-9]*[.][0-9]*";
+                            color = "RED";
                             estado = 0;
                         }
                         break;
@@ -125,9 +136,13 @@ public class Parser {
                             estado = 5;
                         } else if (esOperador == true) {
                             tipo1 = "Identificador";
+                            color = "BLACK";
+                            patron = "([w]|_)+(w|d)*";
                             estado = 0;
                         } else {
                             tipo1 = "Identificador";
+                            color = "BLACK";
+                            patron = "([w]|_)+(w|d)*";
                             estado = 0;
                         }
                         break;
@@ -138,30 +153,37 @@ public class Parser {
                             estado = 6;
                         } else {
                             tipo1 = "Comentario";
+                            color = "GRAY";
                             estado = 0;
+                            patron = "[#][w|operador]*";
                         }
                         break;
 
                     case 7:
                         lexema += lineas[i].charAt(j);
 
-                        if (caracterSiguiente > 31 && caracterSiguiente < 127 && caracterSiguiente != 34 &&caracterSiguiente != 39) {
+                        if (caracterSiguiente > 31 && caracterSiguiente < 127 && caracterSiguiente != 34 && caracterSiguiente != 39) {
                             estado = 7;
-                        } else if (caracterSiguiente == 34 ||caracterSiguiente == 39) {
+                        } else if (caracterSiguiente == 34 || caracterSiguiente == 39) {
                             lexema += lineas[i].charAt(j + 1);
                             tipo1 = "Cadena";
                             tipo2 = "Constante";
+                            color = "RED";
+                            patron = "['|comillaDoble][w|operador]*['|comillaDoble]";
                             estado = 0;
                             acaboCadena = true;
                         } else {
                             tipo1 = "Error lexico";
-                            estado=0;
+                            color = "GREEN";
+                            estado = 0;
                         }
                         break;
 
                     case 8:
                         lexema += lineas[i].charAt(j); //agrega cada caracter al token
                         tipo1 = "Operador";
+                        color = "BLUE";
+                        patron = "[op]";
                         estado = 0;
                         if (lexema.equals("==") || lexema.equals(">=") || lexema.equals("<=") || lexema.equals("!=")) {
                             tipo2 = "Comparacion";
@@ -179,6 +201,8 @@ public class Parser {
                             estado = 8;//si es un operador logico doble
                         } else {
                             tipo1 = "Operador";
+                            color = "BLUE";
+                            patron = "[op]";
                             estado = 0;
                             if (lexema.equals("+") || lexema.equals("-") || lexema.equals("%") || lexema.equals("/") || lexema.equals("*")) {
                                 tipo2 = "Aritmetico";
@@ -197,6 +221,8 @@ public class Parser {
                     esPalabraReservada = encontrarKW(lexema);
                     if (esPalabraReservada == true) {
                         tipo1 = "Palabra_Reservada";
+                        color = "MAGENTA";
+                        patron = "[kw]";
                     }
                     if (lexema.equals("and") || lexema.equals("or") || lexema.equals("not")) {
                         tipo2 = "Operador Logico";
@@ -204,9 +230,9 @@ public class Parser {
                         tipo2 = "Constante Booleana";
                     }
                     if (tipo1 == "Error lexico") {
-                        tablaErrores.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron));
+                        tablaErrores.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron, color));
                     } else {
-                        tablaTokens.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron));
+                        tablaTokens.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron, color));
                         //  System.out.println("lexema = " + lexema + "\n---------------------------");
                     }
                     lexema = "";

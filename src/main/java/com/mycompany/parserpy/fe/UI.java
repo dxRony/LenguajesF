@@ -9,6 +9,7 @@ import com.mycompany.parserpy.be.Parser;
 import com.mycompany.parserpy.be.Token;
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -19,6 +20,8 @@ public class UI extends javax.swing.JFrame {
     private Archivo archivo;
     ArrayList<Token> reporteTokens = new ArrayList();
     ArrayList<Token> reporteErrores = new ArrayList();
+    StyledDocument doc1;
+    StyledDocument doc2;
 
     /**
      * Creates new form NewJFrame
@@ -27,9 +30,12 @@ public class UI extends javax.swing.JFrame {
         initComponents();
         archivo = new Archivo();
         txtAreaCodigo.setEnabled(false);
-        txtAreaError.setEnabled(false);
-        txtAreaReporte.setEnabled(false);
         btnPlay.setEnabled(false);
+        btnLimpiarAreaCodigo.setEnabled(false);
+        btnLimpiarAreaReporte.setEnabled(false);
+        btnLimpiarAreaError.setEnabled(false);
+        doc1 = txtAreaReporte.getStyledDocument();
+        doc2 = txtAreaError.getStyledDocument();
     }
 
     /**
@@ -44,13 +50,16 @@ public class UI extends javax.swing.JFrame {
         pnlUI = new javax.swing.JPanel();
         btnPlay = new javax.swing.JButton();
         lblReporte = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtAreaReporte = new javax.swing.JTextArea();
         lblError = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtAreaError = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtAreaCodigo = new javax.swing.JTextArea();
+        btnLimpiarAreaCodigo = new javax.swing.JButton();
+        btnLimpiarAreaReporte = new javax.swing.JButton();
+        btnLimpiarAreaError = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtAreaReporte = new javax.swing.JTextPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAreaError = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenuArchivo = new javax.swing.JMenu();
         btnMenuSeleccionarArchivo = new javax.swing.JMenuItem();
@@ -74,38 +83,67 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(btnPlay);
-        btnPlay.setBounds(520, 10, 180, 40);
+        btnPlay.setBounds(610, 20, 180, 40);
 
         lblReporte.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblReporte.setText("Reporte");
         pnlUI.add(lblReporte);
-        lblReporte.setBounds(10, 250, 60, 30);
-
-        txtAreaReporte.setColumns(20);
-        txtAreaReporte.setRows(5);
-        jScrollPane1.setViewportView(txtAreaReporte);
-
-        pnlUI.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 280, 690, 140);
+        lblReporte.setBounds(100, 260, 60, 30);
 
         lblError.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblError.setText("Error");
         pnlUI.add(lblError);
-        lblError.setBounds(10, 430, 34, 20);
-
-        txtAreaError.setColumns(20);
-        txtAreaError.setRows(5);
-        jScrollPane2.setViewportView(txtAreaError);
-
-        pnlUI.add(jScrollPane2);
-        jScrollPane2.setBounds(10, 460, 690, 90);
+        lblError.setBounds(100, 510, 34, 20);
 
         txtAreaCodigo.setColumns(20);
         txtAreaCodigo.setRows(5);
         jScrollPane3.setViewportView(txtAreaCodigo);
 
         pnlUI.add(jScrollPane3);
-        jScrollPane3.setBounds(10, 50, 690, 200);
+        jScrollPane3.setBounds(100, 60, 690, 200);
+
+        btnLimpiarAreaCodigo.setBackground(new java.awt.Color(255, 255, 0));
+        btnLimpiarAreaCodigo.setForeground(new java.awt.Color(0, 0, 0));
+        btnLimpiarAreaCodigo.setText("Limpiar");
+        btnLimpiarAreaCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarAreaCodigoActionPerformed(evt);
+            }
+        });
+        pnlUI.add(btnLimpiarAreaCodigo);
+        btnLimpiarAreaCodigo.setBounds(790, 230, 80, 30);
+
+        btnLimpiarAreaReporte.setBackground(new java.awt.Color(255, 255, 0));
+        btnLimpiarAreaReporte.setForeground(new java.awt.Color(0, 0, 0));
+        btnLimpiarAreaReporte.setText("Limpiar");
+        btnLimpiarAreaReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarAreaReporteActionPerformed(evt);
+            }
+        });
+        pnlUI.add(btnLimpiarAreaReporte);
+        btnLimpiarAreaReporte.setBounds(790, 470, 80, 30);
+
+        btnLimpiarAreaError.setBackground(new java.awt.Color(255, 255, 0));
+        btnLimpiarAreaError.setForeground(new java.awt.Color(0, 0, 0));
+        btnLimpiarAreaError.setText("Limpiar");
+        btnLimpiarAreaError.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarAreaErrorActionPerformed(evt);
+            }
+        });
+        pnlUI.add(btnLimpiarAreaError);
+        btnLimpiarAreaError.setBounds(790, 630, 80, 30);
+
+        jScrollPane4.setViewportView(txtAreaReporte);
+
+        pnlUI.add(jScrollPane4);
+        jScrollPane4.setBounds(100, 290, 690, 210);
+
+        jScrollPane1.setViewportView(txtAreaError);
+
+        pnlUI.add(jScrollPane1);
+        jScrollPane1.setBounds(100, 540, 690, 120);
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -164,11 +202,11 @@ public class UI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, 948, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
         );
 
         pack();
@@ -199,16 +237,22 @@ public class UI extends javax.swing.JFrame {
         txtAreaError.setText("");
         reporteTokens.clear();
         reporteErrores.clear();
+
         new Parser(reporteTokens, reporteErrores).analizar(txtAreaCodigo.getText());
 
         for (int i = 0; i < reporteTokens.size(); i++) {
             txtAreaReporte.setText(txtAreaReporte.getText() + reporteTokens.get(i).toString());
+            //txtAreaReporte.setForeground(Color);
+
         }
         for (int i = 0; i < reporteErrores.size(); i++) {
             txtAreaError.setText(txtAreaError.getText() + reporteErrores.get(i).toString());
         }
-        txtAreaReporte.setBackground(Color.darkGray);
-        txtAreaError.setBackground(Color.darkGray);
+        // txtAreaReporte.setBackground(Color.darkGray);
+        //    txtAreaError.setBackground(Color.darkGray);
+        btnLimpiarAreaCodigo.setEnabled(true);
+        btnLimpiarAreaReporte.setEnabled(true);
+        btnLimpiarAreaError.setEnabled(true);
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnMenuSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSeleccionarArchivoActionPerformed
@@ -228,11 +272,31 @@ public class UI extends javax.swing.JFrame {
         btnPlay.setEnabled(true);
     }//GEN-LAST:event_btnMenuEscribirCodigoActionPerformed
 
+    private void btnLimpiarAreaCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarAreaCodigoActionPerformed
+        // TODO add your handling code here:
+        txtAreaCodigo.setText("");
+        txtAreaCodigo.setEnabled(true);
+        txtAreaCodigo.setBackground(Color.white);
+    }//GEN-LAST:event_btnLimpiarAreaCodigoActionPerformed
+
+    private void btnLimpiarAreaReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarAreaReporteActionPerformed
+        // TODO add your handling code here:
+        txtAreaReporte.setText("");
+    }//GEN-LAST:event_btnLimpiarAreaReporteActionPerformed
+
+    private void btnLimpiarAreaErrorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarAreaErrorActionPerformed
+        // TODO add your handling code here:
+        txtAreaError.setText("");
+    }//GEN-LAST:event_btnLimpiarAreaErrorActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLimpiarAreaCodigo;
+    private javax.swing.JButton btnLimpiarAreaError;
+    private javax.swing.JButton btnLimpiarAreaReporte;
     private javax.swing.JMenu btnMenuAcercaDe;
     private javax.swing.JMenu btnMenuArchivo;
     private javax.swing.JMenu btnMenuAyuda;
@@ -242,13 +306,13 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JButton btnPlay;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblReporte;
     private javax.swing.JPanel pnlUI;
     private javax.swing.JTextArea txtAreaCodigo;
-    private javax.swing.JTextArea txtAreaError;
-    private javax.swing.JTextArea txtAreaReporte;
+    private javax.swing.JTextPane txtAreaError;
+    private javax.swing.JTextPane txtAreaReporte;
     // End of variables declaration//GEN-END:variables
 }
