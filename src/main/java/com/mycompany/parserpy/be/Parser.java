@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.parserpy.be;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author romar
- */
 public class Parser {
 
     ArrayList<Token> tablaTokens = new ArrayList();//lista donde se guardaran los tokens
@@ -62,9 +54,6 @@ public class Parser {
                 } catch (Exception e) {
                 }
                 esOperador = encontrarOperador(letraSiguiente);
-                //  System.out.println("estado = " + estado);
-                // System.out.println("caracterActual = " + (char) caracterActual + "/" + caracterActual);
-                // System.out.println("caracterSiguiente = " + (char) caracterSiguiente + "/" + caracterSiguiente);
 
                 switch (estado) {
                     case 1://si es entero                      
@@ -96,10 +85,7 @@ public class Parser {
                             estado = 5;
                         } else if (caracterSiguiente > 47 && caracterSiguiente < 48) {//se convierte en un identificador
                             estado = 5;
-                        } /*else if (esOperador == true) { // si el caracter siguiente no es una letra
-                            tipo = "Palabra";
-                            estado = 0;
-                        }*/ else {
+                        } else {
                             tipo1 = "Identificador";
                             color = "BLACK";
                             patron = "([w]|_)+(w|d)*";
@@ -284,9 +270,7 @@ public class Parser {
             return 6;//estado de aceptacion comentario
         } else if (caracterAscii == 34 || caracterAscii == 39) {
             return 7;//estado de aceptacion cadenas
-        } /*   else if (true) {
-            return 8;//estado de aceptacion operadores dobles
-        }*/ else {
+        } else {
             return 10;//cuando el caracter siguiente es especial
         }
     }

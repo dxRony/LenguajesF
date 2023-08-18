@@ -1,8 +1,8 @@
 digraph{
 rankdir=LR
- node0 [label="a", shape=ellipse];
- node1 [label="s", shape=ellipse];
+ node0 [label="t", shape=ellipse];
+ node1 [label="r", shape=ellipse];
   node0 -> node1;
- node2 [label="d", shape=doublecircle];
+ node2 [label="y", shape=doublecircle];
   node1 -> node2;
 }

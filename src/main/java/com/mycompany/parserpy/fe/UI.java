@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.parserpy.fe;
 
 import com.mycompany.parserpy.be.Archivo;
@@ -11,17 +7,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.text.StyledDocument;
 
-/**
- *
- * @author romar
- */
 public class UI extends javax.swing.JFrame {
 
     private Archivo archivo;
     private ArrayList<Token> reporteTokens = new ArrayList();
     private ArrayList<Token> reporteErrores = new ArrayList();
-    private StyledDocument doc1;
-    private StyledDocument doc2;
     private Token elToken;
 
     /**
@@ -31,8 +21,6 @@ public class UI extends javax.swing.JFrame {
         initComponents();
         archivo = new Archivo();
         txtAreaCodigo.setEnabled(true);
-        doc1 = txtAreaReporte.getStyledDocument();
-        doc2 = txtAreaError.getStyledDocument();
         elToken = new Token();
 
         btnPlay.setVisible(false);
@@ -224,7 +212,7 @@ public class UI extends javax.swing.JFrame {
         pnlUI.add(comboBoxKW);
         comboBoxKW.setBounds(20, 250, 120, 22);
         pnlUI.add(lblImagen);
-        lblImagen.setBounds(210, 80, 700, 470);
+        lblImagen.setBounds(170, 80, 760, 470);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 255, 51));
@@ -338,14 +326,10 @@ public class UI extends javax.swing.JFrame {
 
         for (int i = 0; i < reporteTokens.size(); i++) {
             txtAreaReporte.setText(txtAreaReporte.getText() + reporteTokens.get(i).toString());
-            //txtAreaReporte.setForeground(Color);
-
         }
         for (int i = 0; i < reporteErrores.size(); i++) {
             txtAreaError.setText(txtAreaError.getText() + reporteErrores.get(i).toString());
         }
-        // txtAreaReporte.setBackground(Color.darkGray);
-        //    txtAreaError.setBackground(Color.darkGray);
         btnLimpiar1.setEnabled(true);
         btnLimpiar2.setEnabled(true);
         btnLimpiar3.setEnabled(true);

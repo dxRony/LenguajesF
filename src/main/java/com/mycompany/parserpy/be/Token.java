@@ -1,21 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.parserpy.be;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
 
-/**
- *
- * @author romar
- */
 public class Token {
 
     private String lexema;
@@ -79,23 +68,18 @@ public class Token {
 
             } else {
                 codigoDot.append(" node").append(i).append(" [label=\"").append(caracteres[i]).append("\", shape=ellipse];\n");
-
             }
-
             if (i > 0) {
                 codigoDot.append("  node").append(i - 1).append(" -> node").append(i).append(";\n");
-
             }
         }
         codigoDot.append("}\n");
         String codigoDotTxt = codigoDot.toString();
-        System.out.println(codigoDotTxt);
-
         try {
             FileWriter fileWriter = new FileWriter(archivo);
             fileWriter.write(codigoDotTxt);
             fileWriter.close();;
-            System.out.println("Archivo .dot modificado");
+            System.out.println("Archivo modificado");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,7 +97,6 @@ public class Token {
         } catch (IOException | InterruptedException e) {
             System.err.println("Error: " + e.getMessage());
         }
-
     }
 
     public String getTipo2() {

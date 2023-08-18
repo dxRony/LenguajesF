@@ -45,13 +45,9 @@ public class Archivo {
     }
 
     public void mostrarImagen(JLabel lblImagen) {
-        ImageIcon imagenIcono = new ImageIcon("src\\main\\java\\archivos\\imagen.png");
-
-        Image imagen = imagenIcono.getImage().getScaledInstance(600, 300, Image.SCALE_SMOOTH);
-
+        ImageIcon imagenIcono = new ImageIcon("src\\main\\java\\archivos\\imagen.png");      
+        Image imagen = imagenIcono.getImage().getScaledInstance(750, 300, Image.SCALE_SMOOTH);   
         ImageIcon imagenFinal = new ImageIcon(imagen);
-
         lblImagen.setIcon(imagenFinal);
-
     }
 }
