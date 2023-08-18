@@ -4,17 +4,21 @@
  */
 package com.mycompany.parserpy.be;
 
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 
 /**
  *
  * @author romar
  */
 public class Archivo {
+
     private String RUTA;
     private JFileChooser buscador = new JFileChooser();
 
@@ -38,5 +42,16 @@ public class Archivo {
             System.out.println(error);
         }
         return texto;
+    }
+
+    public void mostrarImagen(JLabel lblImagen) {
+        ImageIcon imagenIcono = new ImageIcon("src\\main\\java\\archivos\\imagen.png");
+
+        Image imagen = imagenIcono.getImage().getScaledInstance(600, 300, Image.SCALE_SMOOTH);
+
+        ImageIcon imagenFinal = new ImageIcon(imagen);
+
+        lblImagen.setIcon(imagenFinal);
+
     }
 }

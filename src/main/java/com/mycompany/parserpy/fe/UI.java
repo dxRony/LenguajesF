@@ -18,10 +18,11 @@ import javax.swing.text.StyledDocument;
 public class UI extends javax.swing.JFrame {
 
     private Archivo archivo;
-    ArrayList<Token> reporteTokens = new ArrayList();
-    ArrayList<Token> reporteErrores = new ArrayList();
-    StyledDocument doc1;
-    StyledDocument doc2;
+    private ArrayList<Token> reporteTokens = new ArrayList();
+    private ArrayList<Token> reporteErrores = new ArrayList();
+    private StyledDocument doc1;
+    private StyledDocument doc2;
+    private Token elToken;
 
     /**
      * Creates new form NewJFrame
@@ -32,6 +33,7 @@ public class UI extends javax.swing.JFrame {
         txtAreaCodigo.setEnabled(true);
         doc1 = txtAreaReporte.getStyledDocument();
         doc2 = txtAreaError.getStyledDocument();
+        elToken = new Token();
 
         btnPlay.setVisible(false);
         lblReporte.setVisible(false);
@@ -42,6 +44,14 @@ public class UI extends javax.swing.JFrame {
         jScrollPane1.setVisible(false);
         jScrollPane4.setVisible(false);
         jScrollPane3.setVisible(false);
+
+        comboBoxIdentificadores.setVisible(false);
+        comboBoxAritmeticos.setVisible(false);
+        comboBoxComparacion.setVisible(false);
+        comboBoxLogicos.setVisible(false);
+        comboBoxAsignacion.setVisible(false);
+        comboBoxKW.setVisible(false);
+
     }
 
     /**
@@ -66,10 +76,14 @@ public class UI extends javax.swing.JFrame {
         txtAreaError = new javax.swing.JTextPane();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtAreaReporte = new javax.swing.JTextPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        listTokens = new javax.swing.JList<>();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        comboBoxIdentificadores = new javax.swing.JComboBox<>();
+        comboBoxAritmeticos = new javax.swing.JComboBox<>();
+        comboBoxComparacion = new javax.swing.JComboBox<>();
+        comboBoxLogicos = new javax.swing.JComboBox<>();
+        comboBoxAsignacion = new javax.swing.JComboBox<>();
+        comboBoxKW = new javax.swing.JComboBox<>();
+        lblImagen = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenuArchivo = new javax.swing.JMenu();
         btnMenuSeleccionarArchivo = new javax.swing.JMenuItem();
@@ -133,7 +147,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(btnLimpiar2);
-        btnLimpiar2.setBounds(840, 460, 80, 30);
+        btnLimpiar2.setBounds(840, 480, 80, 30);
 
         btnLimpiar3.setBackground(new java.awt.Color(255, 255, 0));
         btnLimpiar3.setForeground(new java.awt.Color(0, 0, 0));
@@ -156,28 +170,67 @@ public class UI extends javax.swing.JFrame {
         pnlUI.add(jScrollPane4);
         jScrollPane4.setBounds(150, 280, 690, 230);
 
-        listTokens.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Identificadores", "Aritmeticos", "Comparacion", "Logicos", "Asignacion", "Palabras Clave" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(listTokens);
-
-        pnlUI.add(jScrollPane2);
-        jScrollPane2.setBounds(0, 40, 100, 120);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Identificadores", "Aritmeticos", "Comparacion", "Logicos", "Asignacion", "Palabras Clave" }));
-        pnlUI.add(jComboBox1);
-        jComboBox1.setBounds(0, 170, 120, 22);
-
-        jButton1.setText("pintarReporte");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        comboBoxIdentificadores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Identificadores" }));
+        comboBoxIdentificadores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                comboBoxIdentificadoresActionPerformed(evt);
             }
         });
-        pnlUI.add(jButton1);
-        jButton1.setBounds(190, 20, 170, 23);
+        pnlUI.add(comboBoxIdentificadores);
+        comboBoxIdentificadores.setBounds(20, 150, 120, 22);
+
+        comboBoxAritmeticos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Aritmeticos" }));
+        comboBoxAritmeticos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxAritmeticosActionPerformed(evt);
+            }
+        });
+        pnlUI.add(comboBoxAritmeticos);
+        comboBoxAritmeticos.setBounds(20, 170, 120, 22);
+
+        comboBoxComparacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Comparacion" }));
+        comboBoxComparacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxComparacionActionPerformed(evt);
+            }
+        });
+        pnlUI.add(comboBoxComparacion);
+        comboBoxComparacion.setBounds(20, 190, 120, 22);
+
+        comboBoxLogicos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Logicos" }));
+        comboBoxLogicos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxLogicosActionPerformed(evt);
+            }
+        });
+        pnlUI.add(comboBoxLogicos);
+        comboBoxLogicos.setBounds(20, 210, 120, 22);
+
+        comboBoxAsignacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asignacion" }));
+        comboBoxAsignacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxAsignacionActionPerformed(evt);
+            }
+        });
+        pnlUI.add(comboBoxAsignacion);
+        comboBoxAsignacion.setBounds(20, 230, 120, 22);
+
+        comboBoxKW.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Palabras Clave" }));
+        comboBoxKW.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxKWActionPerformed(evt);
+            }
+        });
+        pnlUI.add(comboBoxKW);
+        comboBoxKW.setBounds(20, 250, 120, 22);
+        pnlUI.add(lblImagen);
+        lblImagen.setBounds(210, 80, 700, 470);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 255, 51));
+        jLabel1.setText("ANALIZADOR LEXICO");
+        pnlUI.add(jLabel1);
+        jLabel1.setBounds(360, 0, 280, 40);
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -296,6 +349,9 @@ public class UI extends javax.swing.JFrame {
         btnLimpiar1.setEnabled(true);
         btnLimpiar2.setEnabled(true);
         btnLimpiar3.setEnabled(true);
+        elToken.llenarComboBox(reporteTokens, comboBoxIdentificadores, comboBoxAritmeticos, comboBoxComparacion,
+                comboBoxLogicos, comboBoxAsignacion, comboBoxKW);
+
 
     }//GEN-LAST:event_btnPlayActionPerformed
 
@@ -316,6 +372,14 @@ public class UI extends javax.swing.JFrame {
         txtAreaCodigo.setEnabled(false);
         txtAreaCodigo.setBackground(Color.red);
         btnPlay.setEnabled(true);
+
+        comboBoxIdentificadores.setVisible(false);
+        comboBoxAritmeticos.setVisible(false);
+        comboBoxComparacion.setVisible(false);
+        comboBoxLogicos.setVisible(false);
+        comboBoxAsignacion.setVisible(false);
+        comboBoxKW.setVisible(false);
+        lblImagen.setVisible(false);
     }//GEN-LAST:event_btnMenuSeleccionarArchivoActionPerformed
 
     private void btnMenuEscribirCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuEscribirCodigoActionPerformed
@@ -332,6 +396,14 @@ public class UI extends javax.swing.JFrame {
         txtAreaCodigo.setEnabled(true);
         txtAreaCodigo.setBackground(Color.white);
         btnPlay.setEnabled(true);
+
+        comboBoxIdentificadores.setVisible(false);
+        comboBoxAritmeticos.setVisible(false);
+        comboBoxComparacion.setVisible(false);
+        comboBoxLogicos.setVisible(false);
+        comboBoxAsignacion.setVisible(false);
+        comboBoxKW.setVisible(false);
+        lblImagen.setVisible(false);
     }//GEN-LAST:event_btnMenuEscribirCodigoActionPerformed
 
     private void btnLimpiar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar1ActionPerformed
@@ -362,12 +434,63 @@ public class UI extends javax.swing.JFrame {
         jScrollPane1.setVisible(false);
         jScrollPane4.setVisible(false);
         jScrollPane3.setVisible(false);
+
+        comboBoxIdentificadores.setVisible(true);
+        comboBoxAritmeticos.setVisible(true);
+        comboBoxComparacion.setVisible(true);
+        comboBoxLogicos.setVisible(true);
+        comboBoxAsignacion.setVisible(true);
+        comboBoxKW.setVisible(true);
+        lblImagen.setVisible(true);
     }//GEN-LAST:event_btnMenuGenerarGraficoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void comboBoxIdentificadoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxIdentificadoresActionPerformed
         // TODO add your handling code here:
-        System.out.println(reporteTokens.toString());
-    }//GEN-LAST:event_jButton1ActionPerformed
+        String selectedItem = (String) comboBoxIdentificadores.getSelectedItem();
+        System.out.println("Selected Item: " + selectedItem);
+        elToken.generarGrafica(selectedItem);
+        archivo.mostrarImagen(lblImagen);
+    }//GEN-LAST:event_comboBoxIdentificadoresActionPerformed
+
+    private void comboBoxAritmeticosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxAritmeticosActionPerformed
+        // TODO add your handling code here:
+        String selectedItem = (String) comboBoxAritmeticos.getSelectedItem();
+        System.out.println("Selected Item: " + selectedItem);
+        elToken.generarGrafica(selectedItem);
+        archivo.mostrarImagen(lblImagen);
+    }//GEN-LAST:event_comboBoxAritmeticosActionPerformed
+
+    private void comboBoxComparacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxComparacionActionPerformed
+        // TODO add your handling code here:
+        String selectedItem = (String) comboBoxComparacion.getSelectedItem();
+        System.out.println("Selected Item: " + selectedItem);
+        elToken.generarGrafica(selectedItem);
+        archivo.mostrarImagen(lblImagen);
+    }//GEN-LAST:event_comboBoxComparacionActionPerformed
+
+    private void comboBoxLogicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxLogicosActionPerformed
+        // TODO add your handling code here:
+        String selectedItem = (String) comboBoxLogicos.getSelectedItem();
+        System.out.println("Selected Item: " + selectedItem);
+        elToken.generarGrafica(selectedItem);
+        archivo.mostrarImagen(lblImagen);
+    }//GEN-LAST:event_comboBoxLogicosActionPerformed
+
+    private void comboBoxAsignacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxAsignacionActionPerformed
+        // TODO add your handling code here:
+        String selectedItem = (String) comboBoxAsignacion.getSelectedItem();
+        System.out.println("Selected Item: " + selectedItem);
+        elToken.generarGrafica(selectedItem);
+        archivo.mostrarImagen(lblImagen);
+    }//GEN-LAST:event_comboBoxAsignacionActionPerformed
+
+    private void comboBoxKWActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxKWActionPerformed
+        // TODO add your handling code here:
+        String selectedItem = (String) comboBoxKW.getSelectedItem();
+        System.out.println("Selected Item: " + selectedItem);
+        elToken.generarGrafica(selectedItem);
+        archivo.mostrarImagen(lblImagen);
+    }//GEN-LAST:event_comboBoxKWActionPerformed
 
     /**
      * @param args the command line arguments
@@ -385,16 +508,20 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JMenu btnMenuGrafico;
     private javax.swing.JMenuItem btnMenuSeleccionarArchivo;
     private javax.swing.JButton btnPlay;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> comboBoxAritmeticos;
+    private javax.swing.JComboBox<String> comboBoxAsignacion;
+    private javax.swing.JComboBox<String> comboBoxComparacion;
+    private javax.swing.JComboBox<String> comboBoxIdentificadores;
+    private javax.swing.JComboBox<String> comboBoxKW;
+    private javax.swing.JComboBox<String> comboBoxLogicos;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblError;
+    private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblReporte;
-    private javax.swing.JList<String> listTokens;
     private javax.swing.JPanel pnlUI;
     private javax.swing.JTextArea txtAreaCodigo;
     private javax.swing.JTextPane txtAreaError;
