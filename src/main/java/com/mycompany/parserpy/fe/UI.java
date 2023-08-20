@@ -5,7 +5,6 @@ import com.mycompany.parserpy.be.Parser;
 import com.mycompany.parserpy.be.Token;
 import java.awt.Color;
 import java.util.ArrayList;
-import javax.swing.text.StyledDocument;
 
 public class UI extends javax.swing.JFrame {
 
