@@ -2,7 +2,6 @@ com\mycompany\parserpy\fe\UI$1.class
 com\mycompany\parserpy\fe\UI$8.class
 com\mycompany\parserpy\fe\UI$14.class
 com\mycompany\parserpy\fe\UI$6.class
-com\mycompany\parserpy\be\graficas\Nodo.class
 com\mycompany\parserpy\fe\UI$16.class
 com\mycompany\parserpy\fe\UI$13.class
 com\mycompany\parserpy\fe\UI$5.class
@@ -12,7 +11,6 @@ com\mycompany\parserpy\fe\UI$17.class
 com\mycompany\parserpy\fe\UI$4.class
 com\mycompany\parserpy\be\Parser.class
 com\mycompany\parserpy\fe\UI$12.class
-com\mycompany\parserpy\be\graficas\ListaDoble.class
 com\mycompany\parserpy\fe\UI$11.class
 com\mycompany\parserpy\be\Archivo.class
 com\mycompany\parserpy\ParserPy.class

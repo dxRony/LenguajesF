@@ -17,6 +17,14 @@ public class Parser {
         this.tablaErrores = tablaErrores;
     }
 
+    /**
+     * Esta funcion recibe el codigo a analizar para leerlo caracter a caracter
+     * e ir definiedo al tipo que pertenece, tambien analiza errore lexicos y
+     * cuando termina de leer un token lo manda a una lista donde se estan
+     * guardando los tokens
+     *
+     * @param codigoFuente
+     */
     public void analizar(String codigoFuente) {
         int estado = 0;
         String lexema = "";
@@ -24,7 +32,7 @@ public class Parser {
         String tipo2 = "";
         String patron = "";
         String color = "";
-        String[] lineas = splitear(codigoFuente, '\n');//el metodo splitear devuelve un arreglo con el codigoFuente separado linea por linea, para analizarlo de la misma forma
+        String[] lineas = splitear(codigoFuente, '\n');
 
         boolean esPalabraReservada = false;
         boolean esOperador = false;
@@ -233,6 +241,15 @@ public class Parser {
         }
     }
 
+    /**
+     * Esta funcion recibe el codigo para que lo separe linea por linea y
+     * guardarlo en un arreglo, tambien recibe un string de comparacion para
+     * identificar cuando crear una nueva posicion del arreglo
+     *
+     * @param codigo
+     * @param separar
+     * @return retorna un arreglo con el codigo fuente separado linea por linea
+     */
     public String[] splitear(String codigo, char separar) {
         String linea = "";
         int contador = 0;
@@ -257,6 +274,15 @@ public class Parser {
         return lineas;
     }
 
+    /**
+     * Esta funcion recibe un numero que se interpreta a traves del codigo
+     * ascii, para hacer comparciones y asi determinar que tipo de caracter se
+     * esta leyendo del codigo, segun el caracter que sea cambia el estado y asi
+     * mismo cambia el tipo de token que se esta leyendo
+     *
+     * @param caracterAscii
+     * @return retorna un estado para el analizador y asi define el token
+     */
     public int evaluarEstadoTransicion(int caracterAscii) {
         if (caracterAscii > 47 && caracterAscii < 58) {
             return 1;//estado de aceptacion de numeros
@@ -275,11 +301,19 @@ public class Parser {
         }
     }
 
-    public boolean encontrarOperador(String letra) {
+    /**
+     * Esta funcion recibe un token y lo compara en el arreglo operadores para
+     * determinar si el token pertenece a este
+     *
+     * @param token
+     * @return retorna true si el token es un operador y false en el caso que el
+     * token no sea un operador
+     */
+    public boolean encontrarOperador(String token) {
         boolean encontrado = false;
 
         for (String elemento : operadores) {
-            if (elemento.equals(letra)) {
+            if (elemento.equals(token)) {
                 encontrado = true;
                 break;
             }
@@ -287,6 +321,14 @@ public class Parser {
         return encontrado;
     }
 
+    /**
+     * Esta funcion recibe un token y lo compara en el arreglo
+     * palabrasReservadas para determinar si el token pertenece a este
+     *
+     * @param token
+     * @return retorna true si el token es una palabra reservada y false en el
+     * caso que no sea una palabra reservada
+     */
     public boolean encontrarKW(String token) {
         boolean encontrado = false;
 

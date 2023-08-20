@@ -124,7 +124,7 @@ public class Token {
 
     /**
      * Esta funcion colorea los tokens recibiendo el area del texto y el reporte de los tokens
-     * haciendo uso de la clase StyledDocument y comparando los tipos de los tokens para darles un color distinto segun el tokens
+     * haciendo uso de la clase StyledDocument y comparando los tipos de los tokens para darles un color distinto segun el token
      * @param areaTxt
      * @param reporteTokens 
      */

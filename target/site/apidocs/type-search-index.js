@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.mycompany.parserpy.be","l":"Archivo"},{"p":"com.mycompany.parserpy.be","l":"Parser"},{"p":"com.mycompany.parserpy","l":"ParserPy"},{"p":"com.mycompany.parserpy.be","l":"Token"},{"p":"com.mycompany.parserpy.fe","l":"UI"}];updateSearchResults();
