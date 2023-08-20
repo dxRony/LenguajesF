@@ -1,9 +1,14 @@
 package com.mycompany.parserpy.be;
 
+import java.awt.Color;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
+import javax.swing.JTextPane;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class Token {
 
@@ -27,7 +32,19 @@ public class Token {
         this.patron = patron;//patron de token
         this.color = color;//color del token
     }
-
+     
+    /**
+     * Esta funcion recibe el reporte de los Tokens y los comboBox del frame 
+    * e identifica el tipo1 y tipo2 de cada token para clasificarlos en los distintos comboBox segun el 
+    * tipo que tengan
+     * @param reporteTokens
+     * @param comboBoxIdentificadores
+     * @param comboBoxAritmeticos
+     * @param comboBoxComparacion
+     * @param comboBoxLogicos
+     * @param comboBoxAsignacion
+     * @param comboBoxKW 
+     */
     public void llenarComboBox(ArrayList<Token> reporteTokens, JComboBox comboBoxIdentificadores,
             JComboBox comboBoxAritmeticos, JComboBox comboBoxComparacion, JComboBox comboBoxLogicos,
             JComboBox comboBoxAsignacion, JComboBox comboBoxKW) {
@@ -55,7 +72,13 @@ public class Token {
             lexema = "";
         }
     }
-
+    
+    /**
+     * Esta funcion recibe el lexema de un token, para separarlo caracter por caracter y segun la cantidad de caracteres
+     * que tenga genera los nodos y la estructura de un archivo .dot.
+     * Luego con el archivo.dot genera la imgagen del lexema separado 
+     * @param lexema 
+     */
     public void generarGrafica(String lexema) {
 
         String archivo = "src\\main\\java\\archivos\\grafo.dot";
@@ -96,6 +119,48 @@ public class Token {
             }
         } catch (IOException | InterruptedException e) {
             System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Esta funcion colorea los tokens recibiendo el area del texto y el reporte de los tokens
+     * haciendo uso de la clase StyledDocument y comparando los tipos de los tokens para darles un color distinto segun el tokens
+     * @param areaTxt
+     * @param reporteTokens 
+     */
+    public void colorearTokens(JTextPane areaTxt, ArrayList<Token> reporteTokens) {
+        StyledDocument doc = areaTxt.getStyledDocument();
+        Style st = areaTxt.addStyle("StyleName", null);
+        areaTxt.setText("");
+
+        for (int i = 0; i < reporteTokens.size(); i++) {
+            String texto = "Token: \n " + reporteTokens.get(i).getTipo2() + " / " + reporteTokens.get(i).getTipo1() + "  *Patron = " + reporteTokens.get(i).getPatron()
+                    + "  *Lexema = " + reporteTokens.get(i).getLexema() + "  *Linea = " + reporteTokens.get(i).getLinea() + "  *Columna = " + reporteTokens.get(i).getColumna() + "\n";
+
+            try {
+                if ("Identificador".equals(reporteTokens.get(i).getTipo1())) {
+                    StyleConstants.setForeground(st, Color.black);
+                } else if ("Operador".equals(reporteTokens.get(i).getTipo1())) {
+                    StyleConstants.setForeground(st, Color.cyan);
+                } else if ("Palabra_Reservada".equals(reporteTokens.get(i).getTipo1())) {
+                    StyleConstants.setForeground(st, Color.pink);
+                } else if ("Constante".equals(reporteTokens.get(i).getTipo2())) {
+                    StyleConstants.setForeground(st, Color.red);
+                } else if ("Comentario".equals(reporteTokens.get(i).getTipo1())) {
+                    StyleConstants.setForeground(st, Color.gray);
+                } else if ("Otros".equals(reporteTokens.get(i).getTipo2())) {
+                    StyleConstants.setForeground(st, Color.green);
+                }
+                try {
+                    doc.insertString(doc.getLength(), texto + "\n", st);
+
+                } catch (Exception e) {
+                }
+
+            } catch (Exception e) {
+                //TODO MANEJAR EX
+            }
+
         }
     }
 

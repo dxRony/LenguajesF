@@ -22,6 +22,11 @@ public class Archivo {
     private String RUTA;
     private JFileChooser buscador = new JFileChooser();
 
+    /**
+     *Esta funcion abre un file chooser y 
+     * obtiene el texto de un archivo
+     * @return retorna el texto del archivo seleccionado en un String
+     **/
     public String abrirArchivo() {
 
         String texto = "";
@@ -43,7 +48,10 @@ public class Archivo {
         }
         return texto;
     }
-
+    /**
+    *Esta funcion abre una imagen con una ruta fija 
+    * y dimensiona la imagen para el frame
+    **/
     public void mostrarImagen(JLabel lblImagen) {
         ImageIcon imagenIcono = new ImageIcon("src\\main\\java\\archivos\\imagen.png");      
         Image imagen = imagenIcono.getImage().getScaledInstance(750, 300, Image.SCALE_SMOOTH);   
