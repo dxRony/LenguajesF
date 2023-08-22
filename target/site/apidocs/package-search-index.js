@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.mycompany.parserpy"},{"l":"com.mycompany.parserpy.be"},{"l":"com.mycompany.parserpy.fe"}];updateSearchResults();
