@@ -71,7 +71,7 @@ public class UI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAreaCodigo = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        btnMenuArchivo = new javax.swing.JMenu();
+        btnMenuAnalizar = new javax.swing.JMenu();
         btnMenuSeleccionarArchivo = new javax.swing.JMenuItem();
         btnMenuEscribirCodigo = new javax.swing.JMenuItem();
         btnMenuGrafico = new javax.swing.JMenu();
@@ -218,10 +218,10 @@ public class UI extends javax.swing.JFrame {
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnMenuArchivo.setText("Archivo");
-        btnMenuArchivo.addActionListener(new java.awt.event.ActionListener() {
+        btnMenuAnalizar.setText("Analizar");
+        btnMenuAnalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMenuArchivoActionPerformed(evt);
+                btnMenuAnalizarActionPerformed(evt);
             }
         });
 
@@ -231,7 +231,7 @@ public class UI extends javax.swing.JFrame {
                 btnMenuSeleccionarArchivoActionPerformed(evt);
             }
         });
-        btnMenuArchivo.add(btnMenuSeleccionarArchivo);
+        btnMenuAnalizar.add(btnMenuSeleccionarArchivo);
 
         btnMenuEscribirCodigo.setText("Escribir Codigo Fuente");
         btnMenuEscribirCodigo.addActionListener(new java.awt.event.ActionListener() {
@@ -239,9 +239,9 @@ public class UI extends javax.swing.JFrame {
                 btnMenuEscribirCodigoActionPerformed(evt);
             }
         });
-        btnMenuArchivo.add(btnMenuEscribirCodigo);
+        btnMenuAnalizar.add(btnMenuEscribirCodigo);
 
-        jMenuBar1.add(btnMenuArchivo);
+        jMenuBar1.add(btnMenuAnalizar);
 
         btnMenuGrafico.setText("Grafico");
         btnMenuGrafico.addActionListener(new java.awt.event.ActionListener() {
@@ -292,12 +292,12 @@ public class UI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnMenuArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuArchivoActionPerformed
+    private void btnMenuAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuAnalizarActionPerformed
         btnPlay.setVisible(true);
         txtAreaCodigo.setVisible(true);
         txtAreaError.setVisible(true);
         lblError.setVisible(true);
-    }//GEN-LAST:event_btnMenuArchivoActionPerformed
+    }//GEN-LAST:event_btnMenuAnalizarActionPerformed
 
     private void btnMenuGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuGraficoActionPerformed
         // TODO add your handling code here:
@@ -481,7 +481,7 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpiar2;
     private javax.swing.JButton btnLimpiar3;
     private javax.swing.JMenu btnMenuAcercaDe;
-    private javax.swing.JMenu btnMenuArchivo;
+    private javax.swing.JMenu btnMenuAnalizar;
     private javax.swing.JMenu btnMenuAyuda;
     private javax.swing.JMenuItem btnMenuEscribirCodigo;
     private javax.swing.JMenuItem btnMenuGenerarGrafico;

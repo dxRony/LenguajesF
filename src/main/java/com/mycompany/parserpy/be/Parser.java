@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Parser {
 
-    ArrayList<Token> tablaTokens = new ArrayList();//lista donde se guardaran los tokens
-    ArrayList<Token> tablaErrores = new ArrayList();//lista donde se guardaran los errores
+    private ArrayList<Token> tablaTokens = new ArrayList();//lista donde se guardaran los tokens
+    private ArrayList<Token> tablaErrores = new ArrayList();//lista donde se guardaran los errores
     private final String[] operadores = {"+", "-", "**", "/", "//", "%", "*", "==", "!=", ">", "<", ">=", "<=", "=", "(", ")", "{", "}",
         "[", "]", ",", ";", ":"};
     private final String[] palabrasReservadas = {"and", "as", "assert", "break", "class", "continue", "def", "del", "elif", "else", "except",
@@ -250,12 +250,12 @@ public class Parser {
      * @param separar
      * @return retorna un arreglo con el codigo fuente separado linea por linea
      */
-    public String[] splitear(String codigo, char separar) {
+    public String[] splitear(String codigo, char separador) {
         String linea = "";
         int contador = 0;
 
         for (int i = 0; i < codigo.length(); i++) {
-            if (codigo.charAt(i) == separar) {
+            if (codigo.charAt(i) == separador) {
                 contador++;
             }
         }
@@ -263,7 +263,7 @@ public class Parser {
         contador = 0;
 
         for (int i = 0; i < codigo.length(); i++) {
-            if (codigo.charAt(i) != separar) {
+            if (codigo.charAt(i) != separador) {
                 linea = linea + String.valueOf(codigo.charAt(i));
             } else {
                 lineas[contador] = linea;
