@@ -52,8 +52,6 @@ public class Token {
             String tipo2 = reporteTokens.get(i).getTipo2();
             String tipo1 = reporteTokens.get(i).getTipo1();
             String lexema = reporteTokens.get(i).getLexema();
-            System.out.println("tipo2 = " + tipo2);
-            System.out.println("tipo1 = " + tipo1);
             if (tipo2 == "Identificador" || tipo1 == "Identificador") {
                 comboBoxIdentificadores.addItem(lexema);
             } else if (tipo1 == "Aritmetico" || tipo2 == "Aritmetico") {

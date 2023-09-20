@@ -99,12 +99,12 @@ public class UI extends javax.swing.JFrame {
         lblReporte.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblReporte.setText("Reporte");
         pnlUI.add(lblReporte);
-        lblReporte.setBounds(150, 250, 60, 30);
+        lblReporte.setBounds(150, 250, 90, 30);
 
         lblError.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblError.setText("Error");
         pnlUI.add(lblError);
-        lblError.setBounds(150, 520, 34, 20);
+        lblError.setBounds(150, 520, 40, 17);
 
         btnLimpiar1.setBackground(new java.awt.Color(255, 255, 0));
         btnLimpiar1.setForeground(new java.awt.Color(0, 0, 0));
@@ -156,7 +156,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxIdentificadores);
-        comboBoxIdentificadores.setBounds(20, 150, 120, 22);
+        comboBoxIdentificadores.setBounds(20, 150, 120, 24);
 
         comboBoxAritmeticos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Aritmeticos" }));
         comboBoxAritmeticos.addActionListener(new java.awt.event.ActionListener() {
@@ -165,7 +165,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxAritmeticos);
-        comboBoxAritmeticos.setBounds(20, 170, 120, 22);
+        comboBoxAritmeticos.setBounds(20, 170, 120, 24);
 
         comboBoxComparacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Comparacion" }));
         comboBoxComparacion.addActionListener(new java.awt.event.ActionListener() {
@@ -174,7 +174,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxComparacion);
-        comboBoxComparacion.setBounds(20, 190, 120, 22);
+        comboBoxComparacion.setBounds(20, 190, 120, 24);
 
         comboBoxLogicos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Logicos" }));
         comboBoxLogicos.addActionListener(new java.awt.event.ActionListener() {
@@ -183,7 +183,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxLogicos);
-        comboBoxLogicos.setBounds(20, 210, 120, 22);
+        comboBoxLogicos.setBounds(20, 210, 120, 24);
 
         comboBoxAsignacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asignacion" }));
         comboBoxAsignacion.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +192,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxAsignacion);
-        comboBoxAsignacion.setBounds(20, 230, 120, 22);
+        comboBoxAsignacion.setBounds(20, 230, 120, 24);
 
         comboBoxKW.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Palabras Clave" }));
         comboBoxKW.addActionListener(new java.awt.event.ActionListener() {
@@ -201,7 +201,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxKW);
-        comboBoxKW.setBounds(20, 250, 120, 22);
+        comboBoxKW.setBounds(20, 250, 120, 24);
         pnlUI.add(lblImagen);
         lblImagen.setBounds(170, 80, 760, 470);
 
@@ -209,7 +209,7 @@ public class UI extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 255, 51));
         jLabel1.setText("ANALIZADOR LEXICO");
         pnlUI.add(jLabel1);
-        jLabel1.setBounds(360, 0, 280, 40);
+        jLabel1.setBounds(310, 0, 330, 40);
 
         jScrollPane2.setViewportView(txtAreaCodigo);
 

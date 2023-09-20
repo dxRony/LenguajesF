@@ -227,7 +227,6 @@ public class Parser {
                         tablaErrores.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron, color));
                     } else {
                         tablaTokens.add(new Token(lexema, i + 1, j + 1, tipo1, tipo2, patron, color));
-                        //  System.out.println("lexema = " + lexema + "\n---------------------------");
                     }
                     lexema = "";
                     tipo1 = "";

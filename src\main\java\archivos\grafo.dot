@@ -1,0 +1,8 @@
+digraph{
+rankdir=LR
+ node0 [label="d", shape=ellipse];
+ node1 [label="e", shape=ellipse];
+  node0 -> node1;
+ node2 [label="f", shape=doublecircle];
+  node1 -> node2;
+}
