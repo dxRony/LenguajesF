@@ -3,8 +3,13 @@ package com.mycompany.parserpy.fe;
 import com.mycompany.parserpy.be.Archivo;
 import com.mycompany.parserpy.be.Parser;
 import com.mycompany.parserpy.be.Token;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class UI extends javax.swing.JFrame {
 
@@ -38,6 +43,7 @@ public class UI extends javax.swing.JFrame {
         comboBoxLogicos.setVisible(false);
         comboBoxAsignacion.setVisible(false);
         comboBoxKW.setVisible(false);
+        btnTablaSimbolos.setVisible(false);
     }
 
     /**
@@ -70,6 +76,7 @@ public class UI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAreaCodigo = new javax.swing.JTextPane();
+        btnTablaSimbolos = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenuAnalizar = new javax.swing.JMenu();
         btnMenuSeleccionarArchivo = new javax.swing.JMenuItem();
@@ -94,7 +101,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(btnPlay);
-        btnPlay.setBounds(660, 10, 180, 40);
+        btnPlay.setBounds(660, 10, 200, 40);
 
         lblReporte.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblReporte.setText("Reporte");
@@ -115,7 +122,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(btnLimpiar1);
-        btnLimpiar1.setBounds(840, 220, 80, 30);
+        btnLimpiar1.setBounds(840, 220, 90, 30);
 
         btnLimpiar2.setBackground(new java.awt.Color(255, 255, 0));
         btnLimpiar2.setForeground(new java.awt.Color(0, 0, 0));
@@ -126,7 +133,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(btnLimpiar2);
-        btnLimpiar2.setBounds(840, 480, 80, 30);
+        btnLimpiar2.setBounds(840, 480, 90, 30);
 
         btnLimpiar3.setBackground(new java.awt.Color(255, 255, 0));
         btnLimpiar3.setForeground(new java.awt.Color(0, 0, 0));
@@ -137,7 +144,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(btnLimpiar3);
-        btnLimpiar3.setBounds(840, 620, 80, 30);
+        btnLimpiar3.setBounds(840, 620, 90, 30);
 
         jScrollPane1.setViewportView(txtAreaError);
 
@@ -215,6 +222,16 @@ public class UI extends javax.swing.JFrame {
 
         pnlUI.add(jScrollPane2);
         jScrollPane2.setBounds(150, 70, 690, 180);
+
+        btnTablaSimbolos.setBackground(new java.awt.Color(0, 153, 153));
+        btnTablaSimbolos.setText("Ver Tabla Símbolos");
+        btnTablaSimbolos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTablaSimbolosActionPerformed(evt);
+            }
+        });
+        pnlUI.add(btnTablaSimbolos);
+        btnTablaSimbolos.setBounds(10, 10, 200, 40);
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -296,7 +313,7 @@ public class UI extends javax.swing.JFrame {
         btnPlay.setVisible(true);
         txtAreaCodigo.setVisible(true);
         txtAreaError.setVisible(true);
-        lblError.setVisible(true);
+        lblError.setVisible(true);        
     }//GEN-LAST:event_btnMenuAnalizarActionPerformed
 
     private void btnMenuGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuGraficoActionPerformed
@@ -332,7 +349,7 @@ public class UI extends javax.swing.JFrame {
         elToken.llenarComboBox(reporteTokens, comboBoxIdentificadores, comboBoxAritmeticos, comboBoxComparacion,
                 comboBoxLogicos, comboBoxAsignacion, comboBoxKW);
         elToken.colorearTokens(txtAreaReporte, reporteTokens);
-
+        btnTablaSimbolos.setVisible(true);
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnMenuSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSeleccionarArchivoActionPerformed
@@ -472,6 +489,32 @@ public class UI extends javax.swing.JFrame {
         archivo.mostrarImagen(lblImagen);
     }//GEN-LAST:event_comboBoxKWActionPerformed
 
+    private void btnTablaSimbolosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaSimbolosActionPerformed
+        DefaultTableModel columna = new DefaultTableModel();
+
+        columna.addColumn("Tipo");
+        columna.addColumn("Patron");
+        columna.addColumn("Lexema ");
+        columna.addColumn("Linea");
+        columna.addColumn("Columna");
+
+        for (Token token : reporteTokens) {
+            columna.addRow(new Object[]{token.getTipo1() + " / " + token.getTipo2(),
+                token.getPatron(),
+                token.getLexema(),
+                token.getLinea(),
+                token.getColumna()});
+        }
+        JTable tabla = new JTable(columna);
+        JScrollPane scrollPane = new JScrollPane(tabla);
+        JFrame frame = new JFrame("Tabla de Simbolos");
+        frame.setLayout(new BorderLayout());
+        frame.add(scrollPane, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }//GEN-LAST:event_btnTablaSimbolosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -488,6 +531,7 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JMenu btnMenuGrafico;
     private javax.swing.JMenuItem btnMenuSeleccionarArchivo;
     private javax.swing.JButton btnPlay;
+    private javax.swing.JButton btnTablaSimbolos;
     private javax.swing.JComboBox<String> comboBoxAritmeticos;
     private javax.swing.JComboBox<String> comboBoxAsignacion;
     private javax.swing.JComboBox<String> comboBoxComparacion;
