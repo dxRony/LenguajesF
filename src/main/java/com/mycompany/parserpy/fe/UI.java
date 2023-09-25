@@ -1,7 +1,7 @@
 package com.mycompany.parserpy.fe;
 
 import com.mycompany.parserpy.be.Archivo;
-import com.mycompany.parserpy.be.Parser;
+import com.mycompany.parserpy.be.Lexer;
 import com.mycompany.parserpy.be.Token;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,8 +31,6 @@ public class UI extends javax.swing.JFrame {
         lblReporte.setVisible(false);
         lblError.setVisible(false);
         btnLimpiar1.setVisible(false);
-        btnLimpiar2.setVisible(false);
-        btnLimpiar3.setVisible(false);
         jScrollPane1.setVisible(false);
         jScrollPane4.setVisible(false);
         jScrollPane2.setVisible(false);
@@ -44,6 +42,15 @@ public class UI extends javax.swing.JFrame {
         comboBoxAsignacion.setVisible(false);
         comboBoxKW.setVisible(false);
         btnTablaSimbolos.setVisible(false);
+        
+        lblLexico.setVisible(false);
+        lblSintactico.setVisible(false);
+        divisor.setVisible(false);
+        jScrollPane3.setVisible(false);
+        //txtAreaReporteSint.setVisible(false);
+        
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
     }
 
     /**
@@ -60,23 +67,26 @@ public class UI extends javax.swing.JFrame {
         lblReporte = new javax.swing.JLabel();
         lblError = new javax.swing.JLabel();
         btnLimpiar1 = new javax.swing.JButton();
-        btnLimpiar2 = new javax.swing.JButton();
-        btnLimpiar3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaError = new javax.swing.JTextPane();
         jScrollPane4 = new javax.swing.JScrollPane();
-        txtAreaReporte = new javax.swing.JTextPane();
+        txtAreaReporteLex = new javax.swing.JTextPane();
         comboBoxIdentificadores = new javax.swing.JComboBox<>();
         comboBoxAritmeticos = new javax.swing.JComboBox<>();
         comboBoxComparacion = new javax.swing.JComboBox<>();
         comboBoxLogicos = new javax.swing.JComboBox<>();
         comboBoxAsignacion = new javax.swing.JComboBox<>();
         comboBoxKW = new javax.swing.JComboBox<>();
-        lblImagen = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        lblImagen = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAreaCodigo = new javax.swing.JTextPane();
         btnTablaSimbolos = new javax.swing.JButton();
+        divisor = new javax.swing.JSeparator();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtAreaReporteSint = new javax.swing.JTextPane();
+        lblLexico = new javax.swing.JLabel();
+        lblSintactico = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenuAnalizar = new javax.swing.JMenu();
         btnMenuSeleccionarArchivo = new javax.swing.JMenuItem();
@@ -94,24 +104,24 @@ public class UI extends javax.swing.JFrame {
         btnPlay.setBackground(new java.awt.Color(0, 0, 153));
         btnPlay.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnPlay.setForeground(new java.awt.Color(255, 255, 255));
-        btnPlay.setText("Iniciar Analisis Lexico\n");
+        btnPlay.setText("Iniciar Analisis Lexico y Sintáctico");
         btnPlay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPlayActionPerformed(evt);
             }
         });
         pnlUI.add(btnPlay);
-        btnPlay.setBounds(660, 10, 200, 40);
+        btnPlay.setBounds(750, 50, 290, 40);
 
         lblReporte.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblReporte.setText("Reporte");
         pnlUI.add(lblReporte);
-        lblReporte.setBounds(150, 250, 90, 30);
+        lblReporte.setBounds(20, 440, 90, 20);
 
         lblError.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblError.setText("Error");
         pnlUI.add(lblError);
-        lblError.setBounds(150, 520, 40, 17);
+        lblError.setBounds(20, 690, 40, 17);
 
         btnLimpiar1.setBackground(new java.awt.Color(255, 255, 0));
         btnLimpiar1.setForeground(new java.awt.Color(0, 0, 0));
@@ -122,39 +132,17 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(btnLimpiar1);
-        btnLimpiar1.setBounds(840, 220, 90, 30);
-
-        btnLimpiar2.setBackground(new java.awt.Color(255, 255, 0));
-        btnLimpiar2.setForeground(new java.awt.Color(0, 0, 0));
-        btnLimpiar2.setText("Limpiar");
-        btnLimpiar2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiar2ActionPerformed(evt);
-            }
-        });
-        pnlUI.add(btnLimpiar2);
-        btnLimpiar2.setBounds(840, 480, 90, 30);
-
-        btnLimpiar3.setBackground(new java.awt.Color(255, 255, 0));
-        btnLimpiar3.setForeground(new java.awt.Color(0, 0, 0));
-        btnLimpiar3.setText("Limpiar");
-        btnLimpiar3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiar3ActionPerformed(evt);
-            }
-        });
-        pnlUI.add(btnLimpiar3);
-        btnLimpiar3.setBounds(840, 620, 90, 30);
+        btnLimpiar1.setBounds(1040, 390, 90, 30);
 
         jScrollPane1.setViewportView(txtAreaError);
 
         pnlUI.add(jScrollPane1);
-        jScrollPane1.setBounds(150, 550, 690, 100);
+        jScrollPane1.setBounds(20, 710, 640, 100);
 
-        jScrollPane4.setViewportView(txtAreaReporte);
+        jScrollPane4.setViewportView(txtAreaReporteLex);
 
         pnlUI.add(jScrollPane4);
-        jScrollPane4.setBounds(150, 280, 690, 230);
+        jScrollPane4.setBounds(20, 460, 640, 230);
 
         comboBoxIdentificadores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Identificadores" }));
         comboBoxIdentificadores.addActionListener(new java.awt.event.ActionListener() {
@@ -209,29 +197,49 @@ public class UI extends javax.swing.JFrame {
         });
         pnlUI.add(comboBoxKW);
         comboBoxKW.setBounds(20, 250, 120, 24);
-        pnlUI.add(lblImagen);
-        lblImagen.setBounds(170, 80, 760, 470);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 255, 51));
-        jLabel1.setText("ANALIZADOR LEXICO");
+        jLabel1.setText("PARSER-PY");
         pnlUI.add(jLabel1);
-        jLabel1.setBounds(310, 0, 330, 40);
+        jLabel1.setBounds(570, 20, 180, 40);
+        pnlUI.add(lblImagen);
+        lblImagen.setBounds(360, 130, 760, 470);
 
         jScrollPane2.setViewportView(txtAreaCodigo);
 
         pnlUI.add(jScrollPane2);
-        jScrollPane2.setBounds(150, 70, 690, 180);
+        jScrollPane2.setBounds(350, 90, 690, 330);
 
         btnTablaSimbolos.setBackground(new java.awt.Color(0, 153, 153));
-        btnTablaSimbolos.setText("Ver Tabla Símbolos");
+        btnTablaSimbolos.setText("Ver Tabla Tokens");
         btnTablaSimbolos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTablaSimbolosActionPerformed(evt);
             }
         });
         pnlUI.add(btnTablaSimbolos);
-        btnTablaSimbolos.setBounds(10, 10, 200, 40);
+        btnTablaSimbolos.setBounds(20, 90, 200, 40);
+
+        divisor.setBackground(new java.awt.Color(0, 255, 255));
+        divisor.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        pnlUI.add(divisor);
+        divisor.setBounds(690, 430, 10, 390);
+
+        jScrollPane3.setViewportView(txtAreaReporteSint);
+
+        pnlUI.add(jScrollPane3);
+        jScrollPane3.setBounds(720, 460, 630, 260);
+
+        lblLexico.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        lblLexico.setText("Analísis Léxico");
+        pnlUI.add(lblLexico);
+        lblLexico.setBounds(250, 420, 120, 22);
+
+        lblSintactico.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        lblSintactico.setText("Analísis Sintáctico");
+        pnlUI.add(lblSintactico);
+        lblSintactico.setBounds(910, 430, 160, 22);
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -299,11 +307,13 @@ public class UI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, 965, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlUI, javax.swing.GroupLayout.PREFERRED_SIZE, 1401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE)
+            .addComponent(pnlUI, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
         );
 
         pack();
@@ -313,7 +323,7 @@ public class UI extends javax.swing.JFrame {
         btnPlay.setVisible(true);
         txtAreaCodigo.setVisible(true);
         txtAreaError.setVisible(true);
-        lblError.setVisible(true);        
+        lblError.setVisible(true);
     }//GEN-LAST:event_btnMenuAnalizarActionPerformed
 
     private void btnMenuGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuGraficoActionPerformed
@@ -330,25 +340,23 @@ public class UI extends javax.swing.JFrame {
 
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
         // TODO add your handling code here:
-        txtAreaReporte.setText("");
+        txtAreaReporteLex.setText("");
         txtAreaError.setText("");
         reporteTokens.clear();
         reporteErrores.clear();
 
-        new Parser(reporteTokens, reporteErrores).analizar(txtAreaCodigo.getText());
+        new Lexer(reporteTokens, reporteErrores).analizar(txtAreaCodigo.getText());
 
         for (int i = 0; i < reporteTokens.size(); i++) {
-            txtAreaReporte.setText(txtAreaReporte.getText() + reporteTokens.get(i).toString());
+            txtAreaReporteLex.setText(txtAreaReporteLex.getText() + reporteTokens.get(i).toString());
         }
         for (int i = 0; i < reporteErrores.size(); i++) {
             txtAreaError.setText(txtAreaError.getText() + reporteErrores.get(i).toString());
         }
         btnLimpiar1.setEnabled(true);
-        btnLimpiar2.setEnabled(true);
-        btnLimpiar3.setEnabled(true);
         elToken.llenarComboBox(reporteTokens, comboBoxIdentificadores, comboBoxAritmeticos, comboBoxComparacion,
                 comboBoxLogicos, comboBoxAsignacion, comboBoxKW);
-        elToken.colorearTokens(txtAreaReporte, reporteTokens);
+        elToken.colorearTokens(txtAreaReporteLex, reporteTokens);
         btnTablaSimbolos.setVisible(true);
     }//GEN-LAST:event_btnPlayActionPerformed
 
@@ -358,10 +366,9 @@ public class UI extends javax.swing.JFrame {
         lblReporte.setVisible(true);
         lblError.setVisible(true);
         btnLimpiar1.setVisible(true);
-        btnLimpiar2.setVisible(true);
-        btnLimpiar3.setVisible(true);
         jScrollPane1.setVisible(true);
         jScrollPane4.setVisible(true);
+        jScrollPane3.setVisible(true);
         jScrollPane2.setVisible(true);
         String codigoFuenteLeido;
         codigoFuenteLeido = archivo.abrirArchivo();
@@ -369,6 +376,10 @@ public class UI extends javax.swing.JFrame {
         txtAreaCodigo.setEnabled(false);
         txtAreaCodigo.setBackground(Color.red);
         btnPlay.setEnabled(true);
+        lblSintactico.setVisible(true);
+        lblLexico.setVisible(true);
+        divisor.setVisible(true);
+        
 
         comboBoxIdentificadores.setVisible(false);
         comboBoxAritmeticos.setVisible(false);
@@ -385,8 +396,6 @@ public class UI extends javax.swing.JFrame {
         lblReporte.setVisible(true);
         lblError.setVisible(true);
         btnLimpiar1.setVisible(true);
-        btnLimpiar2.setVisible(true);
-        btnLimpiar3.setVisible(true);
         jScrollPane1.setVisible(true);
         jScrollPane4.setVisible(true);
         jScrollPane2.setVisible(true);
@@ -410,24 +419,12 @@ public class UI extends javax.swing.JFrame {
         txtAreaCodigo.setBackground(Color.white);
     }//GEN-LAST:event_btnLimpiar1ActionPerformed
 
-    private void btnLimpiar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar2ActionPerformed
-        // TODO add your handling code here:
-        txtAreaReporte.setText("");
-    }//GEN-LAST:event_btnLimpiar2ActionPerformed
-
-    private void btnLimpiar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiar3ActionPerformed
-        // TODO add your handling code here:
-        txtAreaError.setText("");
-    }//GEN-LAST:event_btnLimpiar3ActionPerformed
-
     private void btnMenuGenerarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuGenerarGraficoActionPerformed
         // TODO add your handling code here:
         btnPlay.setVisible(false);
         lblReporte.setVisible(false);
         lblError.setVisible(false);
         btnLimpiar1.setVisible(false);
-        btnLimpiar2.setVisible(false);
-        btnLimpiar3.setVisible(false);
         jScrollPane1.setVisible(false);
         jScrollPane4.setVisible(false);
         jScrollPane2.setVisible(false);
@@ -521,8 +518,6 @@ public class UI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLimpiar1;
-    private javax.swing.JButton btnLimpiar2;
-    private javax.swing.JButton btnLimpiar3;
     private javax.swing.JMenu btnMenuAcercaDe;
     private javax.swing.JMenu btnMenuAnalizar;
     private javax.swing.JMenu btnMenuAyuda;
@@ -538,17 +533,22 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboBoxIdentificadores;
     private javax.swing.JComboBox<String> comboBoxKW;
     private javax.swing.JComboBox<String> comboBoxLogicos;
+    private javax.swing.JSeparator divisor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblImagen;
+    private javax.swing.JLabel lblLexico;
     private javax.swing.JLabel lblReporte;
+    private javax.swing.JLabel lblSintactico;
     private javax.swing.JPanel pnlUI;
     private javax.swing.JTextPane txtAreaCodigo;
     private javax.swing.JTextPane txtAreaError;
-    private javax.swing.JTextPane txtAreaReporte;
+    private javax.swing.JTextPane txtAreaReporteLex;
+    private javax.swing.JTextPane txtAreaReporteSint;
     // End of variables declaration//GEN-END:variables
 }
