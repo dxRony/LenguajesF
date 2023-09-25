@@ -2,6 +2,7 @@ package com.mycompany.parserpy.fe;
 
 import com.mycompany.parserpy.be.Archivo;
 import com.mycompany.parserpy.be.Lexer;
+import com.mycompany.parserpy.be.Parser;
 import com.mycompany.parserpy.be.Token;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,6 +18,7 @@ public class UI extends javax.swing.JFrame {
     private ArrayList<Token> reporteTokens = new ArrayList();
     private ArrayList<Token> reporteErrores = new ArrayList();
     private Token elToken;
+    
 
     /**
      * Creates new form NewJFrame
@@ -358,7 +360,8 @@ public class UI extends javax.swing.JFrame {
                 comboBoxLogicos, comboBoxAsignacion, comboBoxKW);
         elToken.colorearTokens(txtAreaReporteLex, reporteTokens);
         btnTablaSimbolos.setVisible(true);
-        System.out.println(reporteTokens.toString() );
+        new Parser(reporteTokens).analizar();
+        
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnMenuSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSeleccionarArchivoActionPerformed
