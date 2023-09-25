@@ -358,6 +358,7 @@ public class UI extends javax.swing.JFrame {
                 comboBoxLogicos, comboBoxAsignacion, comboBoxKW);
         elToken.colorearTokens(txtAreaReporteLex, reporteTokens);
         btnTablaSimbolos.setVisible(true);
+        System.out.println(reporteTokens.toString() );
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnMenuSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSeleccionarArchivoActionPerformed
