@@ -18,7 +18,6 @@ public class UI extends javax.swing.JFrame {
     private ArrayList<Token> reporteTokens = new ArrayList();
     private ArrayList<Token> reporteErrores = new ArrayList();
     private Token elToken;
-    
 
     /**
      * Creates new form NewJFrame
@@ -44,13 +43,13 @@ public class UI extends javax.swing.JFrame {
         comboBoxAsignacion.setVisible(false);
         comboBoxKW.setVisible(false);
         btnTablaSimbolos.setVisible(false);
-        
+
         lblLexico.setVisible(false);
         lblSintactico.setVisible(false);
         divisor.setVisible(false);
         jScrollPane3.setVisible(false);
         //txtAreaReporteSint.setVisible(false);
-        
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
     }
@@ -360,8 +359,8 @@ public class UI extends javax.swing.JFrame {
                 comboBoxLogicos, comboBoxAsignacion, comboBoxKW);
         elToken.colorearTokens(txtAreaReporteLex, reporteTokens);
         btnTablaSimbolos.setVisible(true);
-        new Parser(reporteTokens).analizar();
-        
+       new Parser(reporteTokens).analizar();
+
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnMenuSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSeleccionarArchivoActionPerformed
@@ -383,7 +382,6 @@ public class UI extends javax.swing.JFrame {
         lblSintactico.setVisible(true);
         lblLexico.setVisible(true);
         divisor.setVisible(true);
-        
 
         comboBoxIdentificadores.setVisible(false);
         comboBoxAritmeticos.setVisible(false);

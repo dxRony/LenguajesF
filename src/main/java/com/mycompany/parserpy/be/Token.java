@@ -32,18 +32,19 @@ public class Token {
         this.patron = patron;//patron de token
         this.color = color;//color del token
     }
-     
+
     /**
-     * Esta funcion recibe el reporte de los Tokens y los comboBox del frame 
-    * e identifica el tipo1 y tipo2 de cada token para clasificarlos en los distintos comboBox segun el 
-    * tipo que tengan
+     * Esta funcion recibe el reporte de los Tokens y los comboBox del frame e
+     * identifica el tipo1 y tipo2 de cada token para clasificarlos en los
+     * distintos comboBox segun el tipo que tengan
+     *
      * @param reporteTokens
      * @param comboBoxIdentificadores
      * @param comboBoxAritmeticos
      * @param comboBoxComparacion
      * @param comboBoxLogicos
      * @param comboBoxAsignacion
-     * @param comboBoxKW 
+     * @param comboBoxKW
      */
     public void llenarComboBox(ArrayList<Token> reporteTokens, JComboBox comboBoxIdentificadores,
             JComboBox comboBoxAritmeticos, JComboBox comboBoxComparacion, JComboBox comboBoxLogicos,
@@ -70,12 +71,14 @@ public class Token {
             lexema = "";
         }
     }
-    
+
     /**
-     * Esta funcion recibe el lexema de un token, para separarlo caracter por caracter y segun la cantidad de caracteres
-     * que tenga genera los nodos y la estructura de un archivo .dot.
-     * Luego con el archivo.dot genera la imgagen del lexema separado 
-     * @param lexema 
+     * Esta funcion recibe el lexema de un token, para separarlo caracter por
+     * caracter y segun la cantidad de caracteres que tenga genera los nodos y
+     * la estructura de un archivo .dot. Luego con el archivo.dot genera la
+     * imgagen del lexema separado
+     *
+     * @param lexema
      */
     public void generarGrafica(String lexema) {
 
@@ -121,10 +124,12 @@ public class Token {
     }
 
     /**
-     * Esta funcion colorea los tokens recibiendo el area del texto y el reporte de los tokens
-     * haciendo uso de la clase StyledDocument y comparando los tipos de los tokens para darles un color distinto segun el token
+     * Esta funcion colorea los tokens recibiendo el area del texto y el reporte
+     * de los tokens haciendo uso de la clase StyledDocument y comparando los
+     * tipos de los tokens para darles un color distinto segun el token
+     *
      * @param areaTxt
-     * @param reporteTokens 
+     * @param reporteTokens
      */
     public void colorearTokens(JTextPane areaTxt, ArrayList<Token> reporteTokens) {
         StyledDocument doc = areaTxt.getStyledDocument();

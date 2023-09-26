@@ -183,6 +183,8 @@ public class Lexer {
                             tipo2 = "Comparacion";
                         } else if (lexema.equals("**") || lexema.equals("//")) {
                             tipo2 = "Aritmetico";
+                        } else if (lexema.equals("*=") || lexema.equals("-=")) {
+                            tipo2 = "Asignacion";
                         }
                         break;
 
@@ -199,7 +201,11 @@ public class Lexer {
                             patron = "[op]";
                             estado = 0;
                             if (lexema.equals("+") || lexema.equals("-") || lexema.equals("%") || lexema.equals("/") || lexema.equals("*")) {
-                                tipo2 = "Aritmetico";
+                                if (caracterSiguiente == 61) {
+                                    estado = 8;
+                                } else {
+                                    tipo2 = "Aritmetico";
+                                }
                             } else if (lexema.equals(">") | lexema.equals("<")) {
                                 tipo2 = "Comparacion";
                             } else if (lexema.equals("=")) {
