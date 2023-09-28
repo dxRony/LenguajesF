@@ -29,6 +29,12 @@ public class Parser {
             } else if (tokens.get(indice).getLexema().equals("if")) {//se esta iniciando un if
                 System.out.println("hay if");
                 bloqueIf();
+            } else if (tokens.get(indice).getLexema().equals("elif")) {
+                System.out.println("hay elif");
+                bloqueElif();
+            } else if (tokens.get(indice).getLexema().equals("else")) {
+                System.out.println("hay else");
+                bloqueElse();
             } else {
                 break;
             }
@@ -122,56 +128,31 @@ public class Parser {
     }
 
     private void bloqueIf() {
-        indice++;
-        //if
-        System.out.println("entrando a bloque if");
-        if (tokens.get(indice).getTipo1().equals("Identificador")              ) {//en el if hay una expresion
+        if (tokens.get(indice).getLexema().equals("if")) {
             indice++;
-            System.out.println("hay identificador");
-            if (tokens.get(indice).getLexema().equals(":")) {//aparecen los 2 puntos del if
+
+            System.out.println("hay if");
+            if (tokens.get(indice).getTipo1().equals("Identificador")
+                    || tokens.get(indice).getTipo2().equals("Constante Booleana")) {
                 indice++;
-                System.out.println("hay :");
-                System.out.println("bloque de codigo aqui...");
-                //#bloque de codigo
-            } else if (tokens.get(indice).getTipo2().equals("Comparacion")) {//hay un simbolo de comparacion
-                indice++;
-                System.out.println("hay comparacion");
-                if (tokens.get(indice).getTipo1().equals("Identificador")) {//hay otra expresion
+
+                System.out.println("hay id/boolean");
+                if (tokens.get(indice).getLexema().equals(":")) {
                     indice++;
-                    System.out.println("hay otro id");
-                    if (tokens.get(indice).getLexema().equals(":")) {//2 puntos luego de la comparacion
-                        indice++;
-                        System.out.println("hay :");
-                        System.out.println("bloque de codigo aqui(if)");
-                        System.out.println("indice = " + indice);
-                        System.out.println("tokens.size = " + tokens.size());
-                        //#bloque de codigo
-                    } else {
-                        //error sintactico
-                    }
-                } else {
-                    //error sintactico                    
-                }
-            }
-            if (tokens.get(indice).getLexema().equals("elif")) {
-                indice++;
-                System.out.println("hay elif");
-                if (tokens.get(indice).getTipo1().equals("Identificador")) {
+
+                    System.out.println("hay :" + "\n bloque de codigo(if)");
+                } else if (tokens.get(indice).getTipo2().equals("Comparacion")) {
                     indice++;
-                    System.out.println("hay id");
-                    if (tokens.get(indice).getTipo2().equals("Comparacion")) {//comparacion de la expresion1 del elif
+
+                    System.out.println("hay comparacion");
+                    if (tokens.get(indice).getTipo1().equals("Identificador")) {
                         indice++;
-                        System.out.println("hay comparacion");
-                        if (tokens.get(indice).getTipo1().equals("Identificador")) {
+
+                        System.out.println("hay id");
+                        if (tokens.get(indice).getLexema().equals(":")) {
                             indice++;
-                            System.out.println("hay id");
-                            if (tokens.get(indice).getLexema().equals(":")) {
-                                indice++;
-                                System.out.println("hay :");
-                                System.out.println("bloque de codigo aqui (elif)");
-                            } else {
-                                //error sintactico
-                            }
+
+                            System.out.println("hay :" + "\n bloque de codigo(if)");
                         } else {
                             //error sintactico
                         }
@@ -181,16 +162,48 @@ public class Parser {
                 } else {
                     //error sintactico
                 }
-
+            } else {
+                //error sintactico
             }
-            if (tokens.get(indice).getLexema().equals("else")) {//entrando a else
+        } else {
+            //error sintactico
+        }
+    }
+
+    private void bloqueElif() {
+        if (tokens.get(indice).getLexema().equals("elif")) {
+            indice++;
+
+            System.out.println("hay elif");
+            if (tokens.get(indice).getTipo1().equals("Identificador")
+                    || tokens.get(indice).getTipo2().equals("Constante Booleana")) {
                 indice++;
-                System.out.println("hay else");
-                if (tokens.get(indice).getLexema().equals(":")) {//2 puntos
+
+                System.out.println("hay id/ boolean");
+                if (tokens.get(indice).getLexema().equals(":")) {
                     indice++;
-                    System.out.println("hay :");
-                    System.out.println("bloque de codigo aqui(else)");
-                    //#bloque de codigo
+
+                    System.out.println("hay :" + "\n bloque de codigo(elif)");
+                } else if (tokens.get(indice).getTipo2().equals("Comparacion")) {
+                    indice++;
+
+                    System.out.println("hay comparacion");
+                    if (tokens.get(indice).getTipo1().equals("Identificador")) {
+                        indice++;
+
+                        System.out.println("hay id");
+                        if (tokens.get(indice).getLexema().equals(":")) {
+                            indice++;
+
+                            System.out.println("hay :" + "\n bloque de codigo(elif)");
+                        } else {
+                            //error sintactico
+                        }
+                    } else {
+                        //error sintactico
+                    }
+                } else {
+                    //error sintactico
                 }
             } else {
                 //error sintactico
@@ -200,4 +213,96 @@ public class Parser {
         }
     }
 
+    private void bloqueElse() {
+        if (tokens.get(indice).getLexema().equals("else")) {
+            indice++;
+
+            System.out.println("hay else");
+            if (tokens.get(indice).getLexema().equals(":")) {//aparecen los 2 puntos del else
+                indice++;
+                System.out.println("hay :");
+                System.out.println("bloque de codigo aqui...(else)");
+                //#bloque de codigo
+            }
+        }
+    }
+
+//    private void bloqueIf() {
+//        indice++;
+//        //if
+//        System.out.println("entrando a bloque if");
+//        if (tokens.get(indice).getTipo1().equals("Identificador")              ) {//en el if hay una expresion
+//            indice++;
+//            System.out.println("hay identificador");
+//            if (tokens.get(indice).getLexema().equals(":")) {//aparecen los 2 puntos del if
+//                indice++;
+//                System.out.println("hay :");
+//                System.out.println("bloque de codigo aqui...");
+//                //#bloque de codigo
+//            } else if (tokens.get(indice).getTipo2().equals("Comparacion")) {//hay un simbolo de comparacion
+//                indice++;
+//                System.out.println("hay comparacion");
+//                if (tokens.get(indice).getTipo1().equals("Identificador")) {//hay otra expresion
+//                    indice++;
+//                    System.out.println("hay otro id");
+//                    if (tokens.get(indice).getLexema().equals(":")) {//2 puntos luego de la comparacion
+//                        indice++;
+//                        System.out.println("hay :");
+//                        System.out.println("bloque de codigo aqui(if)");
+//                        System.out.println("indice = " + indice);
+//                        System.out.println("tokens.size = " + tokens.size());
+//                        //#bloque de codigo
+//                    } else {
+//                        //error sintactico
+//                    }
+//                } else {
+//                    //error sintactico                    
+//                }
+//            }
+//            if (tokens.get(indice).getLexema().equals("elif")) {
+//                indice++;
+//                System.out.println("hay elif");
+//                if (tokens.get(indice).getTipo1().equals("Identificador")) {
+//                    indice++;
+//                    System.out.println("hay id");
+//                    if (tokens.get(indice).getTipo2().equals("Comparacion")) {//comparacion de la expresion1 del elif
+//                        indice++;
+//                        System.out.println("hay comparacion");
+//                        if (tokens.get(indice).getTipo1().equals("Identificador")) {
+//                            indice++;
+//                            System.out.println("hay id");
+//                            if (tokens.get(indice).getLexema().equals(":")) {
+//                                indice++;
+//                                System.out.println("hay :");
+//                                System.out.println("bloque de codigo aqui (elif)");
+//                            } else {
+//                                //error sintactico
+//                            }
+//                        } else {
+//                            //error sintactico
+//                        }
+//                    } else {
+//                        //error sintactico
+//                    }
+//                } else {
+//                    //error sintactico
+//                }
+//
+//            }
+//            if (tokens.get(indice).getLexema().equals("else")) {//entrando a else
+//                indice++;
+//                System.out.println("hay else");
+//                if (tokens.get(indice).getLexema().equals(":")) {//2 puntos
+//                    indice++;
+//                    System.out.println("hay :");
+//                    System.out.println("bloque de codigo aqui(else)");
+//                    //#bloque de codigo
+//                }
+//            } else {
+//                //error sintactico
+//            }
+//        } else {
+//            //error sintactico
+//        }
+//    }
 }
