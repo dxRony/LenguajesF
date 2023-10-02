@@ -41,7 +41,10 @@ public class Parser {
             } else if (tokens.get(indice).getLexema().equals("def")) {//empieza un metodo
                 System.out.println("hay funcion/metodo");
                 funcionMetodo();
+            } else if (tokens.get(indice).getTipo1().equals("Comentario")) {
+                indice++;
             } else {
+                //error lexico
                 break;
             }
         }
@@ -94,29 +97,87 @@ public class Parser {
                 System.out.println("if(ternario)");
                 ternario();
             }
+
         } else if (tokens.get(indice).getTipo1().equals("Entero")) {//se le da tipo entero
             System.out.println("hay asignacion de tipo: entero");
-
             indice++;
+
+            if (tokens.get(indice).getTipo2().equals("Aritmetico")) {//operadores aritmeticos
+                System.out.println("hay operador aritmetico: " + tokens.get(indice).getLexema());
+                indice++;
+
+                if (tokens.get(indice).getTipo1().equals("Entero")) {
+                    System.out.println("hay otro entero");
+                    indice++;
+
+                } else {
+                    //error sintactico
+                }
+            } else if (tokens.get(indice).getTipo2().equals("Comparacion")) {//operadores de comparacion
+                System.out.println("hay comparacion");
+                indice++;
+
+                if (tokens.get(indice).getTipo1().equals("Entero")) {
+                    System.out.println("hay otro entero");
+                    indice++;
+
+                    if (tokens.get(indice).getLexema().equals("and")
+                            || tokens.get(indice).getLexema().equals("or")) {//operadores logicos
+                        System.out.println("hay operador logico");
+                        indice++;
+
+                        if (tokens.get(indice).getTipo1().equals("Entero")) {
+                            System.out.println("hay otro entero");
+                            indice++;
+
+                            if (tokens.get(indice).getTipo2().equals("Comparacion")) {
+                                System.out.println("hay otra comparacion");
+                                indice++;
+
+                                if (tokens.get(indice).getTipo1().equals("Entero")) {
+                                    System.out.println("hay otro otro entero");
+                                    indice++;
+
+                                } else {
+                                    //error sintactico
+                                }
+                            } else {
+                                //error sintactico
+                            }
+                        } else {
+                            //error sintactico
+                        }
+                    } else {
+                        //error sintactico
+                    }
+                } else {
+                    //error sintactico
+                }
+            } else {
+                //error sintactico
+            }
+
             if (tokens.get(indice).getLexema().equals("if")) { //hay ternario
                 System.out.println("if(ternario)");
                 ternario();
             }
         } else if (tokens.get(indice).getTipo1().equals("Decimal")) {//se le da tipo decimal
             System.out.println("hay asignacion de tipo: decimal");
-
             indice++;
+
             if (tokens.get(indice).getLexema().equals("if")) { //hay ternario
                 System.out.println("if(ternario)");
                 ternario();
+
             }
         } else if (tokens.get(indice).getTipo2().equals("Constante Booleana")) {//se le da tipo boolean
             System.out.println("hay asignacion de tipo: booleana");
-
             indice++;
+
             if (tokens.get(indice).getLexema().equals("if")) { //hay ternario
                 System.out.println("if(ternario)");
                 ternario();
+
             }
         } else if (tokens.get(indice).getLexema().equals("[")) {//se abre un arreglo tipo=?
             System.out.println("se abre array");
@@ -146,7 +207,6 @@ public class Parser {
                 //error sintactico
             }
         } else {
-            System.out.println("no hay expresion");
             //error sintactico
         }
 
@@ -248,6 +308,8 @@ public class Parser {
                 System.out.println("hay :");
                 System.out.println("bloque de codigo aqui...(else)");
                 //#bloque de codigo
+            } else {
+                //error sintactico
             }
         }
     }

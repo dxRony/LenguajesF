@@ -7,7 +7,7 @@ public class Lexer {
     private ArrayList<Token> tablaTokens = new ArrayList();//lista donde se guardaran los tokens
     private ArrayList<Token> tablaErrores = new ArrayList();//lista donde se guardaran los errores
     private final String[] operadores = {"+", "-", "**", "/", "//", "%", "*", "==", "!=", ">", "<", ">=", "<=", "=", "(", ")", "{", "}",
-        "[", "]", ",", ";", ":"};
+        "[", "]", ",", ";", ":", "+=", "-=", "*=", "/=", "**=", "%="};
     private final String[] palabrasReservadas = {"and", "as", "assert", "break", "class", "continue", "def", "del", "elif", "else", "except",
         "False", "finally", "for", "from", "global", "if", "import", "in", "is", "in", "lambda", "None", "nonlocal", "not", "or", "pass", "raise",
         "return", "True", "try", "while", "with", "yield"};
@@ -181,9 +181,14 @@ public class Lexer {
                         estado = 0;
                         if (lexema.equals("==") || lexema.equals(">=") || lexema.equals("<=") || lexema.equals("!=")) {
                             tipo2 = "Comparacion";
-                        } else if (lexema.equals("**") || lexema.equals("//")) {
+                        } else if (lexema.equals("**") && caracterSiguiente == 61) {
+                            estado = 8;
+                        }  
+                        else if (lexema.equals("**") || lexema.equals("//")) {
                             tipo2 = "Aritmetico";
-                        } else if (lexema.equals("*=") || lexema.equals("-=")) {
+                        } else if (lexema.equals("+=") || lexema.equals("-=")
+                                || lexema.equals("*=") || lexema.equals("/=")
+                                || lexema.equals("**=") || lexema.equals("%=")) {
                             tipo2 = "Asignacion";
                         }
                         break;
