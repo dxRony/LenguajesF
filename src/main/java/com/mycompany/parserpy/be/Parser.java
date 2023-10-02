@@ -27,16 +27,8 @@ public class Parser {
                 expresion();
 
             } else if (tokens.get(indice).getLexema().equals("if")) {//se esta iniciando un if
-                System.out.println("hay if");
+                System.out.println("llendo a if");
                 bloqueIf();
-
-            } else if (tokens.get(indice).getLexema().equals("elif")) {//si hay un elif
-                System.out.println("hay elif");
-                bloqueElif();
-
-            } else if (tokens.get(indice).getLexema().equals("else")) {//si hay un else
-                System.out.println("hay else");
-                bloqueElse();
 
             } else if (tokens.get(indice).getLexema().equals("def")) {//empieza un metodo
                 System.out.println("hay funcion/metodo");
@@ -153,6 +145,19 @@ public class Parser {
                 } else {
                     //error sintactico
                 }
+            } else if (tokens.get(indice).getLexema().equals("is")) {//operadores de identidad
+                System.out.println("hay operador identidad positivo");
+                indice++;
+                if (tokens.get(indice).getLexema().equals("not")) {
+                    System.out.println("hay operador identidad negativo");
+                    indice++;
+                }
+                if (tokens.get(indice).getTipo1().equals("Entero")) {
+                    System.out.println("hay otro entero");
+                    indice++;
+                } else {
+                    //error sintactico
+                }
             } else {
                 //error sintactico
             }
@@ -218,10 +223,11 @@ public class Parser {
 
             System.out.println("hay if");
             if (tokens.get(indice).getTipo1().equals("Identificador")
-                    || tokens.get(indice).getTipo2().equals("Constante Booleana")) {
+                    || tokens.get(indice).getTipo2().equals("Constante Booleana")
+                    || tokens.get(indice).getTipo1().equals("Entero")) {
                 indice++;
 
-                System.out.println("hay id/boolean");
+                System.out.println("hay id/boolean/entero");
                 if (tokens.get(indice).getLexema().equals(":")) {
                     indice++;
 
@@ -230,14 +236,30 @@ public class Parser {
                     indice++;
 
                     System.out.println("hay comparacion");
-                    if (tokens.get(indice).getTipo1().equals("Identificador")) {
+                    if (tokens.get(indice).getTipo1().equals("Identificador")
+                            || tokens.get(indice).getTipo2().equals("Constante Booleana")
+                            || tokens.get(indice).getTipo1().equals("Entero")) {
                         indice++;
 
-                        System.out.println("hay id");
+                        System.out.println("hay id/boolean/entero");
                         if (tokens.get(indice).getLexema().equals(":")) {
                             indice++;
-
+                            System.out.println(tokens.get(indice).getLexema());
                             System.out.println("hay :" + "\n bloque de codigo(if)");
+
+                            if (tokens.get(indice).getLexema().equals("elif")) {//si hay un elif
+                                System.out.println("hay elif");
+                                bloqueElif();
+
+                            } else {
+                                //error sintactico
+                            }
+                            if (tokens.get(indice).getLexema().equals("else")) {//si hay un else
+                                System.out.println("hay else");
+                                bloqueElse();
+                            } else {
+                                //error sintactico
+                            }
                         } else {
                             //error sintactico
                         }
@@ -261,10 +283,11 @@ public class Parser {
 
             System.out.println("hay elif");
             if (tokens.get(indice).getTipo1().equals("Identificador")
-                    || tokens.get(indice).getTipo2().equals("Constante Booleana")) {
+                    || tokens.get(indice).getTipo2().equals("Constante Booleana")
+                    || tokens.get(indice).getTipo1().equals("Entero")) {
                 indice++;
 
-                System.out.println("hay id/ boolean");
+                System.out.println("hay id/ boolean/entero");
                 if (tokens.get(indice).getLexema().equals(":")) {
                     indice++;
 
@@ -273,10 +296,12 @@ public class Parser {
                     indice++;
 
                     System.out.println("hay comparacion");
-                    if (tokens.get(indice).getTipo1().equals("Identificador")) {
+                    if (tokens.get(indice).getTipo1().equals("Identificador")
+                            || tokens.get(indice).getTipo2().equals("Constante Booleana")
+                            || tokens.get(indice).getTipo1().equals("Entero")) {
                         indice++;
 
-                        System.out.println("hay id");
+                        System.out.println("hay id/ boolean / entero");
                         if (tokens.get(indice).getLexema().equals(":")) {
                             indice++;
 
@@ -318,10 +343,12 @@ public class Parser {
         System.out.println("entrando a ternario");
         indice++;
 
-        if (tokens.get(indice).getTipo1().equals("Identificador")) {
+        if (tokens.get(indice).getTipo1().equals("Identificador")
+                || tokens.get(indice).getTipo1().equals("Entero")) {
             indice++;
 
-            System.out.println("hay id");
+            System.out.println("hay id/entero");
+
             if (tokens.get(indice).getLexema().equals("else")) {
                 indice++;
 
