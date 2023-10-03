@@ -253,7 +253,7 @@ public class Lexer {
 
     /**
      * Esta funcion recibe el codigo para que lo separe linea por linea y
-     * guardarlo en un arreglo, tambien recibe un string de comparacion para
+     * guardarlo en un arreglo, tambien recibe un char de comparacion para
      * identificar cuando crear una nueva posicion del arreglo
      *
      * @param codigo

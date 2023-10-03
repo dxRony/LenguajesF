@@ -30,9 +30,18 @@ public class Parser {
                 System.out.println("llendo a if");
                 bloqueIf();
 
+            } else if (tokens.get(indice).getLexema().equals("for")) {//empezando un ciclo for
+                System.out.println("llendo a for");
+                bloqueFor();
+
+            } else if (tokens.get(indice).getLexema().equals("while")) {//empezando un ciclo while
+                System.out.println("llendo a while");
+                bloqueWhile();
+
             } else if (tokens.get(indice).getLexema().equals("def")) {//empieza un metodo
                 System.out.println("hay funcion/metodo");
                 funcionMetodo();
+
             } else if (tokens.get(indice).getTipo1().equals("Comentario")) {
                 indice++;
             } else {
@@ -396,6 +405,89 @@ public class Parser {
             }
         } else {
             //error sintactico
+        }
+    }
+
+    private void bloqueFor() {
+        System.out.println("entrando a for");
+        if (tokens.get(indice).getLexema().equals("for")) {
+            indice++;
+            System.out.println("hay for");
+
+            if (tokens.get(indice).getTipo1().equals("Identificador")) {
+                indice++;
+                System.out.println("hay id");
+
+                if (tokens.get(indice).getLexema().equals("in")) {
+                    indice++;
+                    System.out.println("hay in");
+
+                    if (tokens.get(indice).getTipo1().equals("Identificador")) {
+                        indice++;
+                        System.out.println("hay otro id");
+
+                        if (tokens.get(indice).getLexema().equals(":")) {
+                            indice++;
+                            System.out.println("hay :");
+
+                            if (tokens.get(indice).getLexema().equals("break")) {
+                                indice++;
+                                System.out.println("hay un break");
+
+                                if (tokens.get(indice).getLexema().equals("else")) {
+                                    System.out.println("llendo a else");
+                                    bloqueElse();
+                                } else {
+                                    //error sintactico
+                                }
+                            }
+                        } else {
+                            //error sintactico
+                        }
+                    } else {
+                        //error sintactico
+                    }
+                } else {
+                    //error sintactico
+                }
+            } else {
+                //error sintactico
+            }
+        } else {
+            //error sintactico
+        }
+    }
+
+    private void bloqueWhile() {
+        System.out.println("entrando a while");
+        if (tokens.get(indice).getLexema().equals("while")) {
+            indice++;
+            System.out.println("hay while");
+
+            if (tokens.get(indice).getTipo1().equals("Identificador")
+                    || tokens.get(indice).getTipo2().equals("Constante Booleana")
+                    || tokens.get(indice).getTipo1().equals("Entero")) {
+                System.out.println("hay id/boolean/entero");
+                indice++;
+
+                if (tokens.get(indice).getTipo2().equals("Comparacion")) {
+                    indice++;
+                    System.out.println("hay comparacion");
+
+                    if (tokens.get(indice).getTipo1().equals("Identificador")
+                            || tokens.get(indice).getTipo2().equals("Constante Booleana")
+                            || tokens.get(indice).getTipo1().equals("Entero")) {
+                        System.out.println("hay id/boolean/entero");
+                        indice++;
+
+                        if (tokens.get(indice).getLexema().equals(":")) {
+                            indice++;
+                            System.out.println("hay :");
+
+                        }
+                    }
+                }
+            }
         }
     }
 

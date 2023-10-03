@@ -48,6 +48,7 @@ public class Archivo {
         }
         return texto;
     }
+    
     /**
     *Esta funcion abre una imagen con una ruta fija 
     * y dimensiona la imagen para el frame
