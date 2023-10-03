@@ -21,7 +21,9 @@ public class Parser {
     }
 
     public void analizar() {
+
         while (indice < tokens.size()) {
+            System.out.println("tokens.size() = " + tokens.size());
             if (tokens.get(indice).getTipo1().equals("Identificador")) {//se esta declarando un identificador              
                 System.out.println("hay identificador");
                 expresion();
@@ -39,13 +41,13 @@ public class Parser {
                 bloqueWhile();
 
             } else if (tokens.get(indice).getLexema().equals("def")) {//empieza un metodo
-                System.out.println("hay funcion/metodo");
-                funcionMetodo();
+                System.out.println("llendo funcion/metodo");
+                bloqueMetodo();
 
             } else if (tokens.get(indice).getTipo1().equals("Comentario")) {
                 indice++;
             } else {
-                //error lexico
+                //error sintactico
                 break;
             }
         }
@@ -253,6 +255,7 @@ public class Parser {
                         System.out.println("hay id/boolean/entero");
                         if (tokens.get(indice).getLexema().equals(":")) {
                             indice++;
+                            System.out.println("hay :");
                             System.out.println(tokens.get(indice).getLexema());
                             System.out.println("hay :" + "\n bloque de codigo(if)");
 
@@ -491,72 +494,115 @@ public class Parser {
         }
     }
 
-    private void funcionMetodo() {
-        System.out.println("entrando a funcion/metodo");
-        indice++;
-        if (tokens.get(indice).getTipo1().equals("Identificador")) {//nombre de la funcion
+    private void bloqueMetodo() {
+        System.out.println("entrando a def");
+
+        if (tokens.get(indice).getLexema().equals("def")) {
             indice++;
-            System.out.println("hay nombre de funcion");
-            if (tokens.get(indice).getLexema().equals("(")) {//parentesis abre
+            System.out.println("hay def");
+
+            if (tokens.get(indice).getTipo1().equals("Identificador")) {//nombre de la funcion
                 indice++;
-                System.out.println("hay ( de apertura");
-                if (tokens.get(indice).getLexema().equals(")")) {//parentesis cierra
+                System.out.println("hay nombre de metodo");
+
+                if (tokens.get(indice).getLexema().equals("(")) {//parentesis abre               
                     indice++;
-                    System.out.println("hay ) de cierre");
-                    if (tokens.get(indice).getLexema().equals(":")) {// hay :
-                        System.out.println("hay :");
-                        //bloque de codigo
-                        if (tokens.get(indice).getLexema().equals("return")) {
-                            retornar();
-                        } else {
-                            //otra cosa
-                        }
-                    } else {
-                        //error sintactico
-                    }
-                } else if (tokens.get(indice).getTipo1().equals("Identificador")) {//hay argumento1
-                    indice++;
-                    System.out.println("hay 1 argumento");
-                    if (tokens.get(indice).getLexema().equals(",")) {//hay coma
+                    System.out.println("hay ( de apertura");
+
+                    if (tokens.get(indice).getLexema().equals(")")) {//parentesis cierra
                         indice++;
-                        System.out.println("hay ,");
-                        if (tokens.get(indice).getTipo1().equals("Identificador")) {//hay argumento2
+                        System.out.println("hay ) de cierre");
+
+                        if (tokens.get(indice).getLexema().equals(":")) {
                             indice++;
-                            System.out.println("hay 2 argumentos");
-                            if (tokens.get(indice).getLexema().equals(":")) {// hay :
-                                System.out.println("hay :");
-                                //bloque de codigo
-                                if (tokens.get(indice).getLexema().equals("return")) {
-                                    retornar();
-                                } else {
-                                    //otra cosa
-                                }
+                            System.out.println("hay :");
+                            //bloque de codigo
+
+                            if (tokens.get(indice).getLexema().equals("return")) {
+                                System.out.println("hay return");
+                                bloqueRetornar();
+
                             } else {
                                 //error sintactico
                             }
-                        } else {
-                            //error sintactico
+
+                        } else if (tokens.get(indice).getTipo1().equals("Identificador")) {//se convierte en funcion
+                            System.out.println("hay parametro1");
+                            bloqueFuncion();
+
                         }
+
                     } else {
                         //error sintactico
                     }
                 } else {
                     //error sintactico
                 }
-            } else {
-                //error sintactico
             }
-        } else {
-            //error sintactico
         }
     }
 
-    private void retornar() {
-        System.out.println("entrando a retornar()");
-        indice++;
+    private void bloqueFuncion() {
 
-        if (tokens.get(indice).getTipo1().equals("Identificador")) {//valor a retornar id o constante?
+        if (tokens.get(indice).getTipo1().equals("Identificador")) {
+            System.out.println("hay id");
             indice++;
+
+            if (tokens.get(indice).getLexema().equals(",")) {
+                System.out.println("hay , (viene otro parametro)");
+                indice++;
+
+                if (tokens.get(indice).getTipo1().equals("Identificador")) {
+                    System.out.println("hay parametro2");
+                    indice++;
+
+                    if (tokens.get(indice).getLexema().equals(")")) {//parentesis cierra
+                        System.out.println("hay ) de cierre");
+                        indice++;
+
+                        if (tokens.get(indice).getLexema().equals(":")) {
+                            System.out.println("hay :");
+                            indice++;
+                            //bloque de codigo
+
+                            if (tokens.get(indice).getLexema().equals("return")) {
+                                System.out.println("hay return");
+                                bloqueRetornar();
+                            }
+                        } else {
+                            //error sintactico
+                        }
+                    }
+                } else {
+                    //error sintactico
+                }
+            }
+        }
+    }
+
+    private void bloqueRetornar() {
+
+        if (tokens.get(indice).getLexema().equals("return")) {
+            indice++;
+            System.out.println("hay return");
+
+            if (tokens.get(indice).getTipo1().equals("Identificador")) {
+                System.out.println("hay valor retorno");
+                indice++;
+
+                if (tokens.get(indice).getTipo2().equals("Aritmetico")) {
+                    System.out.println("hay operador aritmetico");
+                    indice++;
+
+                    if (tokens.get(indice).getTipo1().equals("Identificador")) {
+                        System.out.println("hay valor a operar aritmeticamente");
+                        indice++;
+
+                    } else {
+                        //error sintactico
+                    }
+                }
+            }
         }
     }
 }
