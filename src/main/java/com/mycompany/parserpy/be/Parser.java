@@ -13,10 +13,12 @@ import java.util.ArrayList;
 public class Parser {
 
     private ArrayList<Token> tokens;
+    private ArrayList<String> errores;
     private int indice;
 
-    public Parser(ArrayList<Token> tokens) {
+    public Parser(ArrayList<Token> tokens, ArrayList<String> errores) {
         this.tokens = tokens;
+        this.errores = errores;
         this.indice = 0;
     }
 
@@ -47,7 +49,8 @@ public class Parser {
             } else if (tokens.get(indice).getTipo1().equals("Comentario")) {
                 indice++;
             } else {
-                //error sintactico                
+                errores.add("ERROR. Se esperaba: ID, if, for, while, def o comentario\nEn linea:" + tokens.get(indice).getLinea());
+                indice++;
             }
         }
     }
@@ -83,7 +86,7 @@ public class Parser {
                 //error sintactico
             }
         } else {
-            //error sintactico 
+            System.out.println("se esperaba un Identificador o ,");
         }
 
     }

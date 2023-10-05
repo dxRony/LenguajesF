@@ -3,6 +3,7 @@ package com.mycompany.parserpy.fe;
 import com.mycompany.parserpy.be.Archivo;
 import com.mycompany.parserpy.be.Lexer;
 import com.mycompany.parserpy.be.Parser;
+import com.mycompany.parserpy.be.Parserdef;
 import com.mycompany.parserpy.be.Token;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,7 +17,8 @@ public class UI extends javax.swing.JFrame {
 
     private Archivo archivo;
     private ArrayList<Token> reporteTokens = new ArrayList();
-    private ArrayList<Token> reporteErrores = new ArrayList();
+    private ArrayList<Token> reporteErroresLexicos = new ArrayList();
+    private ArrayList<String> reporteErroresSintacticos = new ArrayList();
     private Token elToken;
 
     /**
@@ -30,7 +32,8 @@ public class UI extends javax.swing.JFrame {
 
         btnPlay.setVisible(false);
         lblReporte.setVisible(false);
-        lblError.setVisible(false);
+        lblErrorLex.setVisible(false);
+        lblErrorSint.setVisible(false);
         btnLimpiar1.setVisible(false);
         jScrollPane1.setVisible(false);
         jScrollPane4.setVisible(false);
@@ -66,10 +69,10 @@ public class UI extends javax.swing.JFrame {
         pnlUI = new javax.swing.JPanel();
         btnPlay = new javax.swing.JButton();
         lblReporte = new javax.swing.JLabel();
-        lblError = new javax.swing.JLabel();
+        lblErrorLex = new javax.swing.JLabel();
         btnLimpiar1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtAreaError = new javax.swing.JTextPane();
+        txtAreaErrorLex = new javax.swing.JTextPane();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtAreaReporteLex = new javax.swing.JTextPane();
         comboBoxIdentificadores = new javax.swing.JComboBox<>();
@@ -78,16 +81,17 @@ public class UI extends javax.swing.JFrame {
         comboBoxLogicos = new javax.swing.JComboBox<>();
         comboBoxAsignacion = new javax.swing.JComboBox<>();
         comboBoxKW = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
         lblImagen = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAreaCodigo = new javax.swing.JTextPane();
         btnTablaSimbolos = new javax.swing.JButton();
         divisor = new javax.swing.JSeparator();
         jScrollPane3 = new javax.swing.JScrollPane();
-        txtAreaReporteSint = new javax.swing.JTextPane();
+        txtAreaErrorSint = new javax.swing.JTextPane();
         lblLexico = new javax.swing.JLabel();
         lblSintactico = new javax.swing.JLabel();
+        lblErrorSint = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenuAnalizar = new javax.swing.JMenu();
         btnMenuSeleccionarArchivo = new javax.swing.JMenuItem();
@@ -119,10 +123,10 @@ public class UI extends javax.swing.JFrame {
         pnlUI.add(lblReporte);
         lblReporte.setBounds(20, 440, 90, 20);
 
-        lblError.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblError.setText("Error");
-        pnlUI.add(lblError);
-        lblError.setBounds(20, 690, 40, 17);
+        lblErrorLex.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblErrorLex.setText("Error");
+        pnlUI.add(lblErrorLex);
+        lblErrorLex.setBounds(20, 690, 40, 17);
 
         btnLimpiar1.setBackground(new java.awt.Color(255, 255, 0));
         btnLimpiar1.setForeground(new java.awt.Color(0, 0, 0));
@@ -135,7 +139,7 @@ public class UI extends javax.swing.JFrame {
         pnlUI.add(btnLimpiar1);
         btnLimpiar1.setBounds(1040, 390, 90, 30);
 
-        jScrollPane1.setViewportView(txtAreaError);
+        jScrollPane1.setViewportView(txtAreaErrorLex);
 
         pnlUI.add(jScrollPane1);
         jScrollPane1.setBounds(20, 710, 640, 100);
@@ -199,11 +203,11 @@ public class UI extends javax.swing.JFrame {
         pnlUI.add(comboBoxKW);
         comboBoxKW.setBounds(20, 250, 120, 24);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 255, 51));
-        jLabel1.setText("PARSER-PY");
-        pnlUI.add(jLabel1);
-        jLabel1.setBounds(570, 20, 180, 40);
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(0, 255, 51));
+        lblTitulo.setText("PARSER-PY");
+        pnlUI.add(lblTitulo);
+        lblTitulo.setBounds(570, 20, 180, 40);
         pnlUI.add(lblImagen);
         lblImagen.setBounds(360, 130, 760, 470);
 
@@ -227,10 +231,10 @@ public class UI extends javax.swing.JFrame {
         pnlUI.add(divisor);
         divisor.setBounds(690, 430, 10, 390);
 
-        jScrollPane3.setViewportView(txtAreaReporteSint);
+        jScrollPane3.setViewportView(txtAreaErrorSint);
 
         pnlUI.add(jScrollPane3);
-        jScrollPane3.setBounds(720, 460, 630, 260);
+        jScrollPane3.setBounds(710, 470, 630, 260);
 
         lblLexico.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         lblLexico.setText("Analísis Léxico");
@@ -241,6 +245,11 @@ public class UI extends javax.swing.JFrame {
         lblSintactico.setText("Analísis Sintáctico");
         pnlUI.add(lblSintactico);
         lblSintactico.setBounds(910, 430, 160, 22);
+
+        lblErrorSint.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
+        lblErrorSint.setText("Error");
+        pnlUI.add(lblErrorSint);
+        lblErrorSint.setBounds(720, 450, 37, 18);
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -323,8 +332,10 @@ public class UI extends javax.swing.JFrame {
     private void btnMenuAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuAnalizarActionPerformed
         btnPlay.setVisible(true);
         txtAreaCodigo.setVisible(true);
-        txtAreaError.setVisible(true);
-        lblError.setVisible(true);
+        txtAreaErrorLex.setVisible(true);
+        txtAreaErrorSint.setVisible(true);
+        lblErrorLex.setVisible(true);
+        lblErrorSint.setVisible(true);
     }//GEN-LAST:event_btnMenuAnalizarActionPerformed
 
     private void btnMenuGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuGraficoActionPerformed
@@ -342,32 +353,39 @@ public class UI extends javax.swing.JFrame {
     private void btnPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayActionPerformed
         // TODO add your handling code here:
         txtAreaReporteLex.setText("");
-        txtAreaError.setText("");
+        txtAreaErrorLex.setText("");
+        txtAreaErrorSint.setText("");
         reporteTokens.clear();
-        reporteErrores.clear();
+        reporteErroresLexicos.clear();
+        reporteErroresSintacticos.clear();
 
-        new Lexer(reporteTokens, reporteErrores).analizar(txtAreaCodigo.getText());
+        new Lexer(reporteTokens, reporteErroresLexicos).analizar(txtAreaCodigo.getText());
 
         for (int i = 0; i < reporteTokens.size(); i++) {
             txtAreaReporteLex.setText(txtAreaReporteLex.getText() + reporteTokens.get(i).toString());
         }
-        for (int i = 0; i < reporteErrores.size(); i++) {
-            txtAreaError.setText(txtAreaError.getText() + reporteErrores.get(i).toString());
+        for (int i = 0; i < reporteErroresLexicos.size(); i++) {
+            txtAreaErrorLex.setText(txtAreaErrorLex.getText() + reporteErroresLexicos.get(i).toString());
         }
         btnLimpiar1.setEnabled(true);
         elToken.llenarComboBox(reporteTokens, comboBoxIdentificadores, comboBoxAritmeticos, comboBoxComparacion,
                 comboBoxLogicos, comboBoxAsignacion, comboBoxKW);
         elToken.colorearTokens(txtAreaReporteLex, reporteTokens);
         btnTablaSimbolos.setVisible(true);
-       new Parser(reporteTokens).analizar();
 
+        new Parserdef(reporteTokens, reporteErroresSintacticos).analizar();
+
+        for (int i = 0; i < reporteErroresSintacticos.size(); i++) {
+            txtAreaErrorSint.setText(txtAreaErrorSint.getText() + reporteErroresSintacticos.get(i).toString());
+        }
     }//GEN-LAST:event_btnPlayActionPerformed
 
     private void btnMenuSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuSeleccionarArchivoActionPerformed
         // TODO add your handling code here:
         btnPlay.setVisible(true);
         lblReporte.setVisible(true);
-        lblError.setVisible(true);
+        lblErrorLex.setVisible(true);
+        lblErrorSint.setVisible(true);
         btnLimpiar1.setVisible(true);
         jScrollPane1.setVisible(true);
         jScrollPane4.setVisible(true);
@@ -396,10 +414,12 @@ public class UI extends javax.swing.JFrame {
         // TODO add your handling code here:
         btnPlay.setVisible(true);
         lblReporte.setVisible(true);
-        lblError.setVisible(true);
+        lblErrorLex.setVisible(true);
+        lblErrorSint.setVisible(true);
         btnLimpiar1.setVisible(true);
         jScrollPane1.setVisible(true);
         jScrollPane4.setVisible(true);
+        jScrollPane3.setVisible(true);
         jScrollPane2.setVisible(true);
         txtAreaCodigo.setEnabled(true);
         txtAreaCodigo.setBackground(Color.white);
@@ -425,7 +445,7 @@ public class UI extends javax.swing.JFrame {
         // TODO add your handling code here:
         btnPlay.setVisible(false);
         lblReporte.setVisible(false);
-        lblError.setVisible(false);
+        lblErrorLex.setVisible(false);
         btnLimpiar1.setVisible(false);
         jScrollPane1.setVisible(false);
         jScrollPane4.setVisible(false);
@@ -536,21 +556,22 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboBoxKW;
     private javax.swing.JComboBox<String> comboBoxLogicos;
     private javax.swing.JSeparator divisor;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JLabel lblError;
+    private javax.swing.JLabel lblErrorLex;
+    private javax.swing.JLabel lblErrorSint;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblLexico;
     private javax.swing.JLabel lblReporte;
     private javax.swing.JLabel lblSintactico;
+    private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlUI;
     private javax.swing.JTextPane txtAreaCodigo;
-    private javax.swing.JTextPane txtAreaError;
+    private javax.swing.JTextPane txtAreaErrorLex;
+    private javax.swing.JTextPane txtAreaErrorSint;
     private javax.swing.JTextPane txtAreaReporteLex;
-    private javax.swing.JTextPane txtAreaReporteSint;
     // End of variables declaration//GEN-END:variables
 }
