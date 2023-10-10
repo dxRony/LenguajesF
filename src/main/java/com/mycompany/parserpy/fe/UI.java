@@ -3,7 +3,6 @@ package com.mycompany.parserpy.fe;
 import com.mycompany.parserpy.be.Archivo;
 import com.mycompany.parserpy.be.Lexer;
 import com.mycompany.parserpy.be.Parser;
-import com.mycompany.parserpy.be.Parserdef;
 import com.mycompany.parserpy.be.Token;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -373,7 +372,7 @@ public class UI extends javax.swing.JFrame {
         elToken.colorearTokens(txtAreaReporteLex, reporteTokens);
         btnTablaSimbolos.setVisible(true);
 
-        new Parserdef(reporteTokens, reporteErroresSintacticos).analizar();
+        new Parser(reporteTokens, reporteErroresSintacticos).analizar();
 
         for (int i = 0; i < reporteErroresSintacticos.size(); i++) {
             txtAreaErrorSint.setText(txtAreaErrorSint.getText() + reporteErroresSintacticos.get(i).toString());
