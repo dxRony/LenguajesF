@@ -49,7 +49,7 @@ public class Parser2 {
             } else if (tokens.get(indice).getTipo1().equals("Comentario")) {
                 indice++;
             } else {
-                errores.add("ERROR. Se esperaba: ID, if, for, while, def o comentario\nEn linea:" + tokens.get(indice).getLinea());
+                errores.add("ERROR. Se esperaba: ID, if, for, while, def o comentario\nEn linea:" + tokens.get(indice).getLinea()+"\n");
                 indice++;
             }
         }

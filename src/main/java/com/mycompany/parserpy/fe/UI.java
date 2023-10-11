@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class UI extends javax.swing.JFrame {
-
+    
     private Archivo archivo;
     private ArrayList<Token> reporteTokens = new ArrayList();
     private ArrayList<Token> reporteErroresLexicos = new ArrayList();
@@ -28,7 +28,7 @@ public class UI extends javax.swing.JFrame {
         archivo = new Archivo();
         txtAreaCodigo.setEnabled(true);
         elToken = new Token();
-
+        
         btnPlay.setVisible(false);
         lblReporte.setVisible(false);
         lblErrorLex.setVisible(false);
@@ -36,8 +36,9 @@ public class UI extends javax.swing.JFrame {
         btnLimpiar1.setVisible(false);
         jScrollPane1.setVisible(false);
         jScrollPane4.setVisible(false);
+        jScrollPane3.setVisible(false);
         jScrollPane2.setVisible(false);
-
+        
         comboBoxIdentificadores.setVisible(false);
         comboBoxAritmeticos.setVisible(false);
         comboBoxComparacion.setVisible(false);
@@ -45,15 +46,13 @@ public class UI extends javax.swing.JFrame {
         comboBoxAsignacion.setVisible(false);
         comboBoxKW.setVisible(false);
         btnTablaSimbolos.setVisible(false);
-
+        
         lblLexico.setVisible(false);
         lblSintactico.setVisible(false);
         divisor.setVisible(false);
-        jScrollPane3.setVisible(false);
-        //txtAreaReporteSint.setVisible(false);
-
+        
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+        
     }
 
     /**
@@ -357,9 +356,9 @@ public class UI extends javax.swing.JFrame {
         reporteTokens.clear();
         reporteErroresLexicos.clear();
         reporteErroresSintacticos.clear();
-
+        
         new Lexer(reporteTokens, reporteErroresLexicos).analizar(txtAreaCodigo.getText());
-
+        
         for (int i = 0; i < reporteTokens.size(); i++) {
             txtAreaReporteLex.setText(txtAreaReporteLex.getText() + reporteTokens.get(i).toString());
         }
@@ -367,15 +366,17 @@ public class UI extends javax.swing.JFrame {
             txtAreaErrorLex.setText(txtAreaErrorLex.getText() + reporteErroresLexicos.get(i).toString());
         }
         btnLimpiar1.setEnabled(true);
+        
         elToken.llenarComboBox(reporteTokens, comboBoxIdentificadores, comboBoxAritmeticos, comboBoxComparacion,
                 comboBoxLogicos, comboBoxAsignacion, comboBoxKW);
+        
         elToken.colorearTokens(txtAreaReporteLex, reporteTokens);
         btnTablaSimbolos.setVisible(true);
-
+        
         new Parser(reporteTokens, reporteErroresSintacticos).analizar();
 
         for (int i = 0; i < reporteErroresSintacticos.size(); i++) {
-            txtAreaErrorSint.setText(txtAreaErrorSint.getText() + reporteErroresSintacticos.get(i).toString());
+            txtAreaErrorSint.setText(txtAreaErrorSint.getText() + reporteErroresSintacticos.get(i));
         }
     }//GEN-LAST:event_btnPlayActionPerformed
 
@@ -399,7 +400,7 @@ public class UI extends javax.swing.JFrame {
         lblSintactico.setVisible(true);
         lblLexico.setVisible(true);
         divisor.setVisible(true);
-
+        
         comboBoxIdentificadores.setVisible(false);
         comboBoxAritmeticos.setVisible(false);
         comboBoxComparacion.setVisible(false);
@@ -423,7 +424,7 @@ public class UI extends javax.swing.JFrame {
         txtAreaCodigo.setEnabled(true);
         txtAreaCodigo.setBackground(Color.white);
         btnPlay.setEnabled(true);
-
+        
         comboBoxIdentificadores.setVisible(false);
         comboBoxAritmeticos.setVisible(false);
         comboBoxComparacion.setVisible(false);
@@ -449,7 +450,7 @@ public class UI extends javax.swing.JFrame {
         jScrollPane1.setVisible(false);
         jScrollPane4.setVisible(false);
         jScrollPane2.setVisible(false);
-
+        
         comboBoxIdentificadores.setVisible(true);
         comboBoxAritmeticos.setVisible(true);
         comboBoxComparacion.setVisible(true);
@@ -509,13 +510,13 @@ public class UI extends javax.swing.JFrame {
 
     private void btnTablaSimbolosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaSimbolosActionPerformed
         DefaultTableModel columna = new DefaultTableModel();
-
+        
         columna.addColumn("Tipo");
         columna.addColumn("Patron");
         columna.addColumn("Lexema ");
         columna.addColumn("Linea");
         columna.addColumn("Columna");
-
+        
         for (Token token : reporteTokens) {
             columna.addRow(new Object[]{token.getTipo1() + " / " + token.getTipo2(),
                 token.getPatron(),
