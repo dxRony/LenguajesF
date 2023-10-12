@@ -183,8 +183,7 @@ public class Lexer {
                             tipo2 = "Comparacion";
                         } else if (lexema.equals("**") && caracterSiguiente == 61) {
                             estado = 8;
-                        }  
-                        else if (lexema.equals("**") || lexema.equals("//")) {
+                        } else if (lexema.equals("**") || lexema.equals("//")) {
                             tipo2 = "Aritmetico";
                         } else if (lexema.equals("+=") || lexema.equals("-=")
                                 || lexema.equals("*=") || lexema.equals("/=")
@@ -200,6 +199,10 @@ public class Lexer {
                                 || caracterActual == 60 && caracterSiguiente == 61 || caracterActual == 62 && caracterSiguiente == 61
                                 || caracterActual == 42 && caracterSiguiente == 42 || caracterActual == 47 && caracterSiguiente == 47) {
                             estado = 8;//si es un operador logico doble
+                        } else if (caracterActual == 38 || caracterActual == 124|| caracterActual == 94) {
+                            tipo1 = "Error lexico";
+                            color = "GREEN";
+                            estado = 0;
                         } else {
                             tipo1 = "Operador";
                             color = "BLUE";

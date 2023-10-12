@@ -16,12 +16,14 @@ public class Parser {
     private ArrayList<String> errores;
     private int indice;
     private int indiceError;
+    private int funciones;
 
     public Parser(ArrayList<Token> tokens, ArrayList<String> errores) {
         this.tokens = tokens;
         this.errores = errores;
         this.indice = 0;
         this.indiceError = 1;
+        this.funciones = 0;
     }
 
     public void analizar() {
@@ -54,11 +56,13 @@ public class Parser {
 
             } else {
                 errores.add(indiceError + ". ¡ERROR! Se esperaba: ID, if, for, while, def o comentario\nEN LINEA:"
-                        + tokens.get(indice).getLinea() + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                        + tokens.get(indice).getLinea() + "\n");
                 indice++;
                 indiceError++;
             }
+            
         }
+        System.out.println("funciones = " + funciones);
     }
 
     private void asignacion() {
@@ -71,8 +75,7 @@ public class Parser {
 
             expresion();
         } else {
-            errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Asignacion\nEN LINEA:" + tokens.get(indice).getLinea()
-                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+            errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Asignacion\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
             indice++;
             indiceError++;
         }
@@ -80,12 +83,13 @@ public class Parser {
 
     private void identificador() {
         System.out.println("entrando a identificador");
+        System.out.println(tokens.get(indice).getLexema());
         if (tokens.get(indice).getTipo1().equals("Identificador")) {//hay id valido
             indice++;
             System.out.println("hay identificador");
         } else {
-            errores.add(indiceError + ". ¡ERROR! Se esperaba: ID válido\nEN LINEA:" + tokens.get(indice).getLinea()
-                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+            System.out.println("no ha id valido");
+            errores.add(indiceError + ". ¡ERROR! Se esperaba: ID válido\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
             indice++;
             indiceError++;
         }
@@ -100,7 +104,6 @@ public class Parser {
 
         } else if (tokens.get(indice).getTipo1().equals("Entero")) {//enteros
             System.out.println("hay asignacion de tipo: entero");
-            indice++;
 
             if (tokens.get(indice).getTipo2().equals("Aritmetico")) {//aritmeticos
                 System.out.println("hay operador aritmetico");
@@ -133,27 +136,27 @@ public class Parser {
                                     System.out.println("hay otro otro otro entero");
                                     indice++;
                                 } else {
-                                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea()
-                                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                     indice++;
                                     indiceError++;
                                 }
                             } else {
-                                errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Comparacion\nEN LINEA:" + tokens.get(indice).getLinea()
-                                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Comparacion\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                 indice++;
                                 indiceError++;
                             }
                         } else {
-                            errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea()
-                                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                            errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                             indice++;
                             indiceError++;
                         }
+                    } else {
+                        errores.add(indiceError + ". ¡ERROR! Se esperaba: and/or\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
+                        indice++;
+                        indiceError++;
                     }
                 } else {
-                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea()
-                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
                     indiceError++;
                 }
@@ -169,12 +172,17 @@ public class Parser {
                     System.out.println("hay entero");
                     indice++;
                 } else {
-                    errores.add(indiceError + ". ¡ERROR! Se esperaba: is/not\nEN LINEA:" + tokens.get(indice).getLinea()
-                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
                     indiceError++;
                 }
             }
+//            else {
+//                System.out.println("a");
+//                errores.add(indiceError + ". ¡ERROR! Se esperaba: Operador Aritmetico/Identidad/Comparacion\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
+//                indice++;
+//                indiceError++;
+//            }
 
         } else if (tokens.get(indice).getTipo1().equals("Decimal")) {//decimales
             System.out.println("hay asignacion de tipo: decimal");
@@ -194,18 +202,15 @@ public class Parser {
                 System.out.println("cierra array ]");
                 System.out.println("hay array");
             } else {
-                errores.add(indiceError + ". ¡ERROR! Se esperaba: <]>\nEN LINEA:" + tokens.get(indice).getLinea()
-                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                errores.add(indiceError + ". ¡ERROR! Se esperaba: <]> o <,>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                 indice++;
                 indiceError++;
             }
 
         } else {
-            errores.add(indiceError + ". ¡ERROR! Se esperaba: ID/Cadena/Decimal/Boolean\nEN LINEA:" + tokens.get(indice).getLinea()
-                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
-
+            errores.add(indiceError + ". ¡ERROR! Se esperaba: ID/Cadena/Decimal/Boolean\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
+            indice++;
             indiceError++;
-            //System.out.println(errores.toString());
         }
         try {
             indice++;
@@ -216,7 +221,6 @@ public class Parser {
         } catch (IndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
         }
-
         System.out.println("saliendo de expresion");
     }
 
@@ -232,15 +236,13 @@ public class Parser {
                     System.out.println("hay otro entero");
                     indice++;
                 } else {
-                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea()
-                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
                     indiceError++;
                 }
             }
         } else {
-            errores.add(indiceError + ". ¡ERROR! Se esperaba: Operador Aritmetico\nEN LINEA:" + tokens.get(indice).getLinea()
-                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+            errores.add(indiceError + ". ¡ERROR! Se esperaba: Operador Aritmetico\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
             indice++;
             indiceError++;
         }
@@ -250,16 +252,35 @@ public class Parser {
         //entrando a array
         int id = 0;
 
-        expresion();
-        id++;
-
-        while (tokens.get(indice).getLexema().equals(",")) {//coma para separar
+        // expresion();
+        if (tokens.get(indice).getTipo1().equals("Entero")
+                || tokens.get(indice).getTipo1().equals("Decimal")
+                || tokens.get(indice).getTipo1().equals("Cadena")
+                || tokens.get(indice).getTipo1().equals("Identificador")) {
+            System.out.println("hay entero/decimal/cadena/id");
             indice++;
+        } else {
+            errores.add(indiceError + ". ¡ERROR! Se esperaba: ID/Cadena/Decimal/Boolean\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
+            indice++;
+            indiceError++;
+        }
+        id++;
+        while (tokens.get(indice).getLexema().equals(",")) {//coma para separar
             System.out.println("hay ,");
-            expresion();
+            indice++;
+            if (tokens.get(indice).getTipo1().equals("Entero")
+                    || tokens.get(indice).getTipo1().equals("Decimal")
+                    || tokens.get(indice).getTipo1().equals("Cadena")
+                    || tokens.get(indice).getTipo1().equals("Identificador")) {
+                System.out.println("hay entero/decimal/cadena/id");
+                indice++;
+            } else {
+                errores.add(indiceError + ". ¡ERROR! Se esperaba: ID/Cadena/Decimal/Boolean\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
+                indice++;
+                indiceError++;
+            }
             id++;
         }
-
     }
 
     private void bloqueIf() {
@@ -278,8 +299,8 @@ public class Parser {
                     indice++;
                     System.out.println("hay :");
                     bloqueCodigoIf();//bloque de codigo
-
-                    if (tokens.get(indice).getLexema().equals("elif")) {//bloqueelif
+                    System.out.println("he salido");
+                    if (tokens.get(indice).getLexema().equals("elif")) {//bloque elif
                         System.out.println("hay elif");
 
                         while (tokens.get(indice).getLexema().equals("elif")) {//si hay 0 o varios elifs
@@ -313,27 +334,24 @@ public class Parser {
                                             indice++;
                                             System.out.println("hay :");
                                             bloqueCodigoIf();//bloque de codigo
+                                            System.out.println("he salido");
                                         } else {
-                                            errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea()
-                                                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                            errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                             indice++;
                                             indiceError++;
                                         }
                                     } else {
-                                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                                + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                         indice++;
                                         indiceError++;
                                     }
                                 } else {
-                                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Comparacion o <:>\nEN LINEA:" + tokens.get(indice).getLinea()
-                                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Comparacion o <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                     indice++;
                                     indiceError++;
                                 }
                             } else {
-                                errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                 indice++;
                                 indiceError++;
                             }
@@ -404,26 +422,22 @@ public class Parser {
                                                     System.out.println("hay :");
                                                     bloqueCodigoIf();//bloque de codigo
                                                 } else {
-                                                    errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea()
-                                                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                                    errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                                     indice++;
                                                     indiceError++;
                                                 }
                                             } else {
-                                                errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                                errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                                 indice++;
                                                 indiceError++;
                                             }
                                         } else {
-                                            errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Comparacion o <:>\nEN LINEA:" + tokens.get(indice).getLinea()
-                                                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                            errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Comparacion o <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                             indice++;
                                             indiceError++;
                                         }
                                     } else {
-                                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                                + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                         indice++;
                                         indiceError++;
                                     }
@@ -441,26 +455,22 @@ public class Parser {
                                     }
                                 }
                             } else {
-                                errores.add(indiceError + ". ¡ERROR! Se esperaba: :\nEN LINEA:" + tokens.get(indice).getLinea()
-                                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                                errores.add(indiceError + ". ¡ERROR! Se esperaba: :\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                 indice++;
                                 indiceError++;
                             }
                         } else {
-                            errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                            errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                             indice++;
                             indiceError++;
                         }
                     } else {
-                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Comparacion o <:>\nEN LINEA:" + tokens.get(indice).getLinea()
-                                + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Token de Comparacion o <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;
                         indiceError++;
                     }
                 } else {
-                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
                     indiceError++;
                 }
@@ -469,10 +479,13 @@ public class Parser {
     }
 
     private void bloqueCodigoIf() {
-        bloqueIf();
+        System.out.println("entrando a bloqueCodigoIf");
+        // bloqueIf();
         while (!tokens.get(indice).getLexema().equals("if") && !tokens.get(indice).getLexema().equals("elif") && !tokens.get(indice).getLexema().equals("else")) {
+            System.out.println(tokens.get(indice).getLexema());
             asignacion();
         }
+        System.out.println("saliendo de bloqueCodigoIf");
     }
 
     private void ternario() {
@@ -504,8 +517,7 @@ public class Parser {
                         System.out.println("hay boolean/decimal/cadena/id para comparar");
                         indice++;
                     } else {
-                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;
                         indiceError++;
                     }
@@ -522,20 +534,17 @@ public class Parser {
                         System.out.println("hay boolean/decimal/cadena/id");
                         indice++;
                     } else {
-                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;
                         indiceError++;
                     }
                 } else {
-                    errores.add(indiceError + ". ¡ERROR! Se esperaba: else\nEN LINEA:" + tokens.get(indice).getLinea()
-                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: else\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
                     indiceError++;
                 }
             } else {
-                errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                 indice++;
                 indiceError++;
             }
@@ -567,34 +576,43 @@ public class Parser {
                             bloqueCodigoFor();//bloque de codigo
 
                         } else {
-                            errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea()
-                                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                            errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                             indice++;
                             indiceError++;
                         }
                     } else {
-                        errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                        errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;
                         indiceError++;
                     }
                 } else {
-                    errores.add(indiceError + ". ¡ERROR! Se esperaba: in\nEN LINEA:" + tokens.get(indice).getLinea()
-                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: in\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
                     indiceError++;
                 }
             } else {
-                errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                 indice++;
                 indiceError++;
             }
         }
-        if (tokens.get(indice).getLexema().equals("else")) {
-            indice++;
-            System.out.println("hay else (for-else)");
-            bloqueCodigoForElse();
+
+        try {
+            if (tokens.get(indice).getLexema().equals("else")) {
+                indice++;
+                System.out.println("hay else (for-else)");
+                if (tokens.get(indice).getLexema().equals(":")) {
+                    indice++;
+                    System.out.println("hay :");
+                    bloqueCodigoForElse();
+                } else {
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
+                    indice++;
+                    indiceError++;
+                }
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
         }
         System.out.println("saliendo de for");
     }
@@ -644,35 +662,48 @@ public class Parser {
                             System.out.println("hay :");
                             indice++;
                             bloqueCodigoWhile();
+
+                            if (tokens.get(indice).getLexema().equals("break")) {
+                                indice++;
+                                System.out.println("hay break");
+                            }
                         } else {
-                            errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea()
-                                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                            errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                             indice++;
                             indiceError++;
                         }
                     } else {
-                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                        errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;
                         indiceError++;
                     }
                 } else {
-                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Comparacion\nEN LINEA:" + tokens.get(indice).getLinea()
-                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Comparacion\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
                     indiceError++;
                 }
             } else {
-                errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                 indice++;
                 indiceError++;
             }
         }
-        if (tokens.get(indice).getLexema().equals("else")) {
-            indice++;
-            System.out.println("hay else (while-else)");
-            bloqueCodigoForElse();
+        try {
+            if (tokens.get(indice).getLexema().equals("else")) {
+                indice++;
+                System.out.println("hay else (while-else)");
+                if (tokens.get(indice).getLexema().equals(":")) {
+                    System.out.println("hay : ");
+                    indice++;
+                    bloqueCodigoForElse();
+                } else {
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
+                    indice++;
+                    indiceError++;
+                }
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
         }
         System.out.println("saliendo de bloqueWhile");
     }
@@ -680,7 +711,7 @@ public class Parser {
     private void bloqueCodigoWhile() {
         System.out.println("entrando a bloqueCodigoWhile");
         asignacion();
-        indice++;
+        // indice++;
         System.out.println("saliendo de  bloqueCodigoWhile");
     }
 
@@ -710,26 +741,23 @@ public class Parser {
                             bloqueCodigoDef();//bloque codigo    
 
                         } else {
-                            errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea()
-                                    + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                            errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                             indice++;
                             indiceError++;
                         }
                     } else {
-                        errores.add(indiceError + ". ¡ERROR! Se esperaba: <)>\nEN LINEA:" + tokens.get(indice).getLinea()
-                                + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                        errores.add(indiceError + ". ¡ERROR! Se esperaba: <)>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;
                         indiceError++;
                     }
                 } else {
-                    errores.add(indiceError + ". ¡ERROR! Se esperaba: <(>\nEN LINEA:" + tokens.get(indice).getLinea()
-                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                    System.out.println("E");
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: <(>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
                     indiceError++;
                 }
             } else {
-                errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                 indice++;
                 indiceError++;
             }
@@ -738,6 +766,7 @@ public class Parser {
             System.out.println("hay return");
             bloqueRetornar();
         }
+        funciones++;
         System.out.println("saliendo de def");
     }
 
@@ -756,6 +785,9 @@ public class Parser {
                 indice++;
                 parametro++;
                 System.out.println("hay parametro = " + parametro);
+            } else {
+                errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
+                indiceError++;
             }
         }
         System.out.println("saliendo de parametros");
@@ -786,20 +818,17 @@ public class Parser {
                         indice++;
 
                     } else {
-                        errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                                + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                        errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;
                         indiceError++;
                     }
                 } else {
-                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Operador Aritmetico\nEN LINEA:" + tokens.get(indice).getLinea()
-                            + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: Operador Aritmetico\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
                     indiceError++;
                 }
             } else {
-                errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea()
-                        + "(" + tokens.get(indice).getLexema() + ")" + "\n");
+                errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                 indice++;
                 indiceError++;
             }
