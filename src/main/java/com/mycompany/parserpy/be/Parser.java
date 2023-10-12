@@ -4,6 +4,7 @@
  */
 package com.mycompany.parserpy.be;
 
+import com.mycompany.parserpy.be.util.Funcion;
 import java.util.ArrayList;
 
 /**
@@ -14,16 +15,22 @@ public class Parser {
 
     private ArrayList<Token> tokens;
     private ArrayList<String> errores;
+    private ArrayList<Funcion> funciones;
     private int indice;
     private int indiceError;
-    private int funciones;
+    private int numFunciones;
+    private int llamadasFunciones;
+    private String nombreLlamada;
 
-    public Parser(ArrayList<Token> tokens, ArrayList<String> errores) {
+    public Parser(ArrayList<Token> tokens, ArrayList<String> errores, ArrayList<Funcion> funciones) {
         this.tokens = tokens;
         this.errores = errores;
+        this.funciones = funciones;
         this.indice = 0;
         this.indiceError = 1;
-        this.funciones = 0;
+        this.numFunciones = 0;
+        this.llamadasFunciones = 0;
+        this.nombreLlamada = "";
     }
 
     public void analizar() {
@@ -31,7 +38,12 @@ public class Parser {
 
         while (indice < tokens.size()) {
             System.out.println("indice = " + indice);
-            if (tokens.get(indice).getTipo1().equals("Identificador")) {//se esta declarando un identificador              
+            if (tokens.get(indice).getTipo1().equals("Identificador")
+                    && tokens.get(indice + 1).getLexema().equals("(")) {
+                System.out.println("hay llamada");
+                identificador();
+
+            } else if (tokens.get(indice).getTipo1().equals("Identificador")) {//se esta declarando un identificador              
                 System.out.println("hay identificador");
                 asignacion();
 
@@ -60,9 +72,9 @@ public class Parser {
                 indice++;
                 indiceError++;
             }
-            
+
         }
-        System.out.println("funciones = " + funciones);
+        System.out.println("numFunciones = " + numFunciones);
     }
 
     private void asignacion() {
@@ -83,10 +95,37 @@ public class Parser {
 
     private void identificador() {
         System.out.println("entrando a identificador");
-        System.out.println(tokens.get(indice).getLexema());
+
         if (tokens.get(indice).getTipo1().equals("Identificador")) {//hay id valido
+            nombreLlamada = tokens.get(indice).getLexema();
             indice++;
             System.out.println("hay identificador");
+
+            if (tokens.get(indice).getLexema().equals("(")) {
+                indice++;
+                System.out.println("hay (");
+                parametros();
+
+                if (tokens.get(indice).getLexema().equals(")")) {
+                    indice++;
+                    System.out.println("hay )");
+
+                    for (int i = 0; i < funciones.size(); i++) {
+                        System.out.println("a comparar= " + funciones.get(i).getNombre());
+                        System.out.println("nombreLlamada = " + nombreLlamada);
+
+                        if (funciones.get(i).getNombre().equals(nombreLlamada)) {
+                            System.out.println("existe");
+                            llamadasFunciones = funciones.get(i).getLlamadas();
+                            funciones.get(i).setLlamadas(llamadasFunciones + 1);
+                        }
+                    }
+                } else {
+                    errores.add(indiceError + ". ¡ERROR! Se esperaba: <)>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
+                    indice++;
+                    indiceError++;
+                }
+            }
         } else {
             System.out.println("no ha id valido");
             errores.add(indiceError + ". ¡ERROR! Se esperaba: ID válido\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
@@ -716,19 +755,27 @@ public class Parser {
     }
 
     private void bloqueDef() {
+        String nombre = "";
+        int linea = 0;
+        int columna = 0;
+        int parametros = 0;
+        int llamadas = 0;
         System.out.println("entrando a def");
 
         if (tokens.get(indice).getLexema().equals("def")) {
+            linea = tokens.get(indice).getLinea();
+            columna = tokens.get(indice).getColumna();
             indice++;
 
             if (tokens.get(indice).getTipo1().equals("Identificador")) {//nombre de la funcion
+                nombre = tokens.get(indice).getLexema();
                 indice++;
                 System.out.println("hay nombre de metodo");
 
                 if (tokens.get(indice).getLexema().equals("(")) {//parentesis abre               
                     indice++;
                     System.out.println("hay ( de apertura");
-                    parametros();
+                    parametros = parametros();
 
                     if (tokens.get(indice).getLexema().equals(")")) {//parentesis cierra
                         indice++;
@@ -766,11 +813,18 @@ public class Parser {
             System.out.println("hay return");
             bloqueRetornar();
         }
-        funciones++;
+        numFunciones++;
+        funciones.add(new Funcion(linea, columna, nombre, parametros, llamadas));
         System.out.println("saliendo de def");
+        System.out.println("nombre = " + nombre);
+        System.out.println("parametros = " + parametros);
+        System.out.println("linea = " + linea);
+        System.out.println("columna = " + columna);
+        System.out.println("llamadas = " + llamadas);
+        System.out.println(funciones.toString());
     }
 
-    private void parametros() {
+    private int parametros() {
         System.out.println("entrando a parametros");
         int parametro = 0;
         if (tokens.get(indice).getTipo1().equals("Identificador")) {
@@ -791,6 +845,7 @@ public class Parser {
             }
         }
         System.out.println("saliendo de parametros");
+        return parametro;
     }
 
     private void bloqueCodigoDef() {

@@ -4,6 +4,7 @@ import com.mycompany.parserpy.be.Archivo;
 import com.mycompany.parserpy.be.Lexer;
 import com.mycompany.parserpy.be.Parser;
 import com.mycompany.parserpy.be.Token;
+import com.mycompany.parserpy.be.util.Funcion;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -13,11 +14,12 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class UI extends javax.swing.JFrame {
-    
+
     private Archivo archivo;
     private ArrayList<Token> reporteTokens = new ArrayList();
     private ArrayList<Token> reporteErroresLexicos = new ArrayList();
     private ArrayList<String> reporteErroresSintacticos = new ArrayList();
+    private ArrayList<Funcion> reporteFunciones = new ArrayList();
     private Token elToken;
 
     /**
@@ -28,7 +30,7 @@ public class UI extends javax.swing.JFrame {
         archivo = new Archivo();
         txtAreaCodigo.setEnabled(true);
         elToken = new Token();
-        
+
         btnPlay.setVisible(false);
         lblReporte.setVisible(false);
         lblErrorLex.setVisible(false);
@@ -38,21 +40,22 @@ public class UI extends javax.swing.JFrame {
         jScrollPane4.setVisible(false);
         jScrollPane3.setVisible(false);
         jScrollPane2.setVisible(false);
-        
+
         comboBoxIdentificadores.setVisible(false);
         comboBoxAritmeticos.setVisible(false);
         comboBoxComparacion.setVisible(false);
         comboBoxLogicos.setVisible(false);
         comboBoxAsignacion.setVisible(false);
         comboBoxKW.setVisible(false);
-        btnTablaSimbolos.setVisible(false);
-        
+        btnTablaTokens.setVisible(false);
+        btnTablaFunciones.setVisible(false);
+
         lblLexico.setVisible(false);
         lblSintactico.setVisible(false);
         divisor.setVisible(false);
-        
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
+
     }
 
     /**
@@ -83,13 +86,14 @@ public class UI extends javax.swing.JFrame {
         lblImagen = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAreaCodigo = new javax.swing.JTextPane();
-        btnTablaSimbolos = new javax.swing.JButton();
+        btnTablaTokens = new javax.swing.JButton();
         divisor = new javax.swing.JSeparator();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtAreaErrorSint = new javax.swing.JTextPane();
         lblLexico = new javax.swing.JLabel();
         lblSintactico = new javax.swing.JLabel();
         lblErrorSint = new javax.swing.JLabel();
+        btnTablaFunciones = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenuAnalizar = new javax.swing.JMenu();
         btnMenuSeleccionarArchivo = new javax.swing.JMenuItem();
@@ -154,7 +158,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxIdentificadores);
-        comboBoxIdentificadores.setBounds(20, 150, 120, 24);
+        comboBoxIdentificadores.setBounds(20, 290, 120, 24);
 
         comboBoxAritmeticos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Aritmeticos" }));
         comboBoxAritmeticos.addActionListener(new java.awt.event.ActionListener() {
@@ -163,7 +167,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxAritmeticos);
-        comboBoxAritmeticos.setBounds(20, 170, 120, 24);
+        comboBoxAritmeticos.setBounds(20, 310, 120, 24);
 
         comboBoxComparacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Comparacion" }));
         comboBoxComparacion.addActionListener(new java.awt.event.ActionListener() {
@@ -172,7 +176,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxComparacion);
-        comboBoxComparacion.setBounds(20, 190, 120, 24);
+        comboBoxComparacion.setBounds(20, 330, 120, 24);
 
         comboBoxLogicos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Logicos" }));
         comboBoxLogicos.addActionListener(new java.awt.event.ActionListener() {
@@ -181,7 +185,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxLogicos);
-        comboBoxLogicos.setBounds(20, 210, 120, 24);
+        comboBoxLogicos.setBounds(20, 350, 120, 24);
 
         comboBoxAsignacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asignacion" }));
         comboBoxAsignacion.addActionListener(new java.awt.event.ActionListener() {
@@ -190,7 +194,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxAsignacion);
-        comboBoxAsignacion.setBounds(20, 230, 120, 24);
+        comboBoxAsignacion.setBounds(20, 370, 120, 24);
 
         comboBoxKW.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Palabras Clave" }));
         comboBoxKW.addActionListener(new java.awt.event.ActionListener() {
@@ -199,7 +203,7 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(comboBoxKW);
-        comboBoxKW.setBounds(20, 250, 120, 24);
+        comboBoxKW.setBounds(20, 390, 120, 24);
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(0, 255, 51));
@@ -214,15 +218,15 @@ public class UI extends javax.swing.JFrame {
         pnlUI.add(jScrollPane2);
         jScrollPane2.setBounds(350, 90, 690, 330);
 
-        btnTablaSimbolos.setBackground(new java.awt.Color(0, 153, 153));
-        btnTablaSimbolos.setText("Ver Tabla Tokens");
-        btnTablaSimbolos.addActionListener(new java.awt.event.ActionListener() {
+        btnTablaTokens.setBackground(new java.awt.Color(0, 153, 153));
+        btnTablaTokens.setText("Ver Tabla Tokens");
+        btnTablaTokens.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTablaSimbolosActionPerformed(evt);
+                btnTablaTokensActionPerformed(evt);
             }
         });
-        pnlUI.add(btnTablaSimbolos);
-        btnTablaSimbolos.setBounds(20, 90, 200, 40);
+        pnlUI.add(btnTablaTokens);
+        btnTablaTokens.setBounds(20, 20, 200, 40);
 
         divisor.setBackground(new java.awt.Color(0, 255, 255));
         divisor.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -248,6 +252,16 @@ public class UI extends javax.swing.JFrame {
         lblErrorSint.setText("Error");
         pnlUI.add(lblErrorSint);
         lblErrorSint.setBounds(720, 450, 37, 18);
+
+        btnTablaFunciones.setBackground(new java.awt.Color(0, 153, 153));
+        btnTablaFunciones.setText("Ver Tabla Funciones");
+        btnTablaFunciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTablaFuncionesActionPerformed(evt);
+            }
+        });
+        pnlUI.add(btnTablaFunciones);
+        btnTablaFunciones.setBounds(20, 60, 200, 40);
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -356,9 +370,10 @@ public class UI extends javax.swing.JFrame {
         reporteTokens.clear();
         reporteErroresLexicos.clear();
         reporteErroresSintacticos.clear();
-        
+        reporteFunciones.clear();
+
         new Lexer(reporteTokens, reporteErroresLexicos).analizar(txtAreaCodigo.getText());
-        
+
         for (int i = 0; i < reporteTokens.size(); i++) {
             txtAreaReporteLex.setText(txtAreaReporteLex.getText() + reporteTokens.get(i).toString());
         }
@@ -366,14 +381,15 @@ public class UI extends javax.swing.JFrame {
             txtAreaErrorLex.setText(txtAreaErrorLex.getText() + reporteErroresLexicos.get(i).toString());
         }
         btnLimpiar1.setEnabled(true);
-        
+
         elToken.llenarComboBox(reporteTokens, comboBoxIdentificadores, comboBoxAritmeticos, comboBoxComparacion,
                 comboBoxLogicos, comboBoxAsignacion, comboBoxKW);
-        
+
         elToken.colorearTokens(txtAreaReporteLex, reporteTokens);
-        btnTablaSimbolos.setVisible(true);
-        
-        new Parser(reporteTokens, reporteErroresSintacticos).analizar();
+        btnTablaTokens.setVisible(true);
+        btnTablaFunciones.setVisible(true);
+
+        new Parser(reporteTokens, reporteErroresSintacticos, reporteFunciones).analizar();
 
         for (int i = 0; i < reporteErroresSintacticos.size(); i++) {
             txtAreaErrorSint.setText(txtAreaErrorSint.getText() + reporteErroresSintacticos.get(i));
@@ -400,7 +416,7 @@ public class UI extends javax.swing.JFrame {
         lblSintactico.setVisible(true);
         lblLexico.setVisible(true);
         divisor.setVisible(true);
-        
+
         comboBoxIdentificadores.setVisible(false);
         comboBoxAritmeticos.setVisible(false);
         comboBoxComparacion.setVisible(false);
@@ -424,7 +440,7 @@ public class UI extends javax.swing.JFrame {
         txtAreaCodigo.setEnabled(true);
         txtAreaCodigo.setBackground(Color.white);
         btnPlay.setEnabled(true);
-        
+
         comboBoxIdentificadores.setVisible(false);
         comboBoxAritmeticos.setVisible(false);
         comboBoxComparacion.setVisible(false);
@@ -450,7 +466,7 @@ public class UI extends javax.swing.JFrame {
         jScrollPane1.setVisible(false);
         jScrollPane4.setVisible(false);
         jScrollPane2.setVisible(false);
-        
+
         comboBoxIdentificadores.setVisible(true);
         comboBoxAritmeticos.setVisible(true);
         comboBoxComparacion.setVisible(true);
@@ -508,15 +524,15 @@ public class UI extends javax.swing.JFrame {
         archivo.mostrarImagen(lblImagen);
     }//GEN-LAST:event_comboBoxKWActionPerformed
 
-    private void btnTablaSimbolosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaSimbolosActionPerformed
+    private void btnTablaTokensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaTokensActionPerformed
         DefaultTableModel columna = new DefaultTableModel();
-        
+
         columna.addColumn("Tipo");
         columna.addColumn("Patron");
         columna.addColumn("Lexema ");
         columna.addColumn("Linea");
         columna.addColumn("Columna");
-        
+
         for (Token token : reporteTokens) {
             columna.addRow(new Object[]{token.getTipo1() + " / " + token.getTipo2(),
                 token.getPatron(),
@@ -526,13 +542,42 @@ public class UI extends javax.swing.JFrame {
         }
         JTable tabla = new JTable(columna);
         JScrollPane scrollPane = new JScrollPane(tabla);
-        JFrame frame = new JFrame("Tabla de Simbolos");
+        JFrame frame = new JFrame("Tabla de Tokens");
         frame.setLayout(new BorderLayout());
         frame.add(scrollPane, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }//GEN-LAST:event_btnTablaSimbolosActionPerformed
+    }//GEN-LAST:event_btnTablaTokensActionPerformed
+
+    private void btnTablaFuncionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaFuncionesActionPerformed
+        DefaultTableModel columna = new DefaultTableModel();
+        int numero = 0;
+        columna.addColumn("Numero");
+        columna.addColumn("Nombre");
+        columna.addColumn("Parametros");
+        columna.addColumn("Linea ");
+        columna.addColumn("Columna");
+        columna.addColumn("Llamadas");
+
+        for (Funcion funcion : reporteFunciones) {
+            numero++;
+            columna.addRow(new Object[]{numero, funcion.getNombre(),
+                funcion.getParametros(),
+                funcion.getLinea(),
+                funcion.getColumna(),
+                funcion.getLlamadas()});
+        }
+        JTable tabla = new JTable(columna);
+        JScrollPane scrollPane = new JScrollPane(tabla);
+        JFrame frame = new JFrame("Tabla de Funciones");
+        frame.setLayout(new BorderLayout());
+        frame.add(scrollPane, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+    }//GEN-LAST:event_btnTablaFuncionesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -548,7 +593,8 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JMenu btnMenuGrafico;
     private javax.swing.JMenuItem btnMenuSeleccionarArchivo;
     private javax.swing.JButton btnPlay;
-    private javax.swing.JButton btnTablaSimbolos;
+    private javax.swing.JButton btnTablaFunciones;
+    private javax.swing.JButton btnTablaTokens;
     private javax.swing.JComboBox<String> comboBoxAritmeticos;
     private javax.swing.JComboBox<String> comboBoxAsignacion;
     private javax.swing.JComboBox<String> comboBoxComparacion;

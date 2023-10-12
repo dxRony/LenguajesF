@@ -9,17 +9,19 @@ package com.mycompany.parserpy.be.util;
  * @author rony
  */
 public class Funcion {
-    
+
     private int linea;
     private int columna;
     private String nombre;
     private int parametros;
+    private int llamadas;
 
-    public Funcion(int linea, int columna, String nombre, int parametros) {
+    public Funcion(int linea, int columna, String nombre, int parametros, int llamadas) {
         this.linea = linea;
         this.columna = columna;
         this.nombre = nombre;
         this.parametros = parametros;
+        this.llamadas = llamadas;
     }
 
     public int getLinea() {
@@ -53,7 +55,18 @@ public class Funcion {
     public void setParametros(int parametros) {
         this.parametros = parametros;
     }
-    
-    
-    
+
+    public int getLlamadas() {
+        return llamadas;
+    }
+
+    public void setLlamadas(int llamadas) {
+        this.llamadas = llamadas;
+    }
+
+    @Override
+    public String toString() {
+        return "Funcion: \n" + "  *Nombre = " + nombre + "   *Parametros = " + parametros + "   *Linea = " + linea + "   *Columna = " + columna + "\n";
+    }
+
 }
