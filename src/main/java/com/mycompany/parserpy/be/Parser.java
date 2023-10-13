@@ -5,6 +5,7 @@
 package com.mycompany.parserpy.be;
 
 import com.mycompany.parserpy.be.util.Funcion;
+import com.mycompany.parserpy.be.util.Variable;
 import java.util.ArrayList;
 
 /**
@@ -16,16 +17,19 @@ public class Parser {
     private ArrayList<Token> tokens;
     private ArrayList<String> errores;
     private ArrayList<Funcion> funciones;
+    private ArrayList<Variable> variables;
     private int indice;
     private int indiceError;
     private int numFunciones;
     private int llamadasFunciones;
     private String nombreLlamada;
+    private String nombreFuncion;
 
-    public Parser(ArrayList<Token> tokens, ArrayList<String> errores, ArrayList<Funcion> funciones) {
+    public Parser(ArrayList<Token> tokens, ArrayList<String> errores, ArrayList<Funcion> funciones, ArrayList<Variable> variables) {
         this.tokens = tokens;
         this.errores = errores;
         this.funciones = funciones;
+        this.variables = variables;
         this.indice = 0;
         this.indiceError = 1;
         this.numFunciones = 0;
@@ -40,7 +44,6 @@ public class Parser {
             System.out.println("indice = " + indice);
             bloqueDeCodigo();
         }
-        System.out.println("numFunciones = " + numFunciones);
     }
 
     private void bloqueDeCodigo() {
@@ -70,13 +73,20 @@ public class Parser {
             bloqueDef();
 
         } else if (tokens.get(indice).getTipo1().equals("Comentario")) {
-            indice++;
+            ignorarComentario();
 
         } else {
             errores.add(indiceError + ". ¡ERROR! Se esperaba: ID, if, for, while, def o comentario\nEN LINEA:"
                     + tokens.get(indice).getLinea() + "\n");
             indice++;
             indiceError++;
+        }
+    }
+
+    private void ignorarComentario() {
+        if (tokens.get(indice).getTipo1().equals("Comentario")) {
+            System.out.println("hay comentario");
+            indice++;
         }
     }
 
@@ -112,15 +122,14 @@ public class Parser {
                 if (tokens.get(indice).getLexema().equals(")")) {
                     indice++;
                     System.out.println("hay )");
-
+                    ignorarComentario();
                     for (int i = 0; i < funciones.size(); i++) {
-                        System.out.println("a comparar= " + funciones.get(i).getNombre());
-                        System.out.println("nombreLlamada = " + nombreLlamada);
-
                         if (funciones.get(i).getNombre().equals(nombreLlamada)) {
                             System.out.println("existe");
                             llamadasFunciones = funciones.get(i).getLlamadas();
                             funciones.get(i).setLlamadas(llamadasFunciones + 1);
+                        } else {
+                            System.out.println("no existe");
                         }
                     }
                 } else {
@@ -138,13 +147,31 @@ public class Parser {
     }
 
     private void expresion() {
+        String nombre = "";
+        String tipo = "";
+        int linea = 0;
+        int columna = 0;
         System.out.println("entrando a expresion");
 
         if (tokens.get(indice).getTipo1().equals("Cadena")) {//cadenas
             System.out.println("hay asignacion de tipo: cadena");
+            nombre = tokens.get(indice - 2).getLexema();
+            tipo = tokens.get(indice).getTipo1();
+            linea = tokens.get(indice - 2).getLinea();
+            columna = tokens.get(indice - 2).getColumna();
+            variables.add(new Variable(nombre, tipo, linea, columna));
+
+            ignorarComentario();
 
         } else if (tokens.get(indice).getTipo1().equals("Entero")) {//enteros
-            System.out.println("hay asignacion de tipo: entero");
+            System.out.println("hay asignacion de tipo: entero");          
+            nombre = tokens.get(indice - 2).getLexema();
+            tipo = tokens.get(indice).getTipo1();
+            linea = tokens.get(indice - 2).getLinea();
+            columna = tokens.get(indice - 2).getColumna();
+            variables.add(new Variable(nombre, tipo, linea, columna));
+            
+            ignorarComentario();
 
             if (tokens.get(indice).getTipo2().equals("Aritmetico")) {//aritmeticos
                 System.out.println("hay operador aritmetico");
@@ -176,6 +203,7 @@ public class Parser {
                                 if (tokens.get(indice).getTipo1().equals("Entero")) {
                                     System.out.println("hay otro otro otro entero");
                                     indice++;
+                                    ignorarComentario();
                                 } else {
                                     errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                                     indice++;
@@ -212,6 +240,7 @@ public class Parser {
                 if (tokens.get(indice).getTipo1().equals("Entero")) {
                     System.out.println("hay entero");
                     indice++;
+                    ignorarComentario();
                 } else {
                     errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
@@ -220,9 +249,17 @@ public class Parser {
             }
         } else if (tokens.get(indice).getTipo1().equals("Decimal")) {//decimales
             System.out.println("hay asignacion de tipo: decimal");
+            nombre = tokens.get(indice - 2).getLexema();
+            tipo = tokens.get(indice).getTipo1();
+            linea = tokens.get(indice - 2).getLinea();
+            columna = tokens.get(indice - 2).getColumna();
+            variables.add(new Variable(nombre, tipo, linea, columna));
+            
+            ignorarComentario();
 
         } else if (tokens.get(indice).getTipo2().equals("Constante Booleana")) {//booleanos
             System.out.println("hay asignacion de tipo: booleana");
+            ignorarComentario();
 
         } else if (tokens.get(indice).getLexema().equals("[")) {//arrays
             System.out.println("abre array [");
@@ -232,7 +269,7 @@ public class Parser {
             if (tokens.get(indice).getLexema().equals("]")) {
                 indice++;
                 System.out.println("cierra array ]");
-                System.out.println("hay array");
+                ignorarComentario();
             } else {
                 errores.add(indiceError + ". ¡ERROR! Se esperaba: <]> o <,>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                 indice++;
@@ -266,6 +303,7 @@ public class Parser {
                 if (tokens.get(indice).getTipo1().equals("Entero")) {
                     System.out.println("hay otro entero");
                     indice++;
+                    ignorarComentario();
                 } else {
                     errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                     indice++;
@@ -326,6 +364,7 @@ public class Parser {
                 if (tokens.get(indice).getLexema().equals(":")) {
                     indice++;
                     System.out.println("hay :");
+                    ignorarComentario();
                     bloqueCodigoIf();//bloque de codigo
                     System.out.println("he salido");
                     System.out.println(tokens.get(indice).getLexema());
@@ -346,6 +385,7 @@ public class Parser {
                                 if (tokens.get(indice).getLexema().equals(":")) {
                                     indice++;
                                     System.out.println("hay :");
+                                    ignorarComentario();
                                     bloqueCodigoIf();//bloque de codigo
 
                                 } else if (tokens.get(indice).getTipo2().equals("Comparacion")) {
@@ -362,6 +402,7 @@ public class Parser {
                                         if (tokens.get(indice).getLexema().equals(":")) {
                                             indice++;
                                             System.out.println("hay :");
+                                            ignorarComentario();
                                             bloqueCodigoIf();//bloque de codigo
                                             System.out.println("he salido");
                                         } else {
@@ -394,6 +435,7 @@ public class Parser {
                             if (tokens.get(indice).getLexema().equals(":")) {
                                 indice++;
                                 System.out.println("hay :");
+                                ignorarComentario();
                                 bloqueCodigoIf();//bloque de codigo
                             }
                         }
@@ -412,6 +454,7 @@ public class Parser {
                         if (tokens.get(indice).getLexema().equals(":")) {
                             indice++;
                             System.out.println("hay :");
+                            ignorarComentario();
                             bloqueCodigoIf();//bloque de codigo
 
                             if (tokens.get(indice).getLexema().equals("elif")) {//bloqueElif();
@@ -431,6 +474,7 @@ public class Parser {
                                         if (tokens.get(indice).getLexema().equals(":")) {
                                             indice++;
                                             System.out.println("hay :");
+                                            ignorarComentario();
                                             bloqueCodigoIf();//bloque de codigo
 
                                         } else if (tokens.get(indice).getTipo2().equals("Comparacion")) {
@@ -447,6 +491,7 @@ public class Parser {
                                                 if (tokens.get(indice).getLexema().equals(":")) {
                                                     indice++;
                                                     System.out.println("hay :");
+                                                    ignorarComentario();
                                                     bloqueCodigoIf();//bloque de codigo
                                                 } else {
                                                     errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
@@ -477,6 +522,7 @@ public class Parser {
                                         if (tokens.get(indice).getLexema().equals(":")) {
                                             indice++;
                                             System.out.println("hay :");
+                                            ignorarComentario();
                                             bloqueCodigoIf();//bloque de codigo
                                         }
                                     }
@@ -545,6 +591,7 @@ public class Parser {
                             || tokens.get(indice).getTipo1().equals("Identificador")) {
                         System.out.println("hay boolean/decimal/cadena/id para comparar");
                         indice++;
+                        ignorarComentario();
                     } else {
                         errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;
@@ -562,6 +609,7 @@ public class Parser {
                             || tokens.get(indice).getTipo1().equals("Identificador")) {
                         System.out.println("hay boolean/decimal/cadena/id");
                         indice++;
+                        ignorarComentario();
                     } else {
                         errores.add(indiceError + ". ¡ERROR! Se esperaba: Entero/Decimal/Cadena/ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;
@@ -602,6 +650,7 @@ public class Parser {
                         if (tokens.get(indice).getLexema().equals(":")) {
                             indice++;
                             System.out.println("hay :");
+                            ignorarComentario();
                             bloqueCodigoFor();//bloque de codigo
 
                         } else {
@@ -632,6 +681,7 @@ public class Parser {
                 if (tokens.get(indice).getLexema().equals(":")) {
                     indice++;
                     System.out.println("hay :");
+                    ignorarComentario();
                     bloqueCodigoForElse();
                 } else {
                     errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
@@ -692,12 +742,8 @@ public class Parser {
                         if (tokens.get(indice).getLexema().equals(":")) {
                             System.out.println("hay :");
                             indice++;
+                            ignorarComentario();
                             bloqueCodigoWhile();
-
-//                            if (tokens.get(indice).getLexema().equals("break")) {
-//                                indice++;
-//                                System.out.println("hay break");
-//                            }
                         } else {
                             errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                             indice++;
@@ -726,6 +772,7 @@ public class Parser {
                 if (tokens.get(indice).getLexema().equals(":")) {
                     System.out.println("hay : ");
                     indice++;
+                    ignorarComentario();
                     bloqueCodigoForElse();
                 } else {
                     errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
@@ -778,7 +825,7 @@ public class Parser {
                         if (tokens.get(indice).getLexema().equals(":")) {
                             indice++;
                             System.out.println("hay :");
-
+                            ignorarComentario();
                             bloqueCodigoDef();//bloque codigo    
                         } else {
                             errores.add(indiceError + ". ¡ERROR! Se esperaba: <:>\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
@@ -809,12 +856,6 @@ public class Parser {
         numFunciones++;
         funciones.add(new Funcion(linea, columna, nombre, parametros, llamadas));
         System.out.println("saliendo de def");
-        System.out.println("nombre = " + nombre);
-        System.out.println("parametros = " + parametros);
-        System.out.println("linea = " + linea);
-        System.out.println("columna = " + columna);
-        System.out.println("llamadas = " + llamadas);
-        System.out.println(funciones.toString());
     }
 
     private int parametros() {
@@ -855,7 +896,7 @@ public class Parser {
             if (tokens.get(indice).getTipo1().equals("Identificador")) {
                 System.out.println("hay id");
                 indice++;
-
+                ignorarComentario();
                 if (tokens.get(indice).getTipo2().equals("Aritmetico")) {
                     System.out.println("hay operador aritmetico");
                     indice++;
@@ -863,7 +904,7 @@ public class Parser {
                     if (tokens.get(indice).getTipo1().equals("Identificador")) {
                         System.out.println("hay valor a operar aritmeticamente");
                         indice++;
-
+                        ignorarComentario();
                     } else {
                         errores.add(indiceError + ". ¡ERROR! Se esperaba: ID\nEN LINEA:" + tokens.get(indice).getLinea() + "\n");
                         indice++;

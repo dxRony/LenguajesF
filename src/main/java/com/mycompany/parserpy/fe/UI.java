@@ -5,6 +5,7 @@ import com.mycompany.parserpy.be.Lexer;
 import com.mycompany.parserpy.be.Parser;
 import com.mycompany.parserpy.be.Token;
 import com.mycompany.parserpy.be.util.Funcion;
+import com.mycompany.parserpy.be.util.Variable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -26,6 +27,7 @@ public class UI extends javax.swing.JFrame {
     private ArrayList<Token> reporteErroresLexicos = new ArrayList();
     private ArrayList<String> reporteErroresSintacticos = new ArrayList();
     private ArrayList<Funcion> reporteFunciones = new ArrayList();
+    private ArrayList<Variable> reporteVariables = new ArrayList();
     private Token elToken;
 
     /**
@@ -55,6 +57,7 @@ public class UI extends javax.swing.JFrame {
         comboBoxKW.setVisible(false);
         btnTablaTokens.setVisible(false);
         btnTablaFunciones.setVisible(false);
+        btnTablaGlobal.setVisible(false);
 
         lblLexico.setVisible(false);
         lblSintactico.setVisible(false);
@@ -100,6 +103,7 @@ public class UI extends javax.swing.JFrame {
         lblSintactico = new javax.swing.JLabel();
         lblErrorSint = new javax.swing.JLabel();
         btnTablaFunciones = new javax.swing.JButton();
+        btnTablaGlobal = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenuAnalizar = new javax.swing.JMenu();
         btnMenuSeleccionarArchivo = new javax.swing.JMenuItem();
@@ -117,7 +121,7 @@ public class UI extends javax.swing.JFrame {
         btnPlay.setBackground(new java.awt.Color(0, 0, 153));
         btnPlay.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnPlay.setForeground(new java.awt.Color(255, 255, 255));
-        btnPlay.setText("Iniciar Analisis Lexico y Sintáctico");
+        btnPlay.setText("Iniciar Análisis Lexico y Sintáctico");
         btnPlay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPlayActionPerformed(evt);
@@ -245,12 +249,12 @@ public class UI extends javax.swing.JFrame {
         jScrollPane3.setBounds(710, 470, 630, 260);
 
         lblLexico.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
-        lblLexico.setText("Analísis Léxico");
+        lblLexico.setText("Análisis Léxico");
         pnlUI.add(lblLexico);
         lblLexico.setBounds(250, 420, 120, 22);
 
         lblSintactico.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
-        lblSintactico.setText("Analísis Sintáctico");
+        lblSintactico.setText("Análisis Sintáctico");
         pnlUI.add(lblSintactico);
         lblSintactico.setBounds(910, 430, 160, 22);
 
@@ -267,7 +271,17 @@ public class UI extends javax.swing.JFrame {
             }
         });
         pnlUI.add(btnTablaFunciones);
-        btnTablaFunciones.setBounds(20, 60, 200, 40);
+        btnTablaFunciones.setBounds(20, 100, 200, 40);
+
+        btnTablaGlobal.setBackground(new java.awt.Color(0, 153, 153));
+        btnTablaGlobal.setText("Ver Tabla Global");
+        btnTablaGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTablaGlobalActionPerformed(evt);
+            }
+        });
+        pnlUI.add(btnTablaGlobal);
+        btnTablaGlobal.setBounds(20, 60, 200, 40);
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -377,6 +391,7 @@ public class UI extends javax.swing.JFrame {
         reporteErroresLexicos.clear();
         reporteErroresSintacticos.clear();
         reporteFunciones.clear();
+        reporteVariables.clear();
 
         new Lexer(reporteTokens, reporteErroresLexicos).analizar(txtAreaCodigo.getText());
 
@@ -394,8 +409,9 @@ public class UI extends javax.swing.JFrame {
         elToken.colorearTokens(txtAreaReporteLex, reporteTokens);
         btnTablaTokens.setVisible(true);
         btnTablaFunciones.setVisible(true);
+        btnTablaGlobal.setVisible(true);
 
-        new Parser(reporteTokens, reporteErroresSintacticos, reporteFunciones).analizar();
+        new Parser(reporteTokens, reporteErroresSintacticos, reporteFunciones, reporteVariables).analizar();
 
         for (int i = 0; i < reporteErroresSintacticos.size(); i++) {
             txtAreaErrorSint.setText(txtAreaErrorSint.getText() + reporteErroresSintacticos.get(i));
@@ -568,7 +584,8 @@ public class UI extends javax.swing.JFrame {
 
         for (Funcion funcion : reporteFunciones) {
             numero++;
-            columna.addRow(new Object[]{numero, funcion.getNombre(),
+            columna.addRow(new Object[]{numero,
+                funcion.getNombre(),
                 funcion.getParametros(),
                 funcion.getLinea(),
                 funcion.getColumna(),
@@ -585,6 +602,43 @@ public class UI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnTablaFuncionesActionPerformed
 
+    private void btnTablaGlobalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaGlobalActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel columna = new DefaultTableModel();
+        int numero = 0;
+        columna.addColumn("Numero");
+        columna.addColumn("Nombre");
+        columna.addColumn("Tipo");
+        columna.addColumn("Linea ");
+        columna.addColumn("Columna");
+
+        for (Variable variable : reporteVariables) {
+            numero++;
+            columna.addRow(new Object[]{numero,
+                variable.getNombre(),
+                "Variable: " + variable.getTipo(),
+                variable.getLinea(),
+                variable.getColumna()});
+        }
+        for (Funcion funcion : reporteFunciones) {
+            numero++;
+            columna.addRow(new Object[]{numero,
+                funcion.getNombre(),
+                "Funcion/Metodo",
+                funcion.getLinea(),
+                funcion.getColumna()
+            });
+        }
+        JTable tabla = new JTable(columna);
+        JScrollPane scrollPane = new JScrollPane(tabla);
+        JFrame frame = new JFrame("Tabla de Simbolo Global");
+        frame.setLayout(new BorderLayout());
+        frame.add(scrollPane, BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }//GEN-LAST:event_btnTablaGlobalActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -600,6 +654,7 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnMenuSeleccionarArchivo;
     private javax.swing.JButton btnPlay;
     private javax.swing.JButton btnTablaFunciones;
+    private javax.swing.JButton btnTablaGlobal;
     private javax.swing.JButton btnTablaTokens;
     private javax.swing.JComboBox<String> comboBoxAritmeticos;
     private javax.swing.JComboBox<String> comboBoxAsignacion;
