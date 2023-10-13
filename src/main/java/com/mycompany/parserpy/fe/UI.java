@@ -7,11 +7,17 @@ import com.mycompany.parserpy.be.Token;
 import com.mycompany.parserpy.be.util.Funcion;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.text.Element;
 
 public class UI extends javax.swing.JFrame {
 
