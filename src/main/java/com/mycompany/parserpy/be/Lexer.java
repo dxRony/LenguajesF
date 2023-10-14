@@ -208,7 +208,8 @@ public class Lexer {
                             color = "BLUE";
                             patron = "[op]";
                             estado = 0;
-                            if (lexema.equals("+") || lexema.equals("-") || lexema.equals("%") || lexema.equals("/") || lexema.equals("*")) {
+                            if (lexema.equals("+") || lexema.equals("-") || lexema.equals("%") 
+                                    || lexema.equals("/") || lexema.equals("*")) {
                                 if (caracterSiguiente == 61) {
                                     estado = 8;
                                 } else {
@@ -218,8 +219,10 @@ public class Lexer {
                                 tipo2 = "Comparacion";
                             } else if (lexema.equals("=")) {
                                 tipo2 = "Asignacion";
-                            } else if (lexema.equals("(") || lexema.equals(")") || lexema.equals("{") || lexema.equals("}") || lexema.equals(".")
-                                    || lexema.equals(":") || lexema.equals("[") || lexema.equals("]") || lexema.equals(",")) {
+                            } else if (lexema.equals("(") || lexema.equals(")") 
+                                    || lexema.equals("{") || lexema.equals("}") || lexema.equals(".")
+                                    || lexema.equals(":") || lexema.equals("[") || lexema.equals("]") 
+                                    || lexema.equals(",")) {
                                 tipo2 = "Otros";
                             }
                         }

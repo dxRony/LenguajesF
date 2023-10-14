@@ -37,6 +37,10 @@ public class Parser {
         this.nombreLlamada = "";
     }
 
+    /**
+     * Este metodo recorre posicion por posicion de la lista de tokens, que
+     * genero el analisis lexico
+     */
     public void analizar() {
         System.out.println("tokens.size() = " + tokens.size());
 
@@ -46,6 +50,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Este metodo es utilizado para aceptar cualquier parte de codigo que
+     * corresponda a la gramatica, para los bloques de codigo
+     */
     private void bloqueDeCodigo() {
         if (tokens.get(indice).getTipo1().equals("Identificador")
                 && tokens.get(indice + 1).getLexema().equals("(")) {
@@ -83,6 +91,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Este cuando haya un comentario, este metodo lo ignorara aumentando el
+     * indice de busqueda en 1
+     */
     private void ignorarComentario() {
         if (tokens.get(indice).getTipo1().equals("Comentario")) {
             System.out.println("hay comentario");
@@ -90,6 +102,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Este metodo verifica que haya un token de asignacion, con un
+     * identificador previo, de no ser asi es un error sintactico
+     */
     private void asignacion() {
         System.out.println("entrando a asignacion");
         identificador();
@@ -106,6 +122,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Este metodo verifica que el token corresponda a la estructura de una
+     * variable para que sea procedido de una asignacion
+     */
     private void identificador() {
         System.out.println("entrando a identificador");
 
@@ -146,6 +166,11 @@ public class Parser {
         }
     }
 
+    /**
+     * Este metodo verifica que el token corresponda a un tipo de variable y le
+     * da validez, ademas de verificar si es precedido de algun otro token
+     * valido para otro proceso distinto
+     */
     private void expresion() {
         String nombre = "";
         String tipo = "";
@@ -164,13 +189,13 @@ public class Parser {
             ignorarComentario();
 
         } else if (tokens.get(indice).getTipo1().equals("Entero")) {//enteros
-            System.out.println("hay asignacion de tipo: entero");          
+            System.out.println("hay asignacion de tipo: entero");
             nombre = tokens.get(indice - 2).getLexema();
             tipo = tokens.get(indice).getTipo1();
             linea = tokens.get(indice - 2).getLinea();
             columna = tokens.get(indice - 2).getColumna();
             variables.add(new Variable(nombre, tipo, linea, columna));
-            
+
             ignorarComentario();
 
             if (tokens.get(indice).getTipo2().equals("Aritmetico")) {//aritmeticos
@@ -254,7 +279,7 @@ public class Parser {
             linea = tokens.get(indice - 2).getLinea();
             columna = tokens.get(indice - 2).getColumna();
             variables.add(new Variable(nombre, tipo, linea, columna));
-            
+
             ignorarComentario();
 
         } else if (tokens.get(indice).getTipo2().equals("Constante Booleana")) {//booleanos
@@ -292,6 +317,10 @@ public class Parser {
         System.out.println("saliendo de expresion");
     }
 
+    /**
+     * Este metodo verifica que se siga la estructura correcta de un operador
+     * aritmetico, de no ser asi notifica el error
+     */
     private void operadorAritmetico() {
         if (tokens.get(indice).getTipo1().equals("Entero")) {
             indice++;
@@ -317,6 +346,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Este metodo se encarga de validar y agregar de manera ciclica las
+     * distintas variables que existan dentro de un arreglo
+     */
     private void bloqueArray() {
         int id = 0;
         if (tokens.get(indice).getTipo1().equals("Entero")
@@ -349,6 +382,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Este metodo verifica que este bien la estructura de los ifs y verifica la
+     * existencia de los elifs de manera ciclica, ademas del else
+     */
     private void bloqueIf() {
         if (tokens.get(indice).getLexema().equals("if")) {
             indice++;
@@ -551,6 +588,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Este metodo registra cualquier declaracion dentro de un bloque de codigo,
+     * hasta que encuentre algun elif, else o break
+     */
     private void bloqueCodigoIf() {
         System.out.println("entrando a bloqueCodigoIf");
         while (!tokens.get(indice).getLexema().equals("if")
@@ -563,6 +604,10 @@ public class Parser {
         System.out.println("saliendo de bloqueCodigoIf");
     }
 
+    /**
+     * Este metodo registra cuando hayan operadores ternarios, en caso contrario
+     * tira un error sintactico
+     */
     private void ternario() {
         System.out.println("entrando a ternario");
         if (tokens.get(indice).getLexema().equals("if")) {
@@ -629,6 +674,10 @@ public class Parser {
         System.out.println("saliendo de ternario");
     }
 
+    /**
+     * Este metodo verifica que la estructura de los fors se cumpla, incluyendo
+     * los for-else
+     */
     private void bloqueFor() {
         System.out.println("entrando a for");
 
@@ -695,6 +744,10 @@ public class Parser {
         System.out.println("saliendo de for");
     }
 
+    /**
+     * Este metodo se encarga de ciclar el codigo, hasta que se encuentre un
+     * break y termine su porcion
+     */
     private void bloqueCodigoFor() {
         System.out.println("entrando a bloqueCodigoFor");
         while (!tokens.get(indice).getLexema().equals("break")) {
@@ -705,6 +758,10 @@ public class Parser {
         System.out.println("saliendo a bloqueCodigoFor");
     }
 
+    /**
+     * Este metodo se encarga de ciclar el codigo, hasta que se encuentre un
+     * break y termine su porcion
+     */
     private void bloqueCodigoForElse() {
         System.out.println("entrando a bloqueCodigoForElse");
         while (!tokens.get(indice).getLexema().equals("break")) {
@@ -715,6 +772,10 @@ public class Parser {
         System.out.println("saliendo de bloqueCodigoForElse");
     }
 
+    /**
+     * Este metodo verifica que la estructura de los while se cumpla, incluyendo
+     * los while else
+     */
     private void bloqueWhile() {
         System.out.println("entrando a bloqueWhile");
 
@@ -786,6 +847,10 @@ public class Parser {
         System.out.println("saliendo de bloqueWhile");
     }
 
+    /**
+     * Este metodo se encarga de ciclar el codigo, hasta que se encuentre un
+     * break y termine su porcion
+     */
     private void bloqueCodigoWhile() {
         System.out.println("entrando a bloqueCodigoWhile");
         while (!tokens.get(indice).getLexema().equals("break")) {
@@ -795,6 +860,10 @@ public class Parser {
         System.out.println("saliendo de  bloqueCodigoWhile");
     }
 
+    /**
+     * Este metodo se encraga de verificar que la estructura de las funciones o
+     * metodos se cumpla, incluyendo parametros y los bloques de codigo
+     */
     private void bloqueDef() {
         String nombre = "";
         int linea = 0;
@@ -858,6 +927,13 @@ public class Parser {
         System.out.println("saliendo de def");
     }
 
+    /**
+     * Este metodo verifica de manera ciclica los parametros que pertenezacan a
+     * la funcion
+     *
+     * @return retorna la cantidad de parametros para utilizarse en la tabla de
+     * simbolos
+     */
     private int parametros() {
         System.out.println("entrando a parametros");
         int parametro = 0;
@@ -882,12 +958,24 @@ public class Parser {
         return parametro;
     }
 
+    /**
+     * Este metodo se encarga de ciclar el codigo, hasta que se encuentre un
+     * break y termine su porcion
+     */
     private void bloqueCodigoDef() {
         System.out.println("entrando a bloqueCodigoDef");
-        asignacion();
+        while (!tokens.get(indice).getLexema().equals("break")) {
+            bloqueDeCodigo();
+        }
+        indice++;
+        System.out.println("hay break");
         System.out.println("saliendo de bloqueCodigoDef");
     }
 
+    /**
+     * Este bloque verifica que se cumpla la estructura del valor de retorno
+     * al finalizar una funcion/metodo
+     */
     private void bloqueRetornar() {
         System.out.println("entrando a bloque retornar");
         if (tokens.get(indice).getLexema().equals("return")) {
